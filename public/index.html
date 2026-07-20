@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Larper</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <img src="Imagens/Logo.png" alt="Logo" id="logo">
+
+    <form id="form">
+        <input type="text" name="input" id="media-input" placeholder="Media Name" autocomplete="off" required>
+        <input type="submit" value="Search" id="search">
+    </form>
+
+    <ul id="suggestions" class="text"></ul>
+
+    <div id="content">
+        <a href=""><img src="" alt="Cover" id="cover"></a>
+        <p id="name" class="text"></p>
+        <div id="items">
+            <p id="description" class="text"></p>
+            <div id="time" class="field">
+                <p id="timeText" class="text itemName">Runtime</p>
+                <p id="timeContent" class="text itemContent"></p>
+            </div>
+            <div id="rating" class="field">
+                <p id="ratingText" class="text itemName">Rating</p>
+                <p id="ratingContent" class="text itemContent"></p>
+            </div>
+            <div id="genre" class="field">
+                <p id="genreText" class="text itemName">Genres</p>
+                <p id="genreContent" class="text itemContent"></p>
+            </div>
+            <div id="date" class="field">
+                <p id="dateText" class="text itemName">Release date</p>
+                <p id="dateContent" class="text itemContent"></p>
+            </div>
+            <div id="reviews" class="field">
+                <p id="reviewText" class="text itemName">Reviews</p>
+                <p id="reviewContent" class="text itemContent"></p>
+                <p id="reviewAuthor" class="text"></p>
+            </div>
+        </div>
+        <p id="tagline" class="text">teste</p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
