@@ -1,6 +1,6 @@
 const Key = process.env.TMDB_Token;
 
-async function searchMovies(query){
+async function searchMovie(query){
     const urlPrincipal = 'https://api.themoviedb.org/3/search/movie?query=';
     const urlDetails = 'https://api.themoviedb.org/3/movie/'
     const options = {
@@ -30,7 +30,7 @@ async function searchMovies(query){
     };
 }
 
-async function searchSeries(query){
+async function searchSerie(query){
     const urlPrincipal = 'https://api.themoviedb.org/3/search/tv?query=';
     const urlDetails = 'https://api.themoviedb.org/3/tv/';
     const options = {
@@ -45,13 +45,13 @@ async function searchSeries(query){
     if (!info) {
         return null;
     }
+
     const responseDetails = await fetch(urlDetails + info.id, options);
     const dataDetails = await responseDetails.json();
 
     const responseReview = await fetch(urlDetails + info.id + '/reviews', options);
     const dataReviews = await responseReview.json();
     const infoReviews = dataReviews.results[0];
-
 
     return {
         info,
@@ -61,6 +61,6 @@ async function searchSeries(query){
 }
 
 module.exports = {
-    searchMovies,
-    searchSeries
+    searchMovie,
+    searchSerie
 };

@@ -12,8 +12,10 @@ app.listen(PORT, () => {
     console.log(`Server inicialized in port: ${PORT}`);
 }); 
 
-const { searchMovies } = require("./Apis/TMDB");
-const { searchSeries } = require("./Apis/TMDB");
+const { searchMovie } = require("./Apis/TMDB");
+const { searchSerie } = require("./Apis/TMDB");
+const { searchAnime } = require("./Apis/Jikan");
+const { searchBook } = require("./Apis/OpenLibrary")
 
 function structure(media, type){
     let serie = {
@@ -40,7 +42,7 @@ function structure(media, type){
 
         if (media.infoReviews) {
             serie.review.author = media.infoReviews.author;
-            serie.review.rating = media.infoReviews.author_details?.rating.toFixed(1);
+            serie.review.rating = media.infoReviews.author_details.rating.toFixed(1);
             serie.review.content = media.infoReviews.content;
         }
 
@@ -64,7 +66,7 @@ function structure(media, type){
 
         if (media.infoReviews) {
             movie.review.author = media.infoReviews.author;
-            movie.review.rating = media.infoReviews.author_details?.rating.toFixed(1);
+            movie.review.rating = media.infoReviews.author_details.rating.toFixed(1);
             movie.review.content = media.infoReviews.content;
         }
 
@@ -78,13 +80,39 @@ app.get("/search", async (req, res) =>{
     try {
         const query = req.query.q;
 
-        const series = await searchSeries(query);
-        const movies = await searchMovies(query);
+        let serie = movie = anime = book = null;
 
-        const response = [
-            series ? structure(series, 'serie') : null,
-            movies ? structure(movies, 'movie') : null
-        ];
+        serie = await searchSerie(query);
+        movie = await searchMovie(query);
+        anime = await searchAnime(query);
+        book = await searchBook(query);
+
+        let response = [[]]
+
+        console.log(book)
+        
+        if (!Object.hasOwn(anime, 'errorMessage')){
+            if (anime !== null){
+                anime = structure(anime, 'anime');
+                response.push(anime)
+                response[0].push('anime')
+            }            
+        }
+        
+        response.push(book)
+
+        if (serie !== null){
+            serie = structure(serie, 'serie');
+            response.push(serie)
+            response[0].push('serie')
+        }
+        if (movie !== null){
+            movie = structure(movie, 'movie')
+            response.push(movie)
+            response[0].push('movie')
+        }
+         
+        
         
 
         res.json(response);

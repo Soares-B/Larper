@@ -37,16 +37,7 @@ mediaInput.addEventListener('input', () => {
             });
             list.appendChild(li);
         });
-    }, 10);
-});
-
-searchButton.addEventListener('click', async () => {
-    if (mediaInput.value.trim() === '') return;
-
-    const data = await search(mediaInput.value);
-    const type = data[0] ? "serie" : "movie";
-    addElements(data, type);
-    conteudo.classList.add('show');
+    }, 1000);
 });
 
 form.addEventListener('submit', async (e) => {
@@ -54,9 +45,11 @@ form.addEventListener('submit', async (e) => {
     if (mediaInput.value.trim() === '') return;
 
     const data = await search(mediaInput.value);
-    const type = data[0] ? "serie" : "movie";
+    const type = data[1] ? "serie" : "movie";
     addElements(data, type);
     conteudo.classList.add('show');
+    list.innerHTML = ''
+    mediaInput.value = ''
 });
 
 async function search(media) {
@@ -65,6 +58,8 @@ async function search(media) {
 }
 
 function addElements(data, type) {
+    //Order: Anime, Manga, Game, Book, Serie, Movie, Music 
+
     const cover = document.querySelector('#cover');
     const name = document.querySelector('#name');
     const description = document.querySelector('#description');
@@ -89,22 +84,23 @@ function addElements(data, type) {
     }
 
     if (typenumber === null) return;
+    console.log(data)
 
-    name.textContent = data[typenumber].name;
+    name.textContent = data[1].name;
 
-    const oneOcurrancy = data[typenumber].description.indexOf('.');
-    const twoOcurrancy = data[typenumber].description.indexOf('.', oneOcurrancy + 1);
+    const oneOcurrancy = data[1].description.indexOf('.');
+    const twoOcurrancy = data[1].description.indexOf('.', oneOcurrancy + 1);
 
-    description.textContent = data[typenumber].description.slice(0, twoOcurrancy + 1);
+    description.textContent = data[1].description.slice(0, twoOcurrancy + 1);
 
-    cover.src = data[typenumber].cover;
+    cover.src = data[1].cover;
     
-    link.href = data[typenumber].link;
+    link.href = data[1].link;
     link.target = '_blank'
     link.rel = 'nofollow'
 
     if (typenumber === 1){
-        timeContent.textContent = data[typenumber].runtime;
+        timeContent.textContent = data[1].runtime;
         timeContent.style.fontSize = '36px';
         timeContent.style.left = '5%';
         timeContent.style.bottom = '10%';
@@ -112,37 +108,37 @@ function addElements(data, type) {
         timeContent.textContent = '';
         const br = document.createElement('br');
         
-        timeContent.append(`Episodes: ${data[typenumber].totalEpisode}`, br, `Seasons: ${data[typenumber].totalSeason}`);
+        timeContent.append(`Episodes: ${data[1].totalEpisode}`, br, `Seasons: ${data[1].totalSeason}`);
         timeContent.style.fontSize = '16px';
         timeContent.style.left = '5%';
         timeContent.style.bottom = '25%';
     }
     
-    ratingContent.textContent = data[typenumber].rating;
-    dateContent.textContent = data[typenumber].date;
-    genresContent.textContent = data[typenumber].genres.join(', ');
+    ratingContent.textContent = data[1].rating;
+    dateContent.textContent = data[1].date;
+    genresContent.textContent = data[1].genres.join(', ');
 
-    if (data[typenumber].review.author){
-        const firstOcurrancy = data[typenumber].review.content.indexOf('.');
-        const secondOcurrancy = data[typenumber].review.content.indexOf('.', firstOcurrancy + 1);
+    if (data[1].review.author){
+        const firstOcurrancy = data[1].review.content.indexOf('.');
+        const secondOcurrancy = data[1].review.content.indexOf('.', firstOcurrancy + 1);
 
         if (secondOcurrancy < 100){
-            const thirdOcurrancy = data[typenumber].review.content.indexOf('.', secondOcurrancy + 1);
-            reviewContent.textContent = `"${data[typenumber].review.content.slice(0, thirdOcurrancy)}..."`;
+            const thirdOcurrancy = data[1].review.content.indexOf('.', secondOcurrancy + 1);
+            reviewContent.textContent = `"${data[1].review.content.slice(0, thirdOcurrancy)}..."`;
         }else{
-            reviewContent.textContent = `"${data[typenumber].review.content.slice(0, secondOcurrancy)}..."`;
+            reviewContent.textContent = `"${data[1].review.content.slice(0, secondOcurrancy)}..."`;
         }
     
         reviewAuthor.textContent = '';
 
         let span = document.createElement('span');
-        span.innerHTML = data[typenumber].review.rating;
+        span.innerHTML = data[1].review.rating;
 
-        reviewAuthor.append(span, ' - ' + data[typenumber].review.author);
+        reviewAuthor.append(span, ' - ' + data[1].review.author);
 
-        if (data[typenumber].review.rating > 7.5){
+        if (data[1].review.rating > 7.5){
             span.style.color = '#25ff25';
-        }else if (data[typenumber].review.rating > 5){
+        }else if (data[1].review.rating > 5){
             span.style.color = '#ffe925';
         }else{
             span.style.color = '#ff1010';
@@ -152,11 +148,11 @@ function addElements(data, type) {
         reviewAuthor.innerHTML = ''
     }
 
-    tagline.textContent = data[typenumber].tagline
+    tagline.textContent = data[1].tagline
 
-    if (data[typenumber].rating > 7.5){
+    if (data[1].rating > 7.5){
         ratingContent.style.color = '#25ff25';
-    }else if (data[typenumber].rating > 5){
+    }else if (data[1].rating > 5){
         ratingContent.style.color = '#ffe925';
     }else{
         ratingContent.style.color = '#ff1010';
@@ -166,6 +162,4 @@ function addElements(data, type) {
     name.classList.add("show");
     cover.classList.add("show");
     tagline.classList.add("show");
-
-    console.log(data);
 }
