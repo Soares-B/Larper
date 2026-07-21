@@ -1,6 +1,6 @@
-require('dotenv').config();
+import "dotenv/config";
+import express from "express";
 
-const express = require('express');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,102 +12,151 @@ app.listen(PORT, () => {
     console.log(`Server inicialized in port: ${PORT}`);
 }); 
 
-const { searchMovie } = require("./Apis/TMDB");
-const { searchSerie } = require("./Apis/TMDB");
-const { searchAnime } = require("./Apis/Jikan");
-const { searchBook } = require("./Apis/OpenLibrary")
+import { searchMovie, searchSerie } from "./Apis/TMDB.js";
+import { searchAnime, searchManga } from "./Apis/Tenrai.js";
+import { searchBook } from "./Apis/OpenLibrary.js";
 
-function structure(media, type){
-    let serie = {
-        review: {}
+class MediaTenrai{
+    
+    constructor(obj){
+        this.name = obj.info.title_japanese;
+        this.subname = obj.info.title;
+        this.desciption = obj.info.synopsis;
+        this.cover = obj.info.images["jpg"].large_image_url;
+        this.background = null;
+        this.id = obj.info.mal_id;
+        this.rating = obj.info.score
+        this.genres = obj.info.genres.map(g => g.name);
+        this.tagline = null;
+        this.link = obj.info.url
+
+        if (obj.infoReview){
+            this.review_spoiler = obj.infoReview.is_spoiler;
+            this.review_author = obj.infoReview.user.username;
+            this.review_rating = obj.infoReview.score;
+            this.review_opinion = obj.infoReview.tags[0];
+            this.review_content = obj.infoReview.review;
+        }        
     }
-    let movie = {
-        review: {}
+}
+
+class Anime extends MediaTenrai{
+
+    constructor(obj){
+        super(obj)
+        this.date = obj.info.aired["from"].slice(0, 10);
+        this.type = 'anime';
+        this.totalEpisode = obj.info.episodes;
+        this.season = obj.info.season;
     }
-    if (type === 'serie'){
-        serie.name = media.info.original_name;
-        serie.subname = media.info.name;
-        serie.description = media.info.overview;
-        serie.cover = `https://image.tmdb.org/t/p/w500${media.info.poster_path}`;
-        serie.background = `https://image.tmdb.org/t/p/w500${media.info.backdrop_path}`;
-        serie.id = media.info.id;
-        serie.date = media.info.first_air_date;
-        serie.rating = media.info.vote_average.toFixed(2);
-        serie.type = 'serie'
+}
 
-        serie.genres = media.dataDetails.genres.map(g => g.name);
-        serie.totalEpisode = media.dataDetails.number_of_episodes;
-        serie.totalSeason = media.dataDetails.number_of_seasons;
-        serie.tagline = media.dataDetails.tagline;
+class Manga extends MediaTenrai{
+    
+    constructor(obj){
+        super(obj)
+        this.date = obj.info.published["from"].slice(0, 10);
+        this.type = 'manga';
+        this.chapters = obj.info.chapters;
+        this.volumes = obj.info.volumes;
+    }
+}
 
-        if (media.infoReviews) {
-            serie.review.author = media.infoReviews.author;
-            serie.review.rating = media.infoReviews.author_details.rating.toFixed(1);
-            serie.review.content = media.infoReviews.content;
+class Book{
+
+    constructor(obj){
+        this.name = obj.title
+        this.author = obj.author_name[0]
+        this.cover = `https://covers.openlibrary.org/b/olid/${obj.cover_edition_key}}-L.jpg`
+        this.date = obj.first_publish_year
+        this.url = `https://openlibrary.org/books/OL35692182M/${this.name}`
+
+    }
+}
+
+class MediaTMDB{
+
+    constructor(obj){
+        this.description = obj.info.overview;
+        this.cover = `https://image.tmdb.org/t/p/w500${obj.info.poster_path}`;
+        this.background = `https://image.tmdb.org/t/p/w500${obj.info.backdrop_path}`;
+        this.id = obj.info.id;
+        this.rating = obj.info.vote_average.toFixed(2);
+        this.genres = obj.dataDetails.genres.map(g => g.name);
+        this.tagline = obj.dataDetails.tagline;
+
+        if (obj.infoReview) {
+            this.review_author = obj.infoReview.author;
+            this.review_rating = obj.infoReview.author_details.rating.toFixed(1);
+            this.review_content = obj.infoReview.content;
         }
 
-        serie.link = `https://www.themoviedb.org/tv/${media.info.id}`;
-
-        return serie
-    }else if (type === 'movie'){
-        movie.name = media.info.original_title;
-        movie.subname = null;
-        movie.description = media.info.overview;
-        movie.cover = `https://image.tmdb.org/t/p/w500${media.info.poster_path}`;
-        movie.background = `https://image.tmdb.org/t/p/w500${media.info.backdrop_path}`;
-        movie.id = media.info.id;
-        movie.date = media.info.release_date;
-        movie.rating = media.info.vote_average.toFixed(2);
-        movie.type = 'movie';
-
-        movie.genres = media.dataDetails.genres.map(g => g.name);
-        movie.runtime = Math.trunc(media.dataDetails.runtime / 60) + 'h' + media.dataDetails.runtime % 60 + 'm'
-        movie.tagline = media.dataDetails.tagline;
-
-        if (media.infoReviews) {
-            movie.review.author = media.infoReviews.author;
-            movie.review.rating = media.infoReviews.author_details.rating.toFixed(1);
-            movie.review.content = media.infoReviews.content;
-        }
-
-        movie.link = `https://www.themoviedb.org/movie/${media.info.id}`;
-
-        return movie
     }
+}
+
+class Serie extends MediaTMDB{
+
+    constructor(obj){
+        super(obj)
+        this.name = obj.info.original_name;
+        this.subname = obj.info.name;
+        this.date = obj.info.first_air_date;       
+        this.type = 'serie'
+        this.totalEpisode = obj.dataDetails.number_of_episodes;
+        this.totalSeason = obj.dataDetails.number_of_seasons;
+
+        this.link = `https://www.themoviedb.org/tv/${obj.info.id}`;
+    }
+}
+
+class Movie extends MediaTMDB{
+
+    constructor(obj){
+        super(obj)
+        this.name = obj.info.original_title;
+        this.subname = obj.info.title;
+        this.date = obj.info.release_date;
+        this.type = 'movie';
+        this.runtime = Math.trunc(obj.dataDetails.runtime / 60) + 'h' + obj.dataDetails.runtime % 60 + 'm';
+        this.link = `https://www.themoviedb.org/movie/${obj.info.id}`;
+
+    }
+
 }
 
 app.get("/search", async (req, res) =>{
     try {
         const query = req.query.q;
 
-        let serie = movie = anime = book = null;
+        let serie, movie, anime, manga, book = null;
 
         serie = await searchSerie(query);
         movie = await searchMovie(query);
         anime = await searchAnime(query);
+        manga = await searchManga(query);
         book = await searchBook(query);
 
         let response = [[]]
 
-        console.log(book)
-        
-        if (!Object.hasOwn(anime, 'errorMessage')){
-            if (anime !== null){
-                anime = structure(anime, 'anime');
-                response.push(anime)
-                response[0].push('anime')
-            }            
-        }
-        
         response.push(book)
 
+        if (anime !== null){
+            anime = new Anime(anime)
+            response.push(anime)
+            response[0].push('anime')
+        }
+        if (manga !== null){
+            manga = new Manga(manga)
+            response.push(manga)
+            response[0].push('manga')
+        }
         if (serie !== null){
-            serie = structure(serie, 'serie');
+            serie = new Serie(serie)
             response.push(serie)
             response[0].push('serie')
         }
         if (movie !== null){
-            movie = structure(movie, 'movie')
+            movie = new Movie(movie)
             response.push(movie)
             response[0].push('movie')
         }

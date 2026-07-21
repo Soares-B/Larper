@@ -20,13 +20,13 @@ async function searchMovie(query){
 
     const responseReview = await fetch(urlDetails + info.id + '/reviews', options);
     const dataReviews = await responseReview.json();
-    const infoReviews = dataReviews.results[0];
+    const infoReview = dataReviews.results[0];
     
 
     return {
         info,
         dataDetails,
-        infoReviews
+        infoReview
     };
 }
 
@@ -51,16 +51,16 @@ async function searchSerie(query){
 
     const responseReview = await fetch(urlDetails + info.id + '/reviews', options);
     const dataReviews = await responseReview.json();
-    const infoReviews = dataReviews.results[0];
+    const infoReview = dataReviews.results[0];
 
     return {
         info,
         dataDetails,
-        infoReviews
+        infoReview
     };
 }
 
-module.exports = {
+export {
     searchMovie,
     searchSerie
-};
+}

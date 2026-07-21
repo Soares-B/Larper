@@ -21,22 +21,22 @@ mediaInput.addEventListener('input', () => {
         const data = await search(mediaInput.value);
         list.innerHTML = '';
         if (!data) return;
-        data.forEach(media => {
-            if (!media) return;
-            const li = document.createElement('li');
-            const title = media.name
-            const type = media.type
-            li.textContent = `${title} (${type})`;
-            li.dataset.type = type;
-            li.addEventListener('click', async () => {
-                const result = await search(title);
-                addElements(result, type);
-                conteudo.classList.add('show');
-                mediaInput.value = '';
-                list.innerHTML = '';
-            });
-            list.appendChild(li);
-        });
+        // data.forEach(media => {
+        //     if (!media) return;
+        //     const li = document.createElement('li');
+        //     const title = media.name
+        //     const type = media.type
+        //     li.textContent = `${title} (${type})`;
+        //     li.dataset.type = type;
+        //     li.addEventListener('click', async () => {
+        //         const result = await search(title);
+        //         addElements(result, type);
+        //         conteudo.classList.add('show');
+        //         mediaInput.value = '';
+        //         list.innerHTML = '';
+        //     });
+        //     list.appendChild(li);
+        // });
     }, 1000);
 });
 
@@ -83,7 +83,8 @@ function addElements(data, type) {
         typenumber = 1;
     }
 
-    if (typenumber === null) return;
+    if (typenumber === null) return; 
+    
     console.log(data)
 
     name.textContent = data[1].name;

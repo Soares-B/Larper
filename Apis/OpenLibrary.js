@@ -3,9 +3,10 @@ async function searchBook(query){
 
     const response = await fetch (url + query);
     const data = await response.json();
-    return data
+    const info = data.docs[0]
+    return info
 }
 
-module.exports = {
+export {
     searchBook
 }
