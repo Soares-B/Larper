@@ -1,10 +1,8 @@
 import "dotenv/config";
 import express from "express";
 
-
 const app = express();
 const PORT = process.env.PORT || 3000;
-
 
 app.use(express.static('public'));
 
@@ -14,20 +12,19 @@ app.listen(PORT, () => {
 
 import { searchMovie, searchSerie } from "./Apis/TMDB.js";
 import { searchAnime, searchManga } from "./Apis/Tenrai.js";
-import { searchBook } from "./Apis/OpenLibrary.js";
+import { searchBook } from "./Apis/GoogleBooks.js";
+import { searchGame } from "./Apis/IGDB.js";
 
 class MediaTenrai{
     
     constructor(obj){
         this.name = obj.info.title_japanese;
         this.subname = obj.info.title;
-        this.desciption = obj.info.synopsis;
+        this.description = obj.info.synopsis;
         this.cover = obj.info.images["jpg"].large_image_url;
-        this.background = null;
         this.id = obj.info.mal_id;
         this.rating = obj.info.score
         this.genres = obj.info.genres.map(g => g.name);
-        this.tagline = null;
         this.link = obj.info.url
 
         if (obj.infoReview){
@@ -66,11 +63,17 @@ class Book{
 
     constructor(obj){
         this.name = obj.title
-        this.author = obj.author_name[0]
-        this.cover = `https://covers.openlibrary.org/b/olid/${obj.cover_edition_key}}-L.jpg`
-        this.date = obj.first_publish_year
-        this.url = `https://openlibrary.org/books/OL35692182M/${this.name}`
-
+        this.subtitle = obj.subtitle;
+        this.author = obj.authors;
+        this.description = obj.description;
+        this.rating = obj.averageRating * 2;
+        this.genres = obj.categories?.map(genre => genre) ?? null;
+        this.cover = obj.imageLinks["thumbnail"];
+        this.language = obj.language;
+        this.pages = obj.pageCount;
+        this.date = obj.publishedDate;
+        this.url = obj.infoLink;
+        this.type = 'book';
     }
 }
 
@@ -87,10 +90,9 @@ class MediaTMDB{
 
         if (obj.infoReview) {
             this.review_author = obj.infoReview.author;
-            this.review_rating = obj.infoReview.author_details.rating.toFixed(1);
+            this.review_rating = obj.infoReview.author_details.rating?.toFixed(1) ?? null;
             this.review_content = obj.infoReview.content;
         }
-
     }
 }
 
@@ -104,7 +106,6 @@ class Serie extends MediaTMDB{
         this.type = 'serie'
         this.totalEpisode = obj.dataDetails.number_of_episodes;
         this.totalSeason = obj.dataDetails.number_of_seasons;
-
         this.link = `https://www.themoviedb.org/tv/${obj.info.id}`;
     }
 }
@@ -119,7 +120,6 @@ class Movie extends MediaTMDB{
         this.type = 'movie';
         this.runtime = Math.trunc(obj.dataDetails.runtime / 60) + 'h' + obj.dataDetails.runtime % 60 + 'm';
         this.link = `https://www.themoviedb.org/movie/${obj.info.id}`;
-
     }
 
 }
@@ -128,17 +128,20 @@ app.get("/search", async (req, res) =>{
     try {
         const query = req.query.q;
 
-        let serie, movie, anime, manga, book = null;
+        let anime, manga, game, book, serie, movie = null;
 
         serie = await searchSerie(query);
         movie = await searchMovie(query);
         anime = await searchAnime(query);
         manga = await searchManga(query);
         book = await searchBook(query);
+        game = await searchGame(query);
+
+        console.log(game)
 
         let response = [[]]
 
-        response.push(book)
+        response.push(game)
 
         if (anime !== null){
             anime = new Anime(anime)
@@ -150,6 +153,11 @@ app.get("/search", async (req, res) =>{
             response.push(manga)
             response[0].push('manga')
         }
+        if (book !== null){
+            book = new Book(book)
+            response.push(book)
+            response[0].push('book')
+        }
         if (serie !== null){
             serie = new Serie(serie)
             response.push(serie)
@@ -159,10 +167,7 @@ app.get("/search", async (req, res) =>{
             movie = new Movie(movie)
             response.push(movie)
             response[0].push('movie')
-        }
-         
-        
-        
+        }        
 
         res.json(response);
 

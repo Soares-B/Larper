@@ -14,7 +14,7 @@ async function searchAnime(query){
     const responseReview = await fetch(url + '/' + info.mal_id + '/reviews');
 
     const dataReview = await responseReview.json();
-    const infoReview = dataReview.data[0]
+    const infoReview = dataReview.data?.[0] ?? null;
 
     return {
         info,
@@ -35,12 +35,11 @@ async function searchManga(query){
         return null;
     }
 
-    console.log(info)
-
     const responseReview = await fetch(url + '/' + info.mal_id + '/reviews');
 
     const dataReview = await responseReview.json();
-    const infoReview = dataReview.data[0]
+    
+    const infoReview = dataReview.data?.[0] ?? null;
 
     return {
         info,

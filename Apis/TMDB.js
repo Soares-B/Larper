@@ -15,6 +15,7 @@ async function searchMovie(query){
     if (!info) {
         return null;
     }
+    
     const responseDetails = await fetch(urlDetails + info.id, options);
     const dataDetails = await responseDetails.json();
 
