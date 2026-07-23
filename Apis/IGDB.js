@@ -11,7 +11,7 @@ export async function searchGame(query) {
             'Content-Type': 'text/plain'
         },
         body: `
-            search "Silent Hill f";
+            search "${query}";
             fields name, cover.url, genres.name, age_ratings.synopsis, rating, game_modes.name, game_type.type, platforms.name, release_dates.human, storyline, themes.name, url, summary, language_supports.language;
             limit 1;
         `
@@ -20,6 +20,11 @@ export async function searchGame(query) {
     const response = await fetch(url, options);
     const data = await response.json();
     let info = data[0];
+    
+    if (!info){
+        return null;
+    }
+
     info.cover.url = info.cover.url.replace('t_thumb', 't_original');
 
     const languages = info.language_supports.map(l => l.language);

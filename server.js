@@ -14,6 +14,7 @@ import { searchMovie, searchSerie } from "./Apis/TMDB.js";
 import { searchAnime, searchManga } from "./Apis/Tenrai.js";
 import { searchBook } from "./Apis/GoogleBooks.js";
 import { searchGame } from "./Apis/IGDB.js";
+import { searchMusic } from "./Apis/Deezer.js";
 
 class MediaTenrai{
     
@@ -151,11 +152,34 @@ class Movie extends MediaTMDB{
 
 }
 
+class Music{
+
+    constructor(obj){
+        this.artist = {};
+        this.album = {};
+
+        this.name = obj.title;
+        this.preview = obj.preview
+        this.cover = `https://e-cdns-images.dzcdn.net/images/cover/${obj.md5_image}/750x750.jpg`
+        this.link = obj.link
+        this.time = `${Math.trunc(obj.duration / 60)}m${(((obj.duration / 60) % 1).toFixed(1) * 10) * 6}s`
+        this.id = obj.id;
+        this.type = 'music';
+
+        this.artist.name = obj.artist.name;
+        this.artist.image = obj.artist.picture_big;
+        this.artist.link = obj.artist.link;
+
+        this.album.name = obj.album.title;
+        this.album.image = obj.album.cover_big;
+    }
+}
+
 app.get("/search", async (req, res) =>{
     try {
         const query = req.query.q;
 
-        let anime, manga, game, book, serie, movie = null;
+        let anime, manga, game, book, music, serie, movie = null;
 
         serie = await searchSerie(query);
         movie = await searchMovie(query);
@@ -163,6 +187,7 @@ app.get("/search", async (req, res) =>{
         manga = await searchManga(query);
         book = await searchBook(query);
         game = await searchGame(query);
+        music = await searchMusic(query);
 
         let response = [[]]
 
@@ -195,7 +220,12 @@ app.get("/search", async (req, res) =>{
             movie = new Movie(movie)
             response.push(movie)
             response[0].push('movie')
-        }        
+        }
+        if (music !== null){
+            music = new Music(music)
+            response.push(music)
+            response[0].push('music')
+        }    
 
         res.json(response);
 
