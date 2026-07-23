@@ -59,6 +59,33 @@ class Manga extends MediaTenrai{
     }
 }
 
+class Game {
+    constructor(obj) {
+        const ageRating = obj.info.age_ratings?.find(age => age.synopsis) ?? null;
+        this.language = {};
+        
+        this.id = obj.info.id;
+        this.name = obj.info.name;
+        this.description = obj.info.summary;
+        this.storyline = obj.info.storyline;
+        this.age_rating = ageRating?.synopsis ?? null;
+        this.cover = obj.info.cover.url;
+        this.game_modes = obj.info.game_modes.map(gm => gm.name);
+        this.genres = obj.info.genres.map(g => g.name);
+        this.platforms = obj.info.platforms.map(p => p.name);
+        this.themes = obj.info.themes.map(t => t.name);
+        this.rating = (obj.info.rating / 10).toFixed(1);
+        this.date = obj.info.release_dates[0].human;
+        this.link = obj.info.url;
+        this.game_type = obj.info.game_type.type;
+        this.type = 'game'
+
+        this.language.languages = obj.languagesData.map(l => l.name);
+        this.language.nativeLanguages = obj.languagesData.map(l => l.native_name);
+        this.language.locale = obj.languagesData.map(l => l.locale);
+    }
+}
+
 class Book{
 
     constructor(obj){
@@ -137,11 +164,7 @@ app.get("/search", async (req, res) =>{
         book = await searchBook(query);
         game = await searchGame(query);
 
-        console.log(game)
-
         let response = [[]]
-
-        response.push(game)
 
         if (anime !== null){
             anime = new Anime(anime)
@@ -152,6 +175,11 @@ app.get("/search", async (req, res) =>{
             manga = new Manga(manga)
             response.push(manga)
             response[0].push('manga')
+        }
+        if (game !== null){
+            game = new Game(game)
+            response.push(game)
+            response[0].push('game')
         }
         if (book !== null){
             book = new Book(book)
