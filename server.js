@@ -19,21 +19,24 @@ import { searchMusic } from "./Apis/Deezer.js";
 class MediaTenrai{
     
     constructor(obj){
+        this.review = {};
         this.name = obj.info.title_japanese;
         this.subname = obj.info.title;
-        this.description = obj.info.synopsis;
-        this.cover = obj.info.images["jpg"].large_image_url;
+        this.description = textShortener(obj.info.synopsis);
+        this.background = textShortener(obj.info.background);
+        this.cover = obj.info.images?.jpg?.large_image_url ?? null;
         this.id = obj.info.mal_id;
-        this.rating = obj.info.score
-        this.genres = obj.info.genres.map(g => g.name);
-        this.link = obj.info.url
+        this.rating = obj.info.score;
+        this.genres = obj.info.genres?.map(g => g.name) ?? null;
+        this.link = obj.info.url;
+        this.status = obj.info.status;
 
         if (obj.infoReview){
-            this.review_spoiler = obj.infoReview.is_spoiler;
-            this.review_author = obj.infoReview.user.username;
-            this.review_rating = obj.infoReview.score;
-            this.review_opinion = obj.infoReview.tags[0];
-            this.review_content = obj.infoReview.review;
+            this.review.spoiler = obj.infoReview.is_spoiler;
+            this.review.author = obj.infoReview.user.username;
+            this.review.rating = obj.infoReview.score;
+            this.review.opinion = obj.infoReview.tags[0];
+            this.review.content = textShortener(obj.infoReview.review);
         }        
     }
 }
@@ -46,6 +49,9 @@ class Anime extends MediaTenrai{
         this.type = 'anime';
         this.totalEpisode = obj.info.episodes;
         this.season = obj.info.season;
+        this.airing = obj.info.airing;
+        this.age_rating = obj.info.rating;
+        this.source = obj.info.source;
     }
 }
 
@@ -57,43 +63,45 @@ class Manga extends MediaTenrai{
         this.type = 'manga';
         this.chapters = obj.info.chapters;
         this.volumes = obj.info.volumes;
+        this.publishing = obj.info.publishing;
     }
 }
 
 class Game {
     constructor(obj) {
-        const ageRating = obj.info.age_ratings?.find(age => age.synopsis) ?? null;
         this.language = {};
         
         this.id = obj.info.id;
         this.name = obj.info.name;
-        this.description = obj.info.summary;
-        this.storyline = obj.info.storyline;
-        this.age_rating = ageRating?.synopsis ?? null;
-        this.cover = obj.info.cover.url;
-        this.game_modes = obj.info.game_modes.map(gm => gm.name);
-        this.genres = obj.info.genres.map(g => g.name);
-        this.platforms = obj.info.platforms.map(p => p.name);
-        this.themes = obj.info.themes.map(t => t.name);
-        this.rating = (obj.info.rating / 10).toFixed(1);
-        this.date = obj.info.release_dates[0].human;
+        this.description = textShortener(obj.info.summary);
+        this.storyline = obj.info.storyline ?? null;
+        this.age_rating = obj.info.age_ratings ? obj.info.age_ratings.find(age => age.synopsis)?.synopsis ?? null : null;
+        this.cover = obj.info.cover?.url ?? null;
+        this.game_modes = obj.info.game_modes?.map(gm => gm.name) ?? null;
+        this.genres = obj.info.genres?.map(g => g.name) ?? null;
+        this.platforms = obj.info.platforms?.map(p => p.name) ?? null;
+        this.themes = obj.info.themes?.map(t => t.name) ?? null;
+        this.rating = obj.info.rating ? (obj.info.rating / 10).toFixed(1) : null;
+        this.date = obj.info.release_dates ? obj.info.release_dates[0].human : null;
         this.link = obj.info.url;
-        this.game_type = obj.info.game_type.type;
+        this.game_type = obj.info.game_type?.type ?? null;
         this.type = 'game'
 
-        this.language.languages = obj.languagesData.map(l => l.name);
-        this.language.nativeLanguages = obj.languagesData.map(l => l.native_name);
-        this.language.locale = obj.languagesData.map(l => l.locale);
+        if (obj.languagesData){
+            this.language.languages = obj.languagesData.map(l => l.name);
+            this.language.nativeLanguages = obj.languagesData.map(l => l.native_name);
+            this.language.locale = obj.languagesData.map(l => l.locale);
+        }      
     }
 }
 
 class Book{
 
     constructor(obj){
-        this.name = obj.title
-        this.subtitle = obj.subtitle;
+        this.name = obj.title;
+        this.subname = obj.subtitle;
         this.author = obj.authors;
-        this.description = obj.description;
+        this.description = textShortener(obj.description);
         this.rating = obj.averageRating * 2;
         this.genres = obj.categories?.map(genre => genre) ?? null;
         this.cover = obj.imageLinks["thumbnail"];
@@ -108,18 +116,19 @@ class Book{
 class MediaTMDB{
 
     constructor(obj){
-        this.description = obj.info.overview;
+        this.review = {};
+        this.description = obj.info.overview ? obj.info.overview : null;
         this.cover = `https://image.tmdb.org/t/p/w500${obj.info.poster_path}`;
         this.background = `https://image.tmdb.org/t/p/w500${obj.info.backdrop_path}`;
         this.id = obj.info.id;
-        this.rating = obj.info.vote_average.toFixed(2);
-        this.genres = obj.dataDetails.genres.map(g => g.name);
-        this.tagline = obj.dataDetails.tagline;
+        this.rating = obj.info.vote_average?.toFixed(2) ?? null;
+        this.genres = obj.dataDetails.genres?.map(g => g.name) ?? null;
+        this.tagline = obj.dataDetails.tagline ? obj.dataDetails.tagline : null;
 
         if (obj.infoReview) {
-            this.review_author = obj.infoReview.author;
-            this.review_rating = obj.infoReview.author_details.rating?.toFixed(1) ?? null;
-            this.review_content = obj.infoReview.content;
+            this.review.author = obj.infoReview.author;
+            this.review.rating = obj.infoReview.author_details.rating?.toFixed(1) ?? null;
+            this.review.content = textShortener(obj.infoReview.content);
         }
     }
 }
@@ -159,19 +168,38 @@ class Music{
         this.album = {};
 
         this.name = obj.title;
-        this.preview = obj.preview
+        this.preview = obj.preview ? obj.preview : null;
         this.cover = `https://e-cdns-images.dzcdn.net/images/cover/${obj.md5_image}/750x750.jpg`
         this.link = obj.link
         this.time = `${Math.trunc(obj.duration / 60)}m${(((obj.duration / 60) % 1).toFixed(1) * 10) * 6}s`
         this.id = obj.id;
         this.type = 'music';
 
-        this.artist.name = obj.artist.name;
-        this.artist.image = obj.artist.picture_big;
-        this.artist.link = obj.artist.link;
+        this.artist.name = obj.artist?.name ?? null;
+        this.artist.image = obj.artist?.picture_big ?? null;
+        this.artist.link = obj.artist?.link ?? null;
 
-        this.album.name = obj.album.title;
-        this.album.image = obj.album.cover_big;
+        this.album.name = obj.album?.title ?? null;
+        this.album.image = obj.album?.cover_big ?? null;
+    }
+}
+
+function textShortener(desc){
+    if (desc == null){
+        return null
+    }
+
+    const firstIndex = desc.indexOf('.');
+    const secondIndex = desc.indexOf('.', firstIndex + 1);
+    if (secondIndex < 100){
+        const thirdIndex = desc.indexOf('.', secondIndex + 1);
+        if (thirdIndex > 200){
+            return desc.slice(0, secondIndex + 1)
+        }else{
+           return desc.slice(0, thirdIndex + 1); 
+        }
+    }else{
+        return desc.slice(0, secondIndex + 1)
     }
 }
 

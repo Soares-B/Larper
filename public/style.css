@@ -112,17 +112,41 @@ li:hover{
     width: 45%;
 }
 
-#name{
+#title{
     display: none;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 10px;
+
+    width: 60%;
+    height: 7%;
     position: absolute;
-    color: rgb(255, 255, 255);
-    left: 38%;
+    right: 2%;
     top: 5%;
+
+    color: white;
     font-size: 40px;
 }
 
-#name.show{
-    display: block;
+#title.show{
+    display: flex;
+}
+
+#name{
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#subname{
+    flex: 1;
+    font-size: 20px;
+    color: rgba(255,255,255,.5);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #items{

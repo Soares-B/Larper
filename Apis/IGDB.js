@@ -25,10 +25,15 @@ export async function searchGame(query) {
         return null;
     }
 
-    info.cover.url = info.cover.url.replace('t_thumb', 't_original');
+    if (info.cover?.url) {
+        info.cover.url = info.cover.url.replace('t_thumb', 't_original');
+    }
 
-    const languages = info.language_supports.map(l => l.language);
-    const languagesResponse = await fetch(
+    const languages = info.language_supports?.map(l => l.language) ?? null;
+    let languagesData = null;
+
+    if (languages !== null){
+        const languagesResponse = await fetch(
         'https://api.igdb.com/v4/languages', 
         
         {
@@ -43,7 +48,8 @@ export async function searchGame(query) {
             where id = (${languages.join(',')});
         `
     })
-    const languagesData = await languagesResponse.json(); 
+        languagesData = await languagesResponse.json(); 
+    }
 
     return {
         info,
