@@ -1,41 +1,46 @@
 import { NextResponse } from "next/server";
 import { TenraiAnime, TenraiManga } from "@/lib/Tenrai";
-import Restructure from "@/utils/restructure";
+import Restructure from "@/utils/Restructure";
 
 type fullSearch = [string[], ...any[]];
 
 export async function POST(req: Request){
 
     try{
-        const { query } = await req.json();
+        const { query, filters } = await req.json();
 
         let anime, manga, game, book, music, serie, movie = null
         let searchVar, restructure
         let fullSearch: fullSearch = [[]]
         
-        searchVar = await TenraiAnime(query)
+        if (filters.anime){
+            searchVar = await TenraiAnime(query)
 
-        if(searchVar){
-            anime = await searchVar.json();
-            restructure = Restructure(anime, "anime")
-            anime = await restructure?.json() ?? null;
+            if(searchVar){
+                anime = await searchVar.json();
+                restructure = Restructure(anime, "anime")
+                anime = await restructure?.json() ?? null;
+            }
+
+            if (anime !== null){
+                fullSearch.push(anime)
+                fullSearch[0].push('anime')
+            }
         }
+        
+        if (filters.manga){
+            searchVar = await TenraiManga(query)
 
-        searchVar = await TenraiManga(query)
+            if(searchVar){
+                manga = await searchVar.json();
+                restructure = Restructure(manga, "manga")
+                manga = await restructure?.json() ?? null;
+            }
 
-        if(searchVar){
-            manga = await searchVar.json();
-            restructure = Restructure(manga, "manga")
-            manga = await restructure?.json() ?? null;
-        }
-
-        if (anime !== null){
-            fullSearch.push(anime)
-            fullSearch[0].push('anime')
-        }
-        if (manga !== null){
-            fullSearch.push(manga)
-            fullSearch[0].push('manga')
+            if (manga !== null){
+                fullSearch.push(manga)
+                fullSearch[0].push('manga')
+            }
         }
 
         return NextResponse.json(fullSearch)

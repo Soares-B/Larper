@@ -3,6 +3,10 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --middleTone: rgba(255, 255, 255, .5);
+  --great: #19ff11;
+  --medium: #fffb11;
+  --bad: #ff1111;
 }
 
 @theme inline {
