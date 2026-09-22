@@ -57,6 +57,29 @@ type MangaShape = TenraiShape & {
     }
 }
 
+type TMDBShape = {
+    info: {
+        overview?: string | null,
+        poster_path?: string | null,
+        backdrop_path?: string | null
+        id: number,
+        vote_average?: number | null
+    },
+    dataDetails: {
+        genres?: [
+            {name?: string | null}
+        ] | null
+        tagline: string | null,
+    },
+    infoReview?: {
+        author?: string | null,
+        author_details?: {
+            rating?: number | null,
+        } | null,
+        content?: string | null
+    }
+}
+
 class Tenrai{
     
     name: string;
@@ -144,6 +167,44 @@ class Manga extends Tenrai{
     }
 }
 
+class TMDB{
+
+    description: string | null;
+    cover: string | null;
+    background: string | null;
+    id: number;
+    rating: number | null;
+    genres: any[] | null;
+    tagline: string | null;
+
+    review: {
+        author: string | null;
+        rating: number | null;
+        content: string | null;
+    } | null
+
+
+    constructor(obj: TMDBShape){
+        this.description = obj.info.overview ? obj.info.overview : null;
+        this.cover = `https://image.tmdb.org/t/p/w500${obj.info.poster_path}`;
+        this.background = `https://image.tmdb.org/t/p/w500${obj.info.backdrop_path}`;
+        this.id = obj.info.id;
+        this.rating = Number(obj.info.vote_average?.toFixed(2)) ?? null;
+        this.genres = obj.dataDetails.genres?.map(g => g.name) ?? null;
+        this.tagline = obj.dataDetails.tagline ? obj.dataDetails.tagline : null;
+
+        if (obj.infoReview) {
+            this.review = {
+                author: obj.infoReview.author ?? null,
+                rating: Number(obj.infoReview.author_details?.rating?.toFixed(1)) ?? null,
+                content: textShortener(obj.infoReview.content ?? null)
+            };
+        } else {
+            this.review = null;
+        }
+    }
+}
+
 function textShortener(desc: string | null){
     if (desc == null){
         return null
@@ -176,6 +237,33 @@ export default function Restructure(media: any, type: string){
         const data = new Manga(media)
 
         return NextResponse.json(data)
+
+    }
+
+    else if (type === "game"){
+        //nothing
+
+    }
+
+    else if (type === "book"){
+        //nothing
+
+    }
+
+    else if (type === "serie"){
+        //nothing
+
+    }
+
+    else if (type === "movie"){
+        const data = new Movie(media)
+
+        return NextResponse.json(data)
+
+    }
+
+    else if (type === "music"){
+        //nothing
 
     }
 }

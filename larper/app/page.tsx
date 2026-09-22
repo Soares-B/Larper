@@ -65,7 +65,6 @@ export default function Home() {
     });
     const data: SearchData = await response.json();
     setMedia(data);
-    console.log(media, current)
     setCurrent(1);
   }
 
@@ -87,7 +86,6 @@ export default function Home() {
 
   }
 
-  console.log(media)
 
   return (
     <div className="grid w-screen h-screen grid-rows-[20%_7%_1px_1fr] bg-[linear-gradient(to_bottom,black,rgb(77,0,0))]">

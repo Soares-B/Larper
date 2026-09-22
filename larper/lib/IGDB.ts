@@ -1,0 +1,65 @@
+import { NextResponse } from "next/server";
+import getAccessToken from "./TwitchToken";
+
+export default async function IGDB(query: string){
+    try{
+
+        const token = await getAccessToken();
+        const url = 'https://api.igdb.com/v4/games'
+        const options = {
+            method: 'POST',
+            headers: {
+                'Client-ID': process.env.TwitchClientID!,
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'text/plain'
+            },
+            body: `
+                search "${query}";
+                fields name, cover.url, genres.name, age_ratings.synopsis, rating, game_modes.name, game_type.type, platforms.name, release_dates.human, storyline, themes.name, url, summary, language_supports.language;
+                limit 1;
+            `
+        }
+        console.log('chegou')
+        const response = await fetch(url, options);
+        const data = await response.json();
+        let info = data[0];
+
+        if (!info){
+            return null
+        }
+
+        if (info.cover?.url){
+            info.cover.url = info.cover.url.replace('t_thumb', 't_original');
+        }
+
+        const languages = info.language_supports?.map(l => l.language) ?? null;
+        let languagesData = null;
+
+        if (languages !== null){
+            const languagesResponse = await fetch(
+            'https://api.igdb.com/v4/languages', 
+            
+            {
+            method: 'POST',
+            headers: {
+                'Client-ID': process.env.TwitchClientID!,
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'text/plain'
+            },
+            body: `
+                fields name, native_name, locale;
+                where id = (${languages.join(',')});
+            `
+        })
+            languagesData = await languagesResponse.json(); 
+        }
+
+        return NextResponse.json({info, languagesData})
+
+    }catch(err){
+        console.log(err)
+        return NextResponse.json({
+            message: `Erro! ${err}`
+        }, {status: 500})
+    }
+}
