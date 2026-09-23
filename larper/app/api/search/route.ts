@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { TenraiAnime, TenraiManga } from "@/lib/Tenrai";
 import IGDB from "@/lib/IGDB";
-import { TMDBMovie } from "@/lib/TMDB";
+import { TMDBMovie, TMDBSerie } from "@/lib/TMDB";
+import GoogleBooks from "@/lib/GoogleBooks";
+import Deezer from "@/lib/Deezer";
 import Restructure from "@/utils/Restructure";
 
 type fullSearch = [string[], ...any[]];
@@ -56,18 +58,40 @@ export async function POST(req: Request){
             }
 
             if (game !== null){
-                console.log(game)
                 fullSearch.push(game)
                 fullSearch[0].push('game')
             }
         }
 
         if (filters.book){
-            //nothing
+            searchVar = await GoogleBooks(encodeQuery)
+
+            if(searchVar){
+                book = await searchVar.json();
+                restructure = Restructure(book, "book")
+                book = await restructure?.json() ?? null;
+            }
+
+            if (book !== null){
+                console.log(book)
+                fullSearch.push(book)
+                fullSearch[0].push('book')
+            }
         }
 
         if (filters.serie){
-            //nothing
+            searchVar = await TMDBSerie(encodeQuery)
+
+            if(searchVar){
+                serie = await searchVar.json();
+                restructure = Restructure(serie, "serie")
+                serie = await restructure?.json() ?? null;
+            }
+
+            if (serie !== null){
+                fullSearch.push(serie)
+                fullSearch[0].push('serie')
+            }
         }
 
         if (filters.movie){
@@ -75,8 +99,6 @@ export async function POST(req: Request){
 
             if(searchVar){
                 movie = await searchVar.json();
-
-                console.log(movie)
                 restructure = Restructure(movie, "movie")
                 movie = await restructure?.json() ?? null;
             }
@@ -88,7 +110,19 @@ export async function POST(req: Request){
         }
 
         if (filters.music){
-            //nothing
+           searchVar = await Deezer(encodeQuery)
+
+            if(searchVar){
+                music = await searchVar.json();
+                console.log(music)
+                restructure = Restructure(music, "music")
+                music = await restructure?.json() ?? null;
+            }
+
+            if (movie !== null){
+                fullSearch.push(music)
+                fullSearch[0].push('music')
+            }
         }
 
         return NextResponse.json(fullSearch)

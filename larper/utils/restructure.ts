@@ -104,6 +104,28 @@ type IGDBShape = {
     ]
 }
 
+type BookShape = {
+    info: {
+        title: string,
+        subtitle: string | null,
+        authors: string[] | null,
+        description: string | null,
+        averageRating: number | null,
+        categories: [
+            {
+                genre: string | null,
+            }
+        ] | null,
+        imageLinks: {
+            thumbnail: string | null,
+    },
+        pageCount: number | null,
+        publishedDate: string | null,
+        language: string | null,
+        infoLink: string | null,
+    }
+}
+
 type TMDBShape = {
     info: {
         overview?: string | null,
@@ -124,6 +146,30 @@ type TMDBShape = {
             rating?: number | null,
         } | null,
         content?: string | null
+    }
+}
+
+type SerieShape = TMDBShape & {
+    info: {
+        original_name: string,
+        name: string | null,
+        first_air_date: string | null,
+    },
+    dataDetails: {
+        number_of_episodes: number | null,
+        number_of_seasons: number | null,
+    }
+}
+
+type MovieShape = TMDBShape & {
+    info: {
+        original_title: string,
+        title: string | null,
+        release_date: string | null,
+    },
+    dataDetails: {
+        runtime: number | null,
+
     }
 }
 
@@ -268,6 +314,39 @@ class Game{
     }
 }
 
+class Book{
+
+    name: string;
+    subname?: string | null;
+    author: string[] | null;
+    description: string | null;
+    rating?: number | null;
+    genres: {
+        genre: string | null,
+    }[] | null;
+    cover: string | null;
+    language: string | null;
+    pages: number | null;
+    date: string | null;
+    link: string | null;
+    type: string;
+
+    constructor(obj: BookShape){
+        this.name = obj.info.title;
+        this.subname = obj.info.subtitle;
+        this.author = obj.info.authors;
+        this.description = textShortener(obj.info.description);
+        this.rating = obj.info.averageRating ? obj.info.averageRating * 2 : null;
+        this.genres = obj.info.categories?.map(genre => genre) ?? null;
+        this.cover = obj.info.imageLinks?.["thumbnail"];
+        this.language = obj.info.language;
+        this.pages = obj.info.pageCount;
+        this.date = obj.info.publishedDate;
+        this.link = obj.info.infoLink;
+        this.type = 'book';
+    }
+}
+
 class TMDB{
 
     description: string | null;
@@ -303,6 +382,49 @@ class TMDB{
         } else {
             this.review = null;
         }
+    }
+}
+
+class Serie extends TMDB{
+
+    name: string;
+    subname: string | null;
+    date: string | null;
+    type: string;
+    totalEpisode: number | null;
+    totalSeason: number | null;
+    link: string | null;
+
+    constructor(obj: SerieShape){
+        super(obj)
+        this.name = obj.info.original_name;
+        this.subname = obj.info.name;
+        this.date = obj.info.first_air_date;       
+        this.type = 'serie'
+        this.totalEpisode = obj.dataDetails.number_of_episodes;
+        this.totalSeason = obj.dataDetails.number_of_seasons;
+        this.link = `https://www.themoviedb.org/tv/${obj.info.id}`;
+    }
+}
+
+class Movie extends TMDB{
+
+    name: string;
+    subname: string | null;
+    date: string | null;
+    type: string;
+    runtime: String | null;
+    link: string | null;
+
+
+    constructor (obj: MovieShape){
+        super(obj)
+        this.name = obj.info.original_title;
+        this.subname = obj.info.title;
+        this.date = obj.info.release_date;
+        this.type = 'movie';
+        this.runtime = `${Math.floor((obj.dataDetails.runtime ?? 0) / 60)}h${(obj.dataDetails.runtime ?? 0) % 60}m`;
+        this.link = `https://www.themoviedb.org/movie/${obj.info.id}`;
     }
 }
 
@@ -355,24 +477,30 @@ export default function Restructure(media: any, type: string){
     }
 
     else if (type === "book"){
-        //nothing
+        const data = new Book(media)
+
+        return NextResponse.json(data)
 
     }
 
     else if (type === "serie"){
-        //nothing
+        const data = new Serie(media)
+
+        return NextResponse.json(data)
 
     }
 
     else if (type === "movie"){
-        // const data = new Movie(media)
+        const data = new Movie(media)
 
-        // return NextResponse.json(data)
+        return NextResponse.json(data)
 
     }
 
     else if (type === "music"){
-        //nothing
+        // const data = new Music(media)
+
+        // return NextResponse.json(data)
 
     }
 }

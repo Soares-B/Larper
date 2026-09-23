@@ -21,8 +21,11 @@ export async function TenraiAnime(query: string){
         const infoReview = dataReview.data?.[0] ?? null;
 
         return NextResponse.json({info, infoReview})
-    } catch(err){
+    }catch(err){
         console.log(err)
+        return NextResponse.json({
+            message: `Erro! ${err}`
+        }, {status: 500})
     }
 }
 
@@ -46,7 +49,10 @@ export async function TenraiManga(query: string){
         const infoReview = dataReview.data?.[0] ?? null;
 
         return NextResponse.json({info, infoReview})
-    } catch(err){
+    }catch(err){
         console.log(err)
+        return NextResponse.json({
+            message: `Erro! ${err}`
+        }, {status: 500})
     }
 }

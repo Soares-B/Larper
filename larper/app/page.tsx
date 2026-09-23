@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import Menu from "@/utils/PopOver";
+import Menu from "@/components/PopOver";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 type result = {
@@ -127,8 +127,11 @@ useEffect(() => {
       </form>
 
       <div className="relative row-4 flex items-center justify-center w-full h-full">
-        <button className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg text-white w-[50px] h-[50px] rounded-full absolute left-[15%] hover:cursor-pointer ${openField ? media && media[0].length > 1 ? 'block' : 'hidden' : 'hidden'}`}
-        onClick={() => handleClick('left')}
+        <button
+          className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg text-white w-[50px] h-[50px] rounded-full absolute left-[15%] hover:cursor-pointer ${
+            openField && media?.[0]?.length > 1 ? 'block' : 'hidden'
+          }`}
+          onClick={() => handleClick('left')}
         >
           <ArrowLeft className="w-[50px] h-[30px]" />
         </button>
@@ -172,18 +175,24 @@ useEffect(() => {
                   Runtime
                 </p>
                 <p
-                  className={`absolute text-white ${results.type === "manga" ? 'text-lg' : 'text-3xl'} left-[4%] ${results.type === "manga" ? 'bottom-[5%]' : 'bottom-[10%]'}`}
+                  className={`absolute text-white ${results.type === "manga" || results.type === "serie" ? 'text-lg' : 'text-3xl'} left-[4%] ${results.type === "manga" || results.type === "serie" ? 'bottom-[5%]' : 'bottom-[10%]'}`}
                 >
                   {results.type === "anime"
                     ? `Episodes: ${results.totalEpisode}`
-                    : results.type === "manga" ? (
+                    : results.type === "movie" ? results.runtime : results.type === "manga" ? (
                         <>
                           Volumes: {results.volumes}
                           <br />
                           Chapters: {results.chapters}
                         </>
                       )
-                    : ""}
+                    : results.type === "serie" ? (
+                      <>
+                          Seasons: {results.totalSeason}
+                          <br />
+                          Episodes: {results.totalEpisode}
+                        </>
+                    ) : results.type === 'book' ? `Pages: ${results.pages}` :""}
                 </p>
               </div>
               <div className="relative bg-[#3737376e] w-[70%] h-[80%] rounded-[20px]">
@@ -230,7 +239,7 @@ useEffect(() => {
                 <p
                   className={`absolute text-white text-md left-[2%] top-[30%] w-[95%] text-justify`}
                 >
-                  {results.review && results.review.content}
+                  {results.review ? results.review.content : 'No review :‹'}
                 </p>
                 <p className="absolute text-white text-md bottom-[2%] right-[5%]">
                   <span
@@ -246,11 +255,12 @@ useEffect(() => {
           <p
             className={`${openField ? "inline" : "hidden"} absolute text-white bottom-[3%] left-[3%] drop-shadow-white drop-shadow-[0px_0px_5px] select-none`}
           >
-            {results && results.type === "anime" ? results.season : ""}
+            {results && results.type === "anime" ? `${results.season} - ${results.type}` : results && results.type === 'movie' && results.tagline || results && results.type === 'serie' && results.tagline ? `${results.tagline} - ${results.type}` : results &&
+             results.type ? results.type : ""}{` `}
           </p>
         </div>
 
-        <button className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg text-white w-[50px] h-[50px] rounded-full absolute right-[15%] hover:cursor-pointer ${openField ? media && media[0].length > 1 ? 'block' : 'hidden' : 'hidden'}`}
+        <button className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg text-white w-[50px] h-[50px] rounded-full absolute right-[15%] hover:cursor-pointer ${openField ? media && media?.[0]?.length > 1 ? 'block' : 'hidden' : 'hidden'}`}
         onClick={() => handleClick('right')}>
           <ArrowRight className="w-[50px] h-[30px]" />
         </button>
