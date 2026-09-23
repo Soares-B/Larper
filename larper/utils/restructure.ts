@@ -57,6 +57,53 @@ type MangaShape = TenraiShape & {
     }
 }
 
+type IGDBShape = {
+    info: {
+        id: number,
+        name: string | null,
+        summary: string | null,
+        storyline: string | null,
+        age_ratings: {
+            synopsis: string | null,
+        }[]
+        cover: {
+            url: string | null,
+        },
+        game_modes: {
+            name: string | null,
+        }[],
+        genres: {
+        id: number;
+        name: string | null;
+        }[]
+        platforms: {
+            id: number;
+            name: string | null;
+        }[]
+        themes: {
+            id: number;
+            name: string | null;
+        }[],
+        rating: number | null;
+        release_dates: {
+            human: string | null;
+        }[]
+        url: string | null;
+        game_type: {
+            type: string | null;
+        }
+
+    },
+    languagesData: [
+        {
+            id: number | null;
+            name: string | null;
+            native_name: string | null;
+            locale: string | null;
+        }
+    ]
+}
+
 type TMDBShape = {
     info: {
         overview?: string | null,
@@ -167,6 +214,60 @@ class Manga extends Tenrai{
     }
 }
 
+class Game{
+
+    id: number;
+    name: string | null;
+    description: string | null;
+    storyline: string | null;
+    age_rating: string | null;
+    cover: string | null;
+    game_modes: (string | null)[];
+    genres: (string | null)[];
+    platforms: (string | null)[];
+    themes: (string | null)[];
+    rating: number | null;
+    date: string | null;
+    link: string | null;
+    game_type: string | null;
+    type: string
+
+    language: {
+        languages: (string | null)[]
+        nativeLanguages: (string | null)[]
+        locale: (string | null)[]
+    } | null;
+
+    constructor(obj: IGDBShape) {
+        
+        this.id = obj.info.id;
+        this.name = obj.info.name;
+        this.description = textShortener(obj.info.summary);
+        this.storyline = obj.info.storyline ?? null;
+        this.age_rating = obj.info.age_ratings ? obj.info.age_ratings.find(age => age.synopsis)?.synopsis ?? null : null;
+        this.cover = obj.info.cover?.url ? `https:${obj.info.cover.url}` : null;
+        this.game_modes = obj.info.game_modes?.map(gm => gm.name) ?? null;
+        this.genres = obj.info.genres?.map(g => g.name) ?? null;
+        this.platforms = obj.info.platforms?.map(p => p.name) ?? null;
+        this.themes = obj.info.themes?.map(t => t.name) ?? null;
+        this.rating = obj.info.rating ? Number((obj.info.rating / 10).toFixed(1)) : null;
+        this.date = obj.info.release_dates ? obj.info.release_dates[0].human : null;
+        this.link = obj.info.url;
+        this.game_type = obj.info.game_type?.type ?? null;
+        this.type = 'game'
+
+        if (obj.languagesData){
+            this.language = {
+                languages: obj.languagesData.map(l => l.name),
+                nativeLanguages: obj.languagesData.map(l => l.native_name),
+                locale: obj.languagesData.map(l => l.locale)
+            } 
+        } else {
+            this.language = null;
+        }      
+    }
+}
+
 class TMDB{
 
     description: string | null;
@@ -205,26 +306,32 @@ class TMDB{
     }
 }
 
-function textShortener(desc: string | null){
-    if (desc == null){
-        return null
+function textShortener(desc: string | null) {
+    if (desc == null) {
+        return null;
     }
 
     const firstIndex = desc.indexOf('.');
+    
+    if (firstIndex === -1) {
+        return desc.length > 200 ? 'Very long text :(' : desc;
+    }
+
+    if (firstIndex > 200) {
+        return 'Very long text :(';
+    }
+
     const secondIndex = desc.indexOf('.', firstIndex + 1);
 
-    if (secondIndex < 100){
-        const thirdIndex = desc.indexOf('.', secondIndex + 1);
-
-        if (thirdIndex > 200){
-            return desc.slice(0, secondIndex + 1)
-        }else{
-           return desc.slice(0, thirdIndex + 1); 
-        }
-
-    }else{
-        return desc.slice(0, secondIndex + 1)
+    if (secondIndex === -1) {
+        return desc;
     }
+
+    if (secondIndex > 200) {
+        return desc.slice(0, firstIndex + 1);
+    }
+
+    return desc.slice(0, secondIndex + 1);
 }
 
 export default function Restructure(media: any, type: string){
@@ -241,7 +348,9 @@ export default function Restructure(media: any, type: string){
     }
 
     else if (type === "game"){
-        //nothing
+        const data = new Game(media)
+
+        return NextResponse.json(data)
 
     }
 
@@ -256,9 +365,9 @@ export default function Restructure(media: any, type: string){
     }
 
     else if (type === "movie"){
-        const data = new Movie(media)
+        // const data = new Movie(media)
 
-        return NextResponse.json(data)
+        // return NextResponse.json(data)
 
     }
 

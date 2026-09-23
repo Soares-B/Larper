@@ -56,6 +56,7 @@ export async function POST(req: Request){
             }
 
             if (game !== null){
+                console.log(game)
                 fullSearch.push(game)
                 fullSearch[0].push('game')
             }

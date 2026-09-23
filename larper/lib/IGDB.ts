@@ -19,7 +19,6 @@ export default async function IGDB(query: string){
                 limit 1;
             `
         }
-        console.log('chegou')
         const response = await fetch(url, options);
         const data = await response.json();
         let info = data[0];
@@ -32,7 +31,10 @@ export default async function IGDB(query: string){
             info.cover.url = info.cover.url.replace('t_thumb', 't_original');
         }
 
-        const languages = info.language_supports?.map(l => l.language) ?? null;
+        const languages = info.language_supports?.map(
+            (l: { language: number }) => l.language
+        ) ?? null;
+
         let languagesData = null;
 
         if (languages !== null){

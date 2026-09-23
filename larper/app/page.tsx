@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Menu from "@/utils/PopOver";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
@@ -34,8 +34,19 @@ export default function Home() {
   const [entry, setEntry] = useState("");
   const [media, setMedia] = useState<any>(null);
   const [current, setCurrent] = useState(1);
+  const [spoiler, setSpoiler] = useState(false)
 
   const results = media?.[current] ?? null;
+  
+useEffect(() => {
+  const result = media?.[current];
+
+  if (result?.type === "anime" || result?.type === "manga") {
+    setSpoiler(result.review?.spoiler);
+  } else {
+    setSpoiler(false);
+  }
+}, [media, current]);
 
   const [filters, setFilters] = useState({
     anime: true,
@@ -46,8 +57,6 @@ export default function Home() {
     movie: false,
     music: false,
   });
-
-  const hasMultipleFilters = Object.values(filters).filter(Boolean).length > 1;
 
   async function handleSubmit(e: any) {
     e.preventDefault();
@@ -66,6 +75,7 @@ export default function Home() {
     const data: SearchData = await response.json();
     setMedia(data);
     setCurrent(1);
+    console.log(data)
   }
 
   function handleClick(arrow: string){
@@ -85,7 +95,6 @@ export default function Home() {
     }
 
   }
-
 
   return (
     <div className="grid w-screen h-screen grid-rows-[20%_7%_1px_1fr] bg-[linear-gradient(to_bottom,black,rgb(77,0,0))]">
@@ -118,7 +127,7 @@ export default function Home() {
       </form>
 
       <div className="relative row-4 flex items-center justify-center w-full h-full">
-        <button className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg text-white w-[50px] h-[50px] rounded-full absolute left-[15%] hover:cursor-pointer ${openField ? hasMultipleFilters ? 'block' : 'hidden' : 'hidden'}`}
+        <button className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg text-white w-[50px] h-[50px] rounded-full absolute left-[15%] hover:cursor-pointer ${openField ? media && media[0].length > 1 ? 'block' : 'hidden' : 'hidden'}`}
         onClick={() => handleClick('left')}
         >
           <ArrowLeft className="w-[50px] h-[30px]" />
@@ -143,7 +152,7 @@ export default function Home() {
             <div
               className={`${openField ? "flex" : "hidden"} flex-row items-baseline gap-[10px] w-[60%] h-[7%] absolute right-[2%] top-[5%] text-white font-5xl`}
             >
-              <p className="flex-1 min-w-[0] overflow-hidden text-ellipsis whitespace-nowrap">
+              <p className="flex-1 min-w-[0] overflow-hidden text-ellipsis whitespace-nowrap text-xl">
                 {results.name}
               </p>
               <p className="flex-1 text-xl text-[var(--middleTone)] text-ellipsis whitespace-nowrap overflow-hidden">
@@ -207,6 +216,13 @@ export default function Home() {
                   {results.date && results.date.replaceAll("-", "/")}
                 </p>
               </div>
+
+              <div className={`bg-[#141414]/75 w-[90%] h-full col-[1/3] rounded-[20px] z-1 absolute row-4 transition-[1s] backdrop-blur-sm ${spoiler ? 'opacity-100' : 'opacity-0'}`}>
+                      <div className="w-full h-full relative">
+                        <button className="absolute top-[50%] left-[50%] translate-[-50%] w-full h-full text-xl hover:cursor-pointer" onClick={() => setSpoiler(false)}>Contain spoilers! Click to open</button>
+                      </div>
+              </div>
+
               <div className="relative bg-[#3737376e] w-[90%] h-full col-[1/3] rounded-[20px]">
                 <p className="text-[var(--middleTone)] m-[6px_9px] font-xl">
                   Review
@@ -234,7 +250,7 @@ export default function Home() {
           </p>
         </div>
 
-        <button className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg text-white w-[50px] h-[50px] rounded-full absolute right-[15%] hover:cursor-pointer ${openField ? hasMultipleFilters ? 'block' : 'hidden' : 'hidden'}`}
+        <button className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg text-white w-[50px] h-[50px] rounded-full absolute right-[15%] hover:cursor-pointer ${openField ? media && media[0].length > 1 ? 'block' : 'hidden' : 'hidden'}`}
         onClick={() => handleClick('right')}>
           <ArrowRight className="w-[50px] h-[30px]" />
         </button>
