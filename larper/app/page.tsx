@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import Menu from "@/components/PopOver";
+import Menu from "@/components/Types";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import {
   Combobox,
@@ -11,6 +11,7 @@ import {
   ComboboxOption,
   ComboboxOptions,
 } from "@headlessui/react";
+import Theme from "@/components/Theme";
 
 type result = {
   review: {
@@ -47,6 +48,8 @@ type Suggestion = {
 };
 
 export default function Home() {
+  const [theme, setTheme] = useState("dark");
+
   const [openField, setOpenField] = useState(false);
 
   const [query, setQuery] = useState("");
@@ -99,9 +102,6 @@ export default function Home() {
 
         const data = await response.json();
 
-        console.log("STATUS:", response.status);
-        console.log("DATA:", data);
-
         setSuggestions(data.suggestions ?? []);
       } catch (error) {
         console.error("Erro ao buscar sugestões:", error);
@@ -140,13 +140,14 @@ export default function Home() {
 
       const data: SearchData = await response.json();
 
+      console.log(data);
+
       setMedia(data);
       setCurrent(1);
     } catch (error) {
       console.error("Erro ao pesquisar:", error);
     }
   }
-
 
   function handleClick(arrow: string) {
     if (!media || media.length <= 1) {
@@ -207,14 +208,13 @@ export default function Home() {
                 const data: SearchData = await response.json();
                 setMedia(data);
                 setCurrent(1);
-
               } catch (error) {
                 console.error("Erro ao buscar item selecionado:", error);
               }
             }}
           >
             <ComboboxInput
-              className="w-full h-full p-px bg-black text-white text-[rgba(255,255,255,0.455)] border-[rgba(255,255,255,0.171)] rounded-[5px] focus:outline-none text-xl pl-1 focus:outline-none"
+              className={`w-full h-full p-px ${theme === 'dark' ? 'bg-[var(--background)]' : theme === 'light' ? 'bg-[var(--backgroundLight)]' : 'bg-[var(--backgroundTransparent)]'} ${theme === 'dark' ? 'text-[var(--text)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--textLight)]'} text-[rgba(255,255,255,0.455)] border-[rgba(255,255,255,0.171)] rounded-[5px] focus:outline-none text-xl pl-1 focus:outline-none`}
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
@@ -225,7 +225,7 @@ export default function Home() {
 
             <ComboboxOptions
               static
-              className={`absolute top-[45px] left-0 w-full bg-black border border-[rgba(255,255,255,0.171)] rounded-[5px] overflow-hidden z-50 shadow-lg ${
+              className={`absolute top-[45px] left-0 w-full ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : "bg-[var(--backgroundTransparent)]"} border border-[rgba(255,255,255,0.171)] rounded-[5px] overflow-hidden z-50 shadow-lg ${
                 suggestions.length === 0 ? "hidden" : "block"
               }`}
             >
@@ -233,7 +233,7 @@ export default function Home() {
                 <ComboboxOption
                   key={`${item.type}-${item.name}-${index}`}
                   value={item}
-                  className="px-3 py-2 text-white data-[focus]:bg-zinc-800 cursor-pointer flex justify-between items-center"
+                  className={`px-3 py-2 ${theme === 'dark' ? 'text-[var(--text)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--textLight)]'} data-[focus]:bg-zinc-800 cursor-pointer flex justify-between items-center`}
                 >
                   <span>{item.name}</span>
 
@@ -248,17 +248,18 @@ export default function Home() {
 
         <button
           type="submit"
-          className="w-[20%] p-px bg-black text-white text-[rgba(255,255,255,0.455)] border-[rgba(255,255,255,0.171)] rounded-[5px] m-[0_10px] focus:outline-none text-xl hover:cursor-pointer"
+          className={`w-[20%] p-px ${theme === 'dark' ? 'bg-[var(--background)]' : theme === 'light' ? 'bg-[var(--backgroundLight)]' : 'bg-[var(--backgroundTransparent)]'} ${theme === 'dark' ? 'text-[var(--text)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--textLight)]'} text-[rgba(255,255,255,0.455)] border-[rgba(255,255,255,0.171)] rounded-[5px] m-[0_10px] focus:outline-none text-xl hover:cursor-pointer`}
         >
           Search
         </button>
 
-        <Menu filters={filters} setFilters={setFilters} />
+        <Menu filters={filters} setFilters={setFilters} theme={theme} />
+        <Theme theme={theme} setTheme={setTheme} />
       </form>
 
       <div className="relative row-4 flex items-center justify-center w-full h-full">
         <button
-          className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg text-white w-[50px] h-[50px] rounded-full absolute left-[15%] hover:cursor-pointer ${
+          className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} w-[50px] h-[50px] rounded-full absolute left-[15%] hover:cursor-pointer ${
             openField && media?.[0]?.length > 1 ? "block" : "hidden"
           }`}
           onClick={() => handleClick("left")}
@@ -269,7 +270,7 @@ export default function Home() {
         <div
           className={`relative row-4 ${
             openField ? "w-[60vw]" : "w-[0vw]"
-          } h-[98%] bg-black rounded-[10px] m-[0_auto] transition-[1s] text-white`}
+          } h-[98%] ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : "bg-[var(--backgroundTransparent)]"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} rounded-[10px] m-[0_auto] transition-[1s]`}
         >
           {results && (
             <Link href={results.link} className="select-none">
@@ -287,13 +288,15 @@ export default function Home() {
             <div
               className={`${
                 openField ? "flex" : "hidden"
-              } flex-row items-baseline gap-[10px] w-[60%] h-[7%] absolute right-[2%] top-[5%] text-white font-5xl`}
+              } flex-row items-baseline gap-[10px] w-[60%] h-[7%] absolute right-[2%] top-[5%] font-5xl`}
             >
               <p className="flex-1 min-w-[0] overflow-hidden text-ellipsis whitespace-nowrap text-xl">
                 {results.name}
               </p>
 
-              <p className="flex-1 text-xl text-[var(--middleTone)] text-ellipsis whitespace-nowrap overflow-hidden">
+              <p
+                className={`flex-1 text-xl ${theme === "dark" ? "text-[var(--middleTone)]" : theme === "light" ? "text-[var(--middleToneLight)]" : "text-[var(--middleToneLight)]"} text-ellipsis whitespace-nowrap overflow-hidden`}
+              >
                 {results.subname && results.subname}
               </p>
             </div>
@@ -305,17 +308,17 @@ export default function Home() {
                 openField ? "grid" : "hidden"
               } absolute justify-center w-[60%] h-[76%] top-[15%] left-[38%] grid-rows-[1.5fr_1fr_1fr_1fr] grid-cols-[1fr_1fr]`}
             >
-              <p className="text-[var(--middleTone)] col-[1/3] text-xl text-justify">
+              <p className={`${theme === 'dark' ? 'text-[var(--middleTone)]' : theme === 'light' ? 'text-[var(--middleToneLight)]' : 'text-[var(--middleToneLight)]'} col-[1/3] text-xl text-justify`}>
                 {results.description && results.description}
               </p>
 
               <div className="relative bg-[#3737376e] w-[70%] h-[80%] rounded-[20px]">
-                <p className="text-[var(--middleTone)] m-[6px_9px] font-xl">
+                <p className={`${theme === 'dark' ? 'text-[var(--middleTone)]' : theme === 'light' ? 'text-[var(--middleToneLight)]' : 'text-[var(--middleToneLight)]'} m-[6px_9px] font-xl`}>
                   Runtime
                 </p>
 
                 <p
-                  className={`absolute text-white ${
+                  className={`absolute ${
                     results.type === "manga" || results.type === "serie"
                       ? "text-lg"
                       : "text-3xl"
@@ -350,7 +353,7 @@ export default function Home() {
               </div>
 
               <div className="relative bg-[#3737376e] w-[70%] h-[80%] rounded-[20px]">
-                <p className="text-[var(--middleTone)] m-[6px_9px] font-xl">
+                <p className={`${theme === 'dark' ? 'text-[var(--middleTone)]' : theme === 'light' ? 'text-[var(--middleToneLight)]' : 'text-[var(--middleToneLight)]'} m-[6px_9px] font-xl`}>
                   Rating
                 </p>
 
@@ -368,21 +371,21 @@ export default function Home() {
               </div>
 
               <div className="relative bg-[#3737376e] w-[70%] h-[80%] rounded-[20px]">
-                <p className="text-[var(--middleTone)] m-[6px_9px] font-xl">
+                <p className={`${theme === 'dark' ? 'text-[var(--middleTone)]' : theme === 'light' ? 'text-[var(--middleToneLight)]' : 'text-[var(--middleToneLight)]'} m-[6px_9px] font-xl`}>
                   Genres
                 </p>
 
-                <p className="absolute text-white text-lg left-[4%] top-[30%]">
+                <p className="absolute text-lg left-[4%] top-[30%]">
                   {results.genres && results.genres.join(", ")}
                 </p>
               </div>
 
               <div className="relative bg-[#3737376e] w-[70%] h-[80%] rounded-[20px]">
-                <p className="text-[var(--middleTone)] m-[6px_9px] font-xl">
+                <p className={`${theme === 'dark' ? 'text-[var(--middleTone)]' : theme === 'light' ? 'text-[var(--middleToneLight)]' : 'text-[var(--middleToneLight)]'} m-[6px_9px] font-xl`}>
                   Release date
                 </p>
 
-                <p className="absolute text-white text-lg left-[4%] top-[30%]">
+                <p className="absolute text-lg left-[4%] top-[30%]">
                   {results.date && results.date.replaceAll("-", "/")}
                 </p>
               </div>
@@ -404,30 +407,25 @@ export default function Home() {
               </div>
 
               <div className="relative bg-[#3737376e] w-[90%] h-full col-[1/3] rounded-[20px]">
-                <p className="text-[var(--middleTone)] m-[6px_9px] font-xl">
+                <p className={`${theme === 'dark' ? 'text-[var(--middleTone)]' : theme === 'light' ? 'text-[var(--middleToneLight)]' : 'text-[var(--middleToneLight)]'} m-[6px_9px] font-xl`}>
                   Review
                 </p>
 
-                <p className="absolute text-white text-md left-[2%] top-[30%] w-[95%] text-justify">
-                  {results.review
-                    ? results.review.content
-                    : "No review :‹"}
+                <p className="absolute text-md left-[2%] top-[30%] w-[95%] text-justify">
+                  {results.review ? results.review.content : "No review :‹"}
                 </p>
 
-                <p className="absolute text-white text-md bottom-[2%] right-[5%]">
+                <p className="absolute text-md bottom-[2%] right-[5%]">
                   <span
                     className={`${
-                      results.review &&
-                      results.review.rating >= 7.5
+                      results.review && results.review.rating >= 7.5
                         ? "text-[var(--great)]"
-                        : results.review &&
-                            results.review.rating >= 5
+                        : results.review && results.review.rating >= 5
                           ? "text-[var(--medium)]"
                           : "text-[var(--bad)]"
                     }`}
                   >
-                    {results.review &&
-                      results.review.rating?.toFixed(1)}
+                    {results.review && results.review.rating?.toFixed(1)}
                   </span>{" "}
                   - {results.review && results.review.author}
                 </p>
@@ -438,16 +436,12 @@ export default function Home() {
           <p
             className={`${
               openField ? "inline" : "hidden"
-            } absolute text-white bottom-[3%] left-[3%] drop-shadow-white drop-shadow-[0px_0px_5px] select-none`}
+            } absolute bottom-[3%] left-[3%] ${theme === "dark" ? "drop-shadow-[var(--dropShadow)]" : theme === "light" ? "drop-shadow-[var(--dropShadowLigth)]" : "drop-shadow-[var(--dropShadowLight)]"} drop-shadow-[0px_0px_5px] select-none`}
           >
             {results && results.type === "anime"
               ? `${results.season} - ${results.type}`
-              : (results &&
-                  results.type === "movie" &&
-                  results.tagline) ||
-                (results &&
-                  results.type === "serie" &&
-                  results.tagline)
+              : (results && results.type === "movie" && results.tagline) ||
+                  (results && results.type === "serie" && results.tagline)
                 ? `${results.tagline} - ${results.type}`
                 : results && results.type
                   ? results.type
@@ -456,7 +450,7 @@ export default function Home() {
         </div>
 
         <button
-          className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg text-white w-[50px] h-[50px] rounded-full absolute right-[15%] hover:cursor-pointer ${
+          className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} w-[50px] h-[50px] rounded-full absolute right-[15%] hover:cursor-pointer ${
             openField
               ? media && media?.[0]?.length > 1
                 ? "block"

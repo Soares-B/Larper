@@ -6,13 +6,13 @@ import {
 } from "@radix-ui/react-icons";
 
 
-export default function Menu ({filters, setFilters}: {filters: any, setFilters: any}) {
+export default function Menu ({filters, setFilters, theme}: {filters: any, setFilters: any, theme: string}) {
 
   return (
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild>
 				<button
-					className="inline-flex size-[35px] items-center justify-center rounded-full bg-black text-white  text-violet11 shadow-[0_0px_2px] shadow-blackA4 outline-none hover:bg-violet3 focus:shadow-[0_0_0_5px] focus:shadow-black"
+					className={`inline-flex size-[35px] w-[40px] items-center justify-center rounded-full ${theme === 'dark' ? 'bg-[var(--background)]' : theme === 'light' ? 'bg-[var(--backgroundLight)]' : 'bg-[var(--backgroundTransparent)]'} ${theme === 'dark' ? 'text-[var(--text)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--textLight)]'} text-violet11 shadow-[0_0px_2px] shadow-blackA4 outline-none hover:bg-violet3 focus:shadow-[0_0_0_5px] hover:cursor-pointer focus:shadow-black m-[0px_20px_20px_0px]`}
 					aria-label="Customise options"
 				>
 					<HamburgerMenuIcon />

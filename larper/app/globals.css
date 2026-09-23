@@ -1,9 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #000000;
+  --backgroundLight: #ffffff;
+  --backgroundTransparent: #88888888;
+
+  --text: #ffffff;
+  --textLight: #000000;
+
+  --dropShadow: #ffffff;
+  --dropShadowLight: #000000;
+
   --middleTone: rgba(255, 255, 255, .5);
+  --middleToneLight: rgba(000, 000, 000, .5);
   --great: #19ff11;
   --medium: #fffb11;
   --bad: #ff1111;
