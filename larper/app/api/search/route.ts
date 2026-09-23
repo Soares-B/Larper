@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { TenraiAnime, TenraiManga } from "@/lib/Tenrai";
 import IGDB from "@/lib/IGDB";
-import { TMDBMovie, TMDBSerie } from "@/lib/TMDB";
 import GoogleBooks from "@/lib/GoogleBooks";
+import { TMDBMovie, TMDBSerie } from "@/lib/TMDB";
 import Deezer from "@/lib/Deezer";
 import Restructure from "@/utils/Restructure";
 
