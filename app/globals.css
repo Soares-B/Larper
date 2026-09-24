@@ -23,9 +23,15 @@
 
   --middleTone: rgba(255, 255, 255, .5);
   --middleToneLight: rgba(000, 000, 000, .5);
+
   --great: #19ff11;
   --medium: #fffb11;
   --bad: #ff1111;
+
+  --greatLight: #14a80f;
+  --mediumLight: #f19318;
+  --badLight: #b90e0e;
+
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);

@@ -3,9 +3,12 @@ import { test, expect } from "@playwright/test";
 test("usuário consegue pesquisar", async ({ page }) => {
   await page.goto("http://localhost:3000");
 
-  await page.getByLabel("Input").fill("Naruto");
+  const input = page.getByLabel("Input");
 
-  await page.getByRole("button", { name: "Search" }).click();
+  await input.fill("Naruto");
+  await input.press("Enter");
 
-  await expect(page.getByText("Naruto")).toBeVisible();
+  await expect(
+    page.getByText("Naruto", { exact: true })
+  ).toBeVisible();
 });

@@ -49,11 +49,9 @@ type Suggestion = {
 
 export default function Home() {
   const [theme, setTheme] = useState("dark");
-
   const [openField, setOpenField] = useState(false);
 
   const [query, setQuery] = useState("");
-  const [entry, setEntry] = useState<Suggestion | undefined>(undefined);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 
   const [media, setMedia] = useState<any>(null);
@@ -96,7 +94,7 @@ export default function Home() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            query: query,
+            query,
           }),
         });
 
@@ -116,10 +114,8 @@ export default function Home() {
     return () => clearTimeout(delay);
   }, [query]);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    if (!query.trim()) {
+  async function search(queryToSearch: string) {
+    if (!queryToSearch.trim()) {
       return;
     }
 
@@ -133,20 +129,24 @@ export default function Home() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          query: query,
-          filters: filters,
+          query: queryToSearch,
+          filters,
         }),
       });
 
       const data: SearchData = await response.json();
-
-      console.log(data);
 
       setMedia(data);
       setCurrent(1);
     } catch (error) {
       console.error("Erro ao pesquisar:", error);
     }
+  }
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    search(query);
   }
 
   function handleClick(arrow: string) {
@@ -175,12 +175,17 @@ export default function Home() {
         <div
           className="absolute inset-0 -z-10 scale-110 bg-cover bg-center blur-sm"
           style={{
-            backgroundImage: `url(${results.type === 'anime' || results.type === 'manga' ? results.background_image && results.background_image : results.background && results.background})`,
+            backgroundImage: `url(${
+              results.type === "anime" || results.type === "manga"
+                ? results.background_image && results.background_image
+                : results.background && results.background
+            })`,
           }}
         />
       ) : (
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,black,rgb(77,0,0))]" />
       )}
+
       <Image
         src="/Imagens/Logo.png"
         alt="logo"
@@ -195,11 +200,11 @@ export default function Home() {
       >
         <div className="w-[80%] relative">
           <Combobox
-            value={entry}
-            onChange={async (selectedItem) => {
-              if (!selectedItem) return;
+            onChange={async (selectedItem: Suggestion | null) => {
+              if (!selectedItem) {
+                return;
+              }
 
-              setEntry(selectedItem);
               setQuery(selectedItem.name);
               setSuggestions([]);
 
@@ -216,39 +221,83 @@ export default function Home() {
                 });
 
                 const data: SearchData = await response.json();
+
                 setMedia(data);
                 setCurrent(1);
+                setOpenField(true);
               } catch (error) {
-                console.error("Erro ao buscar item selecionado:", error);
+                console.error(
+                  "Erro ao buscar item selecionado:",
+                  error
+                );
               }
             }}
           >
             <ComboboxInput
-              aria-label='Input'
-              className={`w-full h-full p-px ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} text-[rgba(255,255,255,0.455)] border-[rgba(255,255,255,0.171)] rounded-[5px] focus:outline-none text-xl pl-1 focus:outline-none`}
-              value={query}
+              aria-label="Input"
+              className={`w-full h-full p-px ${
+                theme === "dark"
+                  ? "bg-[var(--background)]"
+                  : theme === "light"
+                    ? "bg-[var(--backgroundLight)]"
+                    : theme === "glass"
+                      ? "bg-[var(--backgroundGlass)] backdrop-blur-md"
+                      : "bg-[var(--backgroundTransparent)] backdrop-blur-md"
+              } ${
+                theme === "dark"
+                  ? "text-[var(--text)]"
+                  : "text-[var(--textLight)]"
+              } text-[rgba(255,255,255,0.455)] border-[rgba(255,255,255,0.171)] rounded-[5px] focus:outline-none text-xl pl-1`}
               onChange={(e) => {
                 setQuery(e.target.value);
-                setEntry(undefined);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  search(e.currentTarget.value);
+                }
               }}
               autoComplete="off"
             />
 
             <ComboboxOptions
-              static
-              className={`absolute top-[45px] left-0 w-full ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} border border-[rgba(255,255,255,0.171)] rounded-[5px] overflow-hidden z-50 shadow-lg ${
-                suggestions.length === 0 ? "hidden" : "block"
-              }`}
+              className={`absolute top-[45px] left-0 w-full ${
+                theme === "dark"
+                  ? "bg-[var(--background)]"
+                  : theme === "light"
+                    ? "bg-[var(--backgroundLight)]"
+                    : theme === "glass"
+                      ? "bg-[var(--backgroundGlass)] backdrop-blur-md"
+                      : "bg-[var(--backgroundTransparent)] backdrop-blur-md"
+              } border border-[rgba(255,255,255,0.171)] rounded-[5px] overflow-hidden z-50 shadow-lg`}
             >
               {suggestions.map((item, index) => (
                 <ComboboxOption
                   key={`${item.type}-${item.name}-${index}`}
                   value={item}
-                  className={`px-3 py-2 ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} ${theme === 'dark' ? 'data-[focus]:bg-zinc-800' : theme === 'light' ? 'data-[focus]:bg-zinc-300' : 'data-[focus]:bg-[var(--backgroundTransparent)] data-[focus]:backdrop-blur-sx'} cursor-pointer flex justify-between items-center`}
+                  className={`px-3 py-2 ${
+                    theme === "dark"
+                      ? "text-[var(--text)]"
+                      : theme === "light"
+                        ? "text-[var(--textLight)]"
+                        : "text-[var(--textLight)]"
+                  } ${
+                    theme === "dark"
+                      ? "data-[focus]:bg-zinc-800"
+                      : theme === "light"
+                        ? "data-[focus]:bg-zinc-300"
+                        : "data-[focus]:bg-[var(--backgroundTransparent)] data-[focus]:backdrop-blur-sx"
+                  } cursor-pointer flex justify-between items-center`}
                 >
                   <span>{item.name}</span>
 
-                  <span className={`text-xs ${theme === 'transparent' ? 'text-black' : 'text-zinc-500'} uppercase`}>
+                  <span
+                    className={`text-xs ${
+                      theme === "transparent"
+                        ? "text-black"
+                        : "text-zinc-500"
+                    } uppercase`}
+                  >
                     {item.type}
                   </span>
                 </ComboboxOption>
@@ -259,19 +308,47 @@ export default function Home() {
 
         <button
           type="submit"
-          className={`w-[20%] p-px ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} text-[rgba(255,255,255,0.455)] border-[rgba(255,255,255,0.171)] rounded-[5px] m-[0_10px] focus:outline-none text-xl hover:cursor-pointer`}
+          aria-label="search"
+          className={`w-[20%] p-px ${
+            theme === "dark"
+              ? "bg-[var(--background)]"
+              : theme === "light"
+                ? "bg-[var(--backgroundLight)]"
+                : theme === "glass"
+                  ? "bg-[var(--backgroundGlass)] backdrop-blur-md"
+                  : "bg-[var(--backgroundTransparent)] backdrop-blur-md"
+          } ${
+            theme === "dark"
+              ? "text-[var(--text)]"
+              : "text-[var(--textLight)]"
+          } text-[rgba(255,255,255,0.455)] border-[rgba(255,255,255,0.171)] rounded-[5px] m-[0_10px] focus:outline-none text-xl hover:cursor-pointer`}
         >
           Search
         </button>
 
-        <Menu filters={filters} setFilters={setFilters} theme={theme} />
-        <Theme theme={theme} setTheme={setTheme} />
+        <Menu
+          filters={filters}
+          setFilters={setFilters}
+          theme={theme}
+        />
+
+        <Theme
+          theme={theme}
+          setTheme={setTheme}
+        />
       </form>
 
       <div className="relative row-4 flex items-center justify-center w-full h-full">
         <button
-          className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} w-[50px] h-[50px] rounded-full absolute left-[15%] hover:cursor-pointer ${
-            openField && media?.[0]?.length > 1 ? "block" : "hidden"
+          type="button"
+          className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${
+            theme === "dark"
+              ? "text-[var(--text)]"
+              : "text-[var(--textLight)]"
+          } w-[50px] h-[50px] rounded-full absolute left-[15%] hover:cursor-pointer ${
+            openField && media?.[0]?.length > 1
+              ? "block"
+              : "hidden"
           }`}
           onClick={() => handleClick("left")}
         >
@@ -281,16 +358,36 @@ export default function Home() {
         <div
           className={`relative row-4 ${
             openField ? "w-[60vw]" : "w-[0vw]"
-          } h-[98%] ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} rounded-[10px] m-[0_auto] transition-[1s] top-[-2%]`}
+          } h-[98%] ${
+            theme === "dark"
+              ? "bg-[var(--background)]"
+              : theme === "light"
+                ? "bg-[var(--backgroundLight)]"
+                : theme === "glass"
+                  ? "bg-[var(--backgroundGlass)] backdrop-blur-md"
+                  : "bg-[var(--backgroundTransparent)] backdrop-blur-md"
+          } ${
+            theme === "dark"
+              ? "text-[var(--text)]"
+              : "text-[var(--textLight)]"
+          } rounded-[10px] m-[0_auto] transition-[1s] top-[-2%]`}
         >
           {results && (
-            <Link href={results.link} target="_blank" className="select-none">
+            <Link
+              href={results.link}
+              target="_blank"
+              className="select-none"
+            >
               <Image
                 src={results.cover!}
                 width={600}
                 height={700}
                 alt={results.name}
-                className={`absolute block scale-[.75] rounded-[25px] ${results.type && results.type === "music" ? "top-[-5%]" : "top-[-10%]"} left-[-3%] w-[45%]`}
+                className={`absolute block scale-[.75] rounded-[25px] ${
+                  results.type === "music"
+                    ? "top-[-5%]"
+                    : "top-[-10%]"
+                } left-[-3%] w-[45%]`}
               />
             </Link>
           )}
@@ -306,9 +403,15 @@ export default function Home() {
               </p>
 
               <p
-                className={`flex-1 text-xl ${theme === "dark" ? "text-[var(--middleTone)]" : theme === "light" ? "text-[var(--middleToneLight)]" : "text-[var(--textLight)]"} text-ellipsis whitespace-nowrap overflow-hidden`}
+                className={`flex-1 text-xl ${
+                  theme === "dark"
+                    ? "text-[var(--middleTone)]"
+                    : theme === "light"
+                      ? "text-[var(--middleToneLight)]"
+                      : "text-[var(--textLight)]"
+                } text-ellipsis whitespace-nowrap overflow-hidden`}
               >
-                {results.subname && results.subname}
+                {results.subname}
               </p>
             </div>
           )}
@@ -320,58 +423,92 @@ export default function Home() {
               } absolute justify-center w-[60%] h-[76%] top-[15%] left-[38%] grid-rows-[1.5fr_1fr_1fr_1fr] grid-cols-[1fr_1fr]`}
             >
               <p
-                className={`${theme === "dark" ? "text-[var(--middleTone)]" : theme === "light" ? "text-[var(--middleToneLight)]" : "text-[var(--textLight)]"} col-[1/3] text-xl text-justify`}
+                className={`${
+                  theme === "dark"
+                    ? "text-[var(--middleTone)]"
+                    : theme === "light"
+                      ? "text-[var(--middleToneLight)]"
+                      : "text-[var(--textLight)]"
+                } col-[1/3] text-xl text-justify`}
               >
-                {results.description && results.description}
+                {results.description}
               </p>
 
-              <div className={`relative ${theme === 'dark' ? 'bg-[#ffffff11]' : theme === 'light' ? 'bg-[#00000022]' : 'bg-[#00000022]'} w-[70%] h-[80%] rounded-[20px]`}>
+              <div
+                className={`relative ${
+                  theme === "dark"
+                    ? "bg-[#ffffff11]"
+                    : "bg-[#00000022]"
+                } w-[70%] h-[80%] rounded-[20px]`}
+              >
                 <p
-                  className={`${theme === "dark" ? "text-[var(--middleTone)]" : theme === "light" ? "text-[var(--middleToneLight)]" : "text-[var(--textLight)]"} m-[6px_9px] font-xl`}
+                  className={`${
+                    theme === "dark"
+                      ? "text-[var(--middleTone)]"
+                      : theme === "light"
+                        ? "text-[var(--middleToneLight)]"
+                        : "text-[var(--textLight)]"
+                  } m-[6px_9px] font-xl`}
                 >
                   Runtime
                 </p>
 
                 <p
                   className={`absolute ${
-                    results.type === "manga" || results.type === "serie"
+                    results.type === "manga" ||
+                    results.type === "serie"
                       ? "text-lg"
                       : "text-3xl"
                   } left-[4%] ${
-                    results.type === "manga" || results.type === "serie"
+                    results.type === "manga" ||
+                    results.type === "serie"
                       ? "bottom-[5%]"
                       : "bottom-[10%]"
                   }`}
                 >
-                  {results.type === "anime" ? (
-                    `Episodes: ${results.totalEpisode}`
-                  ) : results.type === "movie" ? (
-                    results.runtime
-                  ) : results.type === "manga" ? (
-                    <>
-                      Volumes: {results.volumes}
-                      <br />
-                      Chapters: {results.chapters}
-                    </>
-                  ) : results.type === "serie" ? (
-                    <>
-                      Seasons: {results.totalSeason}
-                      <br />
-                      Episodes: {results.totalEpisode}
-                    </>
-                  ) : results.type === "book" ? (
-                    `Pages: ${results.pages}`
-                  ) : results.type === "music" ? (
-                    results.time
-                  ) : (
-                    ""
-                  )}
+                  {results.type === "anime"
+                    ? `Episodes: ${results.totalEpisode}`
+                    : results.type === "movie"
+                      ? results.runtime
+                      : results.type === "manga"
+                        ? (
+                            <>
+                              Volumes: {results.volumes}
+                              <br />
+                              Chapters: {results.chapters}
+                            </>
+                          )
+                        : results.type === "serie"
+                          ? (
+                              <>
+                                Seasons: {results.totalSeason}
+                                <br />
+                                Episodes: {results.totalEpisode}
+                              </>
+                            )
+                          : results.type === "book"
+                            ? `Pages: ${results.pages}`
+                            : results.type === "music"
+                              ? results.time
+                              : ""}
                 </p>
               </div>
 
-              <div className={`relative ${theme === 'dark' ? 'bg-[#ffffff11]' : theme === 'light' ? 'bg-[#00000022]' : 'bg-[#00000022]'} w-[70%] h-[80%] rounded-[20px]`}>
+              <div
+                className={`relative ${
+                  theme === "dark"
+                    ? "bg-[#ffffff11]"
+                    : "bg-[#00000022]"
+                } w-[70%] h-[80%] rounded-[20px]`}
+              >
                 <p
-                  className={`${theme === "dark" ? "text-[var(--middleTone)]" : theme === "light" ? "text-[var(--middleToneLight)]" : "text-[var(--textLight)]"} m-[6px_9px] font-xl`}
+                  className={`${
+                    theme === "dark"
+                      ? "text-[var(--middleTone)]"
+                      : theme === "light"
+                        ? "text-[var(--middleToneLight)]"
+                        : "text-[var(--textLight)]"
+                  } m-[6px_9px] font-xl`}
                 >
                   Rating
                 </p>
@@ -379,41 +516,71 @@ export default function Home() {
                 <p
                   className={`absolute text-3xl left-[4%] bottom-[10%] ${
                     results.rating && results.rating >= 7.5
-                      ? "text-[var(--great)]"
+                      ? theme === 'light' ? "text-[var(--greatLight)]" : "text-[var(--great)]"
                       : results.rating && results.rating >= 5
-                        ? "text-[var(--medium)]"
-                        : "text-[var(--bad)]"
+                        ? theme === 'light' ? "text-[var(--mediumLight)]" : "text-[var(--medium)]"
+                        : theme === 'light' ? "text-[var(--badLight)]" : "text-[var(--bad)]"
                   }`}
                 >
-                  {results.rating ? results.rating : "No score :/"}
+                  {results.rating
+                    ? results.rating
+                    : "No score :/"}
                 </p>
               </div>
 
-              <div className={`relative ${theme === 'dark' ? 'bg-[#ffffff11]' : theme === 'light' ? 'bg-[#00000022]' : 'bg-[#00000022]'} w-[70%] h-[80%] rounded-[20px]`}>
+              <div
+                className={`relative ${
+                  theme === "dark"
+                    ? "bg-[#ffffff11]"
+                    : "bg-[#00000022]"
+                } w-[70%] h-[80%] rounded-[20px]`}
+              >
                 <p
-                  className={`${theme === "dark" ? "text-[var(--middleTone)]" : theme === "light" ? "text-[var(--middleToneLight)]" : "text-[var(--textLight)]"} m-[6px_9px] font-xl`}
+                  className={`${
+                    theme === "dark"
+                      ? "text-[var(--middleTone)]"
+                      : theme === "light"
+                        ? "text-[var(--middleToneLight)]"
+                        : "text-[var(--textLight)]"
+                  } m-[6px_9px] font-xl`}
                 >
-                  {results.type === "music" ? "Artist" : "Genres"}
+                  {results.type === "music"
+                    ? "Artist"
+                    : "Genres"}
                 </p>
 
                 <p className="absolute text-lg left-[4%] top-[30%]">
                   {results.type === "music"
-                    ? results.artist && results.artist.name
-                    : results.genres && results.genres.join(", ")}
+                    ? results.artist?.name
+                    : results.genres?.join(", ")}
                 </p>
               </div>
 
-              <div className={`relative ${theme === 'dark' ? 'bg-[#ffffff11]' : theme === 'light' ? 'bg-[#00000022]' : 'bg-[#00000022]'} w-[70%] h-[80%] rounded-[20px]`}>
+              <div
+                className={`relative ${
+                  theme === "dark"
+                    ? "bg-[#ffffff11]"
+                    : "bg-[#00000022]"
+                } w-[70%] h-[80%] rounded-[20px]`}
+              >
                 <p
-                  className={`${theme === "dark" ? "text-[var(--middleTone)]" : theme === "light" ? "text-[var(--middleToneLight)]" : "text-[var(--textLight)]"} m-[6px_9px] font-xl`}
+                  className={`${
+                    theme === "dark"
+                      ? "text-[var(--middleTone)]"
+                      : theme === "light"
+                        ? "text-[var(--middleToneLight)]"
+                        : "text-[var(--textLight)]"
+                  } m-[6px_9px] font-xl`}
                 >
-                  {results.type === "music" ? "Album" : "Release date"}
+                  {results.type === "music"
+                    ? "Album"
+                    : "Release date"}
                 </p>
 
                 <p className="absolute text-lg left-[4%] top-[30%]">
                   {results.type === "music"
-                    ? results.album && results.album.name
-                    : results.date && results.date.replaceAll("-", "/")}
+                    ? results.album?.name
+                    : results.date?.replaceAll("-", "/")}
                 </p>
               </div>
 
@@ -433,28 +600,45 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className={`relative ${theme === 'dark' ? 'bg-[#ffffff11]' : theme === 'light' ? 'bg-[#00000022]' : 'bg-[#00000022]'} w-[90%] h-full col-[1/3] rounded-[20px]`}>
+              <div
+                className={`relative ${
+                  theme === "dark"
+                    ? "bg-[#ffffff11]"
+                    : "bg-[#00000022]"
+                } w-[90%] h-full col-[1/3] rounded-[20px]`}
+              >
                 <p
-                  className={`${theme === "dark" ? "text-[var(--middleTone)]" : theme === "light" ? "text-[var(--middleToneLight)]" : "text-[var(--textLight)]"} m-[6px_9px] font-xl`}
+                  className={`${
+                    theme === "dark"
+                      ? "text-[var(--middleTone)]"
+                      : theme === "light"
+                        ? "text-[var(--middleToneLight)]"
+                        : "text-[var(--textLight)]"
+                  } m-[6px_9px] font-xl`}
                 >
                   Review
                 </p>
 
                 <p className="absolute text-md left-[2%] top-[30%] w-[95%] text-justify">
-                  {results.review ? results.review.content : "No review :‹"}
+                  {results.review
+                    ? results.review.content
+                    : "No review :‹"}
                 </p>
 
                 <p className="absolute text-md bottom-[2%] right-[5%]">
                   <span
                     className={`${
-                      results.review && results.review.rating >= 7.5
-                        ? "text-[var(--great)]"
-                        : results.review && results.review.rating >= 5
-                          ? "text-[var(--medium)]"
-                          : "text-[var(--bad)]"
+                      results.review &&
+                      results.review.rating >= 7.5
+                        ? theme === 'light' ? "text-[var(--greatLight)]" : "text-[var(--great)]"
+                        : results.review &&
+                            results.review.rating >= 5
+                          ? theme === 'light' ? "text-[var(--mediumLight)]" : "text-[var(--medium)]"
+                          : theme === 'light' ? "text-[var(--badLight)]" : "text-[var(--bad)]"
                     }`}
                   >
-                    {results.review && results.review.rating?.toFixed(1)}
+                    {results.review &&
+                      results.review.rating?.toFixed(1)}
                   </span>{" "}
                   - {results.review && results.review.author}
                 </p>
@@ -465,12 +649,22 @@ export default function Home() {
           <p
             className={`${
               openField ? "inline" : "hidden"
-            } absolute bottom-[3%] left-[3%] ${theme === "dark" ? "drop-shadow-[var(--dropShadow)]" : theme === "light" ? "drop-shadow-[var(--dropShadowLigth)]" : "drop-shadow-[var(--dropShadowLight)]"} drop-shadow-[0px_0px_5px] select-none`}
+            } absolute bottom-[3%] left-[3%] ${
+              theme === "dark"
+                ? "drop-shadow-[var(--dropShadow)]"
+                : theme === "light"
+                  ? "drop-shadow-[var(--dropShadowLigth)]"
+                  : "drop-shadow-[var(--dropShadowLight)]"
+            } drop-shadow-[0px_0px_5px] select-none`}
           >
             {results && results.type === "anime"
               ? `${results.season} - ${results.type}`
-              : (results && results.type === "movie" && results.tagline) ||
-                  (results && results.type === "serie" && results.tagline)
+              : (results &&
+                    results.type === "movie" &&
+                    results.tagline) ||
+                  (results &&
+                    results.type === "serie" &&
+                    results.tagline)
                 ? `${results.tagline} - ${results.type}`
                 : results && results.type
                   ? results.type
@@ -479,7 +673,12 @@ export default function Home() {
         </div>
 
         <button
-          className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} w-[50px] h-[50px] rounded-full absolute right-[15%] hover:cursor-pointer ${
+          type="button"
+          className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${
+            theme === "dark"
+              ? "text-[var(--text)]"
+              : "text-[var(--textLight)]"
+          } w-[50px] h-[50px] rounded-full absolute right-[15%] hover:cursor-pointer ${
             openField
               ? media && media?.[0]?.length > 1
                 ? "block"
