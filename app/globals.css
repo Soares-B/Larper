@@ -1,10 +1,16 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
+
+@source "../app";
+@source "../components";
+@source "../lib";
+@source "../utils";
+
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  --background: #000000;
   --backgroundLight: #ffffff;
   --backgroundGlass: #88888844;
   --backgroundTransparent: #88888800;
@@ -20,7 +26,6 @@
   --great: #19ff11;
   --medium: #fffb11;
   --bad: #ff1111;
-  --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);

@@ -12,7 +12,6 @@ import {
   ComboboxOptions,
 } from "@headlessui/react";
 import Theme from "@/components/Theme";
-import { Suspense } from "react";
 
 type result = {
   review: {
@@ -225,6 +224,7 @@ export default function Home() {
             }}
           >
             <ComboboxInput
+              aria-label='Input'
               className={`w-full h-full p-px ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} text-[rgba(255,255,255,0.455)] border-[rgba(255,255,255,0.171)] rounded-[5px] focus:outline-none text-xl pl-1 focus:outline-none`}
               value={query}
               onChange={(e) => {
