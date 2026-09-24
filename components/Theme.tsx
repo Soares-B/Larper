@@ -13,7 +13,7 @@ export default function Theme({theme, setTheme}: {theme: string, setTheme: any})
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild>
 				<button
-					className={`inline-flex size-[35px] w-[40px] items-center justify-center rounded-full ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === 'dark' ? 'text-[var(--text)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--textLight)]'} shadow-[0_2px_10px] shadow-blackA4 outline-none hover:bg-violet3 focus:shadow-[0_0_0_2px] hover:cursor-pointer focus:shadow-black`}
+					className={`inline-flex size-[35px] w-[55px] items-center justify-center rounded-full ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === 'dark' ? 'text-[var(--text)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--textLight)]'} shadow-blackA4 outline-none hover:bg-violet3 hover:cursor-pointer m-[0px_0px_0px_10px]`}
 					aria-label="Customise options"
 				>
 					<Palette />

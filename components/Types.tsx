@@ -12,7 +12,7 @@ export default function Menu ({filters, setFilters, theme}: {filters: any, setFi
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild>
 				<button
-					className={`inline-flex size-[35px] w-[40px] items-center justify-center rounded-full ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === 'dark' ? 'text-[var(--text)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--textLight)]'} text-violet11 shadow-[0_0px_2px] shadow-blackA4 outline-none hover:bg-violet3 focus:shadow-[0_0_0_5px] hover:cursor-pointer focus:shadow-black m-[0px_20px_20px_0px]`}
+					className={`inline-flex size-[35px] w-[55px] items-center justify-center rounded-full ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === 'dark' ? 'text-[var(--text)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--textLight)]'} text-violet11 shadow-blackA4 outline-none hover:bg-violet3 hover:cursor-pointer m-[0px_10px_0px_20px]`}
 					aria-label="Customise options"
 				>
 					<HamburgerMenuIcon />

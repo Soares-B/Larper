@@ -12,6 +12,7 @@ import {
   ComboboxOptions,
 } from "@headlessui/react";
 import Theme from "@/components/Theme";
+import Details from "@/components/Details"
 
 type result = {
   review: {
@@ -195,7 +196,7 @@ export default function Home() {
       />
 
       <form
-        className="block m-[0_auto] mt-[5px] mb-[30px] w-[35%] h-[40px] flex justify-between"
+        className="block m-[0_auto] mt-[5px] mb-[30px] w-[40%] h-[40px] flex justify-between"
         onSubmit={handleSubmit}
       >
         <div className="w-[80%] relative">
@@ -325,6 +326,8 @@ export default function Home() {
         >
           Search
         </button>
+
+        <Details theme={theme}/>        
 
         <Menu
           filters={filters}
@@ -549,7 +552,7 @@ export default function Home() {
                     : "Genres"}
                 </p>
 
-                <p className="absolute text-lg left-[4%] top-[30%]">
+                <p className={`absolute ${results.type !== 'music' ? results.genres && results.genres.join('').length > 38 ? 'text-md' : 'text-lg' : 'text-lg'} left-[4%] top-[30%]`}>
                   {results.type === "music"
                     ? results.artist?.name
                     : results.genres?.join(", ")}
