@@ -2,9 +2,11 @@
 
 With **Larper** you can find data about any `anime`, `manga`, `video game`, `book`, `serie`, `movie` and `music`
 
-> APIs used:
-- [`Tenrai`](https://tenrai.org/) for `animes` and `mangas`
-- [`IGDB`](https://www.igdb.com/api) and [`Twitch`](https://dev.twitch.tv/api) for `games`
-- [`GoogleBooks`](https://developers.google.com/books) for `books`
-- [`TMDB`](https://developer.themoviedb.org/docs/getting-started) for `series` and `movies`
-- [`Deezer`](https://developers.deezer.com) for `musics`
+## APIs used
+|API|Media|
+|---|---|
+|[Tenrai](https://tenrai.org/)Aanimes & Mangas|
+|[IGDB](https://www.igdb.com/api) & [Twitch](https://dev.twitch.tv/api)|Games|
+|[GoogleBooks](https://developers.google.com/books)|Books|
+|[TMDB](https://developer.themoviedb.org/docs/getting-started)|Series & Movies|
+|[Deezer](https://developers.deezer.com)|Musics|
