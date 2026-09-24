@@ -10,11 +10,26 @@
     <img src="Imagens/Logo.png" alt="Logo" id="logo">
 
     <form id="form">
-        <input type="text" name="input" id="media-input" placeholder="Media Name" autocomplete="off" required>
-        <input type="submit" value="Search" id="search">
+        <input type="text" name="input" id="media-input" class="button" placeholder="Media Name" autocomplete="off" required >
+        <input type="submit" value="Search" id="search" class="button">
+        <input type="button" value="Search filter" id="choose" class="button">
     </form>
 
+    <div id="filter">
+        <input type="button" value="Anime">
+        <input type="button" value="Manga">
+        <input type="button" value="Game">
+        <input type="button" value="Book">
+        <input type="button" value="Movie">
+        <input type="button" value="Serie">
+        <input type="button" value="Music">
+    </div>
+
     <ul id="suggestions" class="text"></ul>
+
+    <p id="loading" class="text">loading <i class="fa-solid fa-spinner spin"></i></p>
+        
+    </div>
 
     <div id="content">
         <a href="" target="_blank" rel="nofollow"><img src="" alt="Cover" id="cover"></a>
@@ -48,6 +63,7 @@
         </div>
         <p id="tagline" class="text"></p>
     </div>
+    <script src="https://kit.fontawesome.com/0c24622cda.js" crossorigin="anonymous"></script>
     <script src="script.js"></script>
 </body>
 </html>

@@ -173,6 +173,27 @@ type MovieShape = TMDBShape & {
     }
 }
 
+type MusicShape = {
+    info: {
+        title: string,
+        preview: string | null,
+        md5_image: string | null,
+        link: string | null,
+        duration: number | null,
+        id: number,
+        
+        artist: {
+            name: string | null,
+            picture_big: string | null,
+            link: string | null,
+        },
+        album: {
+            title: string | null,
+            cover_big: string | null
+        }
+    },
+}
+
 class Tenrai{
     
     name: string;
@@ -185,6 +206,7 @@ class Tenrai{
     genres: string[] | null;
     link: string;
     status: string | null;
+    background_image: string | null
     
     review: {
         spoiler: boolean;
@@ -202,6 +224,7 @@ class Tenrai{
         this.description = textShortener(obj.info.synopsis ?? null);
         this.background = textShortener(obj.info.background ?? null);
         this.cover = obj.info.images?.jpg?.large_image_url ?? null;
+        this.background_image = this.cover
         this.id = obj.info.mal_id;
         this.rating = obj.info.score ?? null;
         this.genres = obj.info.genres?.map(g => g.name) ?? null;
@@ -276,7 +299,8 @@ class Game{
     date: string | null;
     link: string | null;
     game_type: string | null;
-    type: string
+    type: string;
+    background: string | null;
 
     language: {
         languages: (string | null)[]
@@ -292,6 +316,7 @@ class Game{
         this.storyline = obj.info.storyline ?? null;
         this.age_rating = obj.info.age_ratings ? obj.info.age_ratings.find(age => age.synopsis)?.synopsis ?? null : null;
         this.cover = obj.info.cover?.url ? `https:${obj.info.cover.url}` : null;
+        this.background = this.cover
         this.game_modes = obj.info.game_modes?.map(gm => gm.name) ?? null;
         this.genres = obj.info.genres?.map(g => g.name) ?? null;
         this.platforms = obj.info.platforms?.map(p => p.name) ?? null;
@@ -330,6 +355,7 @@ class Book{
     date: string | null;
     link: string | null;
     type: string;
+    background: string | null;
 
     constructor(obj: BookShape){
         this.name = obj.info.title;
@@ -339,6 +365,7 @@ class Book{
         this.rating = obj.info.averageRating ? obj.info.averageRating * 2 : null;
         this.genres = obj.info.categories?.map(genre => genre) ?? null;
         this.cover = obj.info.imageLinks?.["thumbnail"];
+        this.background = this.cover
         this.language = obj.info.language;
         this.pages = obj.info.pageCount;
         this.date = obj.info.publishedDate;
@@ -428,33 +455,77 @@ class Movie extends TMDB{
     }
 }
 
-function textShortener(desc: string | null) {
-    if (desc == null) {
-        return null;
+class Music{
+
+    name: string;
+    preview: string | null;
+    cover: string | null;
+    link: string | null;
+    time: string | null;
+    id: number;
+    type: string;
+    background: string | null;
+
+    artist: {
+        name: string | null;
+        image: string | null;
+        link: string | null;
+    };
+    album: {
+        name: string | null;
+        image: string | null;
     }
 
-    const firstIndex = desc.indexOf('.');
-    
-    if (firstIndex === -1) {
-        return desc.length > 200 ? 'Very long text :(' : desc;
+    constructor(obj: MusicShape){
+
+        this.name = obj.info.title;
+        this.preview = obj.info.preview ? obj.info.preview : null;
+        this.cover = `https://e-cdns-images.dzcdn.net/images/cover/${obj.info.md5_image}/750x750.jpg`
+        this.background = this.cover
+        this.link = obj.info.link
+        const duration = obj.info.duration ?? 0;
+
+        this.time = `${Math.floor(duration / 60)}m${String(duration % 60).padStart(2, "0")}s`;
+        this.id = obj.info.id;
+        this.type = 'music';
+
+        this.artist = {
+            name: obj.info.artist?.name ?? null,
+            image: obj.info.artist?.picture_big ?? null,
+            link: obj.info.artist?.link ?? null
+
+        }
+        this.album = {
+            name: obj.info.album?.title ?? null,
+            image: obj.info.album?.cover_big ?? null,
+        }
     }
-
-    if (firstIndex > 200) {
-        return 'Very long text :(';
-    }
-
-    const secondIndex = desc.indexOf('.', firstIndex + 1);
-
-    if (secondIndex === -1) {
-        return desc;
-    }
-
-    if (secondIndex > 200) {
-        return desc.slice(0, firstIndex + 1);
-    }
-
-    return desc.slice(0, secondIndex + 1);
 }
+
+function textShortener(desc: string | null) {
+  if (!desc) return null;
+
+  const MAX_LENGTH = 200;
+
+  if (desc.length <= MAX_LENGTH) {
+    return desc;
+  }
+
+  const firstPeriod = desc.indexOf(".");
+  
+  if (firstPeriod === -1 || firstPeriod >= MAX_LENGTH) {
+    return "Very long text :(";
+  }
+
+  const secondPeriod = desc.indexOf(".", firstPeriod + 1);
+
+  if (secondPeriod === -1 || secondPeriod >= MAX_LENGTH) {
+    return desc.slice(0, firstPeriod + 1);
+  }
+
+  return desc.slice(0, secondPeriod + 1);
+}
+
 
 export default function Restructure(media: any, type: string){
     if (type === "anime"){
@@ -498,9 +569,9 @@ export default function Restructure(media: any, type: string){
     }
 
     else if (type === "music"){
-        // const data = new Music(media)
+        const data = new Music(media)
 
-        // return NextResponse.json(data)
+        return NextResponse.json(data)
 
     }
 }

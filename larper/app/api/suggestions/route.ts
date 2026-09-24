@@ -14,15 +14,19 @@ export async function POST(req: Request) {
     const [
       animeResponse,
       mangaResponse,
+      gameResponse,
       bookResponse,
       serieResponse,
       movieResponse,
+      musicResponse,
     ] = await Promise.all([
       TenraiAnime(encodeQuery),
       TenraiManga(encodeQuery),
+      IGDB(encodeQuery),
       GoogleBooks(encodeQuery),
       TMDBSerie(encodeQuery),
       TMDBMovie(encodeQuery),
+      Deezer(encodeQuery),
     ]);
 
     const suggestions = [];
@@ -42,6 +46,15 @@ export async function POST(req: Request) {
       suggestions.push({
         name: manga.info.title,
         type: "manga",
+      });
+    }
+
+    if (gameResponse) {
+      const game = await gameResponse.json();
+
+      suggestions.push({
+        name: game.info.name,
+        type: "game",
       });
     }
 
@@ -69,6 +82,15 @@ export async function POST(req: Request) {
       suggestions.push({
         name: movie.info.title,
         type: "movie",
+      });
+    }
+
+    if (musicResponse) {
+      const music = await musicResponse.json();
+
+      suggestions.push({
+        name: music.info.title,
+        type: "music",
       });
     }
 

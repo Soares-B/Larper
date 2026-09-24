@@ -73,7 +73,6 @@ export async function POST(req: Request){
             }
 
             if (book !== null){
-                console.log(book)
                 fullSearch.push(book)
                 fullSearch[0].push('book')
             }
@@ -114,12 +113,12 @@ export async function POST(req: Request){
 
             if(searchVar){
                 music = await searchVar.json();
-                console.log(music)
                 restructure = Restructure(music, "music")
                 music = await restructure?.json() ?? null;
             }
 
-            if (movie !== null){
+            if (music !== null){
+
                 fullSearch.push(music)
                 fullSearch[0].push('music')
             }

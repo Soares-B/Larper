@@ -170,7 +170,17 @@ export default function Home() {
   }
 
   return (
-    <div className="grid w-screen h-screen grid-rows-[20%_7%_1px_1fr] bg-[linear-gradient(to_bottom,black,rgb(77,0,0))]">
+    <div className="relative grid w-screen h-screen grid-rows-[20%_7%_1px_1fr] overflow-hidden">
+      {results ? (
+        <div
+          className="absolute inset-0 -z-10 scale-110 bg-cover bg-center blur-sm"
+          style={{
+            backgroundImage: `url(${results.type === 'anime' || results.type === 'manga' ? results.background_image && results.background_image : results.background && results.background})`,
+          }}
+        />
+      ) : (
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,black,rgb(77,0,0))]" />
+      )}
       <Image
         src="/Imagens/Logo.png"
         alt="logo"
@@ -214,7 +224,7 @@ export default function Home() {
             }}
           >
             <ComboboxInput
-              className={`w-full h-full p-px ${theme === 'dark' ? 'bg-[var(--background)]' : theme === 'light' ? 'bg-[var(--backgroundLight)]' : 'bg-[var(--backgroundTransparent)]'} ${theme === 'dark' ? 'text-[var(--text)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--textLight)]'} text-[rgba(255,255,255,0.455)] border-[rgba(255,255,255,0.171)] rounded-[5px] focus:outline-none text-xl pl-1 focus:outline-none`}
+              className={`w-full h-full p-px ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} text-[rgba(255,255,255,0.455)] border-[rgba(255,255,255,0.171)] rounded-[5px] focus:outline-none text-xl pl-1 focus:outline-none`}
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
@@ -225,7 +235,7 @@ export default function Home() {
 
             <ComboboxOptions
               static
-              className={`absolute top-[45px] left-0 w-full ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : "bg-[var(--backgroundTransparent)]"} border border-[rgba(255,255,255,0.171)] rounded-[5px] overflow-hidden z-50 shadow-lg ${
+              className={`absolute top-[45px] left-0 w-full ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} border border-[rgba(255,255,255,0.171)] rounded-[5px] overflow-hidden z-50 shadow-lg ${
                 suggestions.length === 0 ? "hidden" : "block"
               }`}
             >
@@ -233,11 +243,11 @@ export default function Home() {
                 <ComboboxOption
                   key={`${item.type}-${item.name}-${index}`}
                   value={item}
-                  className={`px-3 py-2 ${theme === 'dark' ? 'text-[var(--text)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--textLight)]'} data-[focus]:bg-zinc-800 cursor-pointer flex justify-between items-center`}
+                  className={`px-3 py-2 ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} ${theme === 'dark' ? 'data-[focus]:bg-zinc-800' : theme === 'light' ? 'data-[focus]:bg-zinc-300' : 'data-[focus]:bg-[var(--backgroundTransparent)] data-[focus]:backdrop-blur-sx'} cursor-pointer flex justify-between items-center`}
                 >
                   <span>{item.name}</span>
 
-                  <span className="text-xs text-zinc-500 uppercase">
+                  <span className={`text-xs ${theme === 'transparent' ? 'text-black' : 'text-zinc-500'} uppercase`}>
                     {item.type}
                   </span>
                 </ComboboxOption>
@@ -248,7 +258,7 @@ export default function Home() {
 
         <button
           type="submit"
-          className={`w-[20%] p-px ${theme === 'dark' ? 'bg-[var(--background)]' : theme === 'light' ? 'bg-[var(--backgroundLight)]' : 'bg-[var(--backgroundTransparent)]'} ${theme === 'dark' ? 'text-[var(--text)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--textLight)]'} text-[rgba(255,255,255,0.455)] border-[rgba(255,255,255,0.171)] rounded-[5px] m-[0_10px] focus:outline-none text-xl hover:cursor-pointer`}
+          className={`w-[20%] p-px ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} text-[rgba(255,255,255,0.455)] border-[rgba(255,255,255,0.171)] rounded-[5px] m-[0_10px] focus:outline-none text-xl hover:cursor-pointer`}
         >
           Search
         </button>
@@ -270,16 +280,16 @@ export default function Home() {
         <div
           className={`relative row-4 ${
             openField ? "w-[60vw]" : "w-[0vw]"
-          } h-[98%] ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : "bg-[var(--backgroundTransparent)]"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} rounded-[10px] m-[0_auto] transition-[1s]`}
+          } h-[98%] ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} rounded-[10px] m-[0_auto] transition-[1s] top-[-2%]`}
         >
           {results && (
-            <Link href={results.link} className="select-none">
+            <Link href={results.link} target="_blank" className="select-none">
               <Image
                 src={results.cover!}
                 width={600}
                 height={700}
                 alt={results.name}
-                className="absolute block scale-[.75] rounded-[25px] top-[-10%] left-[-3%] w-[45%]"
+                className={`absolute block scale-[.75] rounded-[25px] ${results.type && results.type === "music" ? "top-[-5%]" : "top-[-10%]"} left-[-3%] w-[45%]`}
               />
             </Link>
           )}
@@ -295,7 +305,7 @@ export default function Home() {
               </p>
 
               <p
-                className={`flex-1 text-xl ${theme === "dark" ? "text-[var(--middleTone)]" : theme === "light" ? "text-[var(--middleToneLight)]" : "text-[var(--middleToneLight)]"} text-ellipsis whitespace-nowrap overflow-hidden`}
+                className={`flex-1 text-xl ${theme === "dark" ? "text-[var(--middleTone)]" : theme === "light" ? "text-[var(--middleToneLight)]" : "text-[var(--textLight)]"} text-ellipsis whitespace-nowrap overflow-hidden`}
               >
                 {results.subname && results.subname}
               </p>
@@ -308,12 +318,16 @@ export default function Home() {
                 openField ? "grid" : "hidden"
               } absolute justify-center w-[60%] h-[76%] top-[15%] left-[38%] grid-rows-[1.5fr_1fr_1fr_1fr] grid-cols-[1fr_1fr]`}
             >
-              <p className={`${theme === 'dark' ? 'text-[var(--middleTone)]' : theme === 'light' ? 'text-[var(--middleToneLight)]' : 'text-[var(--middleToneLight)]'} col-[1/3] text-xl text-justify`}>
+              <p
+                className={`${theme === "dark" ? "text-[var(--middleTone)]" : theme === "light" ? "text-[var(--middleToneLight)]" : "text-[var(--textLight)]"} col-[1/3] text-xl text-justify`}
+              >
                 {results.description && results.description}
               </p>
 
-              <div className="relative bg-[#3737376e] w-[70%] h-[80%] rounded-[20px]">
-                <p className={`${theme === 'dark' ? 'text-[var(--middleTone)]' : theme === 'light' ? 'text-[var(--middleToneLight)]' : 'text-[var(--middleToneLight)]'} m-[6px_9px] font-xl`}>
+              <div className={`relative ${theme === 'dark' ? 'bg-[#ffffff11]' : theme === 'light' ? 'bg-[#00000022]' : 'bg-[#00000022]'} w-[70%] h-[80%] rounded-[20px]`}>
+                <p
+                  className={`${theme === "dark" ? "text-[var(--middleTone)]" : theme === "light" ? "text-[var(--middleToneLight)]" : "text-[var(--textLight)]"} m-[6px_9px] font-xl`}
+                >
                   Runtime
                 </p>
 
@@ -346,14 +360,18 @@ export default function Home() {
                     </>
                   ) : results.type === "book" ? (
                     `Pages: ${results.pages}`
+                  ) : results.type === "music" ? (
+                    results.time
                   ) : (
                     ""
                   )}
                 </p>
               </div>
 
-              <div className="relative bg-[#3737376e] w-[70%] h-[80%] rounded-[20px]">
-                <p className={`${theme === 'dark' ? 'text-[var(--middleTone)]' : theme === 'light' ? 'text-[var(--middleToneLight)]' : 'text-[var(--middleToneLight)]'} m-[6px_9px] font-xl`}>
+              <div className={`relative ${theme === 'dark' ? 'bg-[#ffffff11]' : theme === 'light' ? 'bg-[#00000022]' : 'bg-[#00000022]'} w-[70%] h-[80%] rounded-[20px]`}>
+                <p
+                  className={`${theme === "dark" ? "text-[var(--middleTone)]" : theme === "light" ? "text-[var(--middleToneLight)]" : "text-[var(--textLight)]"} m-[6px_9px] font-xl`}
+                >
                   Rating
                 </p>
 
@@ -370,23 +388,31 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="relative bg-[#3737376e] w-[70%] h-[80%] rounded-[20px]">
-                <p className={`${theme === 'dark' ? 'text-[var(--middleTone)]' : theme === 'light' ? 'text-[var(--middleToneLight)]' : 'text-[var(--middleToneLight)]'} m-[6px_9px] font-xl`}>
-                  Genres
+              <div className={`relative ${theme === 'dark' ? 'bg-[#ffffff11]' : theme === 'light' ? 'bg-[#00000022]' : 'bg-[#00000022]'} w-[70%] h-[80%] rounded-[20px]`}>
+                <p
+                  className={`${theme === "dark" ? "text-[var(--middleTone)]" : theme === "light" ? "text-[var(--middleToneLight)]" : "text-[var(--textLight)]"} m-[6px_9px] font-xl`}
+                >
+                  {results.type === "music" ? "Artist" : "Genres"}
                 </p>
 
                 <p className="absolute text-lg left-[4%] top-[30%]">
-                  {results.genres && results.genres.join(", ")}
+                  {results.type === "music"
+                    ? results.artist && results.artist.name
+                    : results.genres && results.genres.join(", ")}
                 </p>
               </div>
 
-              <div className="relative bg-[#3737376e] w-[70%] h-[80%] rounded-[20px]">
-                <p className={`${theme === 'dark' ? 'text-[var(--middleTone)]' : theme === 'light' ? 'text-[var(--middleToneLight)]' : 'text-[var(--middleToneLight)]'} m-[6px_9px] font-xl`}>
-                  Release date
+              <div className={`relative ${theme === 'dark' ? 'bg-[#ffffff11]' : theme === 'light' ? 'bg-[#00000022]' : 'bg-[#00000022]'} w-[70%] h-[80%] rounded-[20px]`}>
+                <p
+                  className={`${theme === "dark" ? "text-[var(--middleTone)]" : theme === "light" ? "text-[var(--middleToneLight)]" : "text-[var(--textLight)]"} m-[6px_9px] font-xl`}
+                >
+                  {results.type === "music" ? "Album" : "Release date"}
                 </p>
 
                 <p className="absolute text-lg left-[4%] top-[30%]">
-                  {results.date && results.date.replaceAll("-", "/")}
+                  {results.type === "music"
+                    ? results.album && results.album.name
+                    : results.date && results.date.replaceAll("-", "/")}
                 </p>
               </div>
 
@@ -406,8 +432,10 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="relative bg-[#3737376e] w-[90%] h-full col-[1/3] rounded-[20px]">
-                <p className={`${theme === 'dark' ? 'text-[var(--middleTone)]' : theme === 'light' ? 'text-[var(--middleToneLight)]' : 'text-[var(--middleToneLight)]'} m-[6px_9px] font-xl`}>
+              <div className={`relative ${theme === 'dark' ? 'bg-[#ffffff11]' : theme === 'light' ? 'bg-[#00000022]' : 'bg-[#00000022]'} w-[90%] h-full col-[1/3] rounded-[20px]`}>
+                <p
+                  className={`${theme === "dark" ? "text-[var(--middleTone)]" : theme === "light" ? "text-[var(--middleToneLight)]" : "text-[var(--textLight)]"} m-[6px_9px] font-xl`}
+                >
                   Review
                 </p>
 

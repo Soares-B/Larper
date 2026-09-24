@@ -3,6 +3,9 @@ const form = document.querySelector('#form');
 const mediaInput = document.querySelector('#media-input');
 const searchButton = document.querySelector('#search');
 const list = document.querySelector("#suggestions");
+const loading = document.querySelector('#loading')
+const choose = document.querySelector('#choose')
+const filter = document.querySelector('#filter')
 
 searchButton.disabled = true;
 
@@ -21,35 +24,43 @@ mediaInput.addEventListener('input', () => {
         const data = await search(mediaInput.value);
         list.innerHTML = '';
         if (!data) return;
-        // data.forEach(media => {
-        //     if (!media) return;
-        //     const li = document.createElement('li');
-        //     const title = media.name
-        //     const type = media.type
-        //     li.textContent = `${title} (${type})`;
-        //     li.dataset.type = type;
-        //     li.addEventListener('click', async () => {
-        //         const result = await search(title);
-        //         addElements(result, type);
-        //         conteudo.classList.add('show');
-        //         mediaInput.value = '';
-        //         list.innerHTML = '';
-        //     });
-        //     list.appendChild(li);
-        // });
-    }, 1000);
+        data.forEach((media, index) => {
+            if (index === 0) return
+            
+            if (!media) return;
+
+            const li = document.createElement('li');
+            const title = media.name
+            const type = media.type
+            li.textContent = `${title} (${type})`;
+            li.dataset.type = type;
+            li.addEventListener('click', async () => {
+                const result = await search(title);
+                addElements(result, type);
+                conteudo.classList.add('show');
+                mediaInput.value = '';
+                list.innerHTML = '';
+            });
+            list.appendChild(li);
+        });
+    }, 500);
 });
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (mediaInput.value.trim() === '') return;
 
+    list.innerHTML = ''
+    loading.classList.add('show')
     const data = await search(mediaInput.value);
     addElements(data, data[0][0]);
     conteudo.classList.add('show');
-    list.innerHTML = ''
     mediaInput.value = ''
 });
+
+choose.addEventListener('click', () =>{
+    filter.classList.toggle('show')
+})
 
 async function search(media) {
     const response = await fetch(`/search?q=${encodeURIComponent(media)}`);
@@ -144,6 +155,7 @@ function addElements(data, type) {
     
     console.log(data, type)
 
+    loading.classList.remove('show')
     items.classList.add("show");
     title.classList.add("show");
     name.classList.add("show");

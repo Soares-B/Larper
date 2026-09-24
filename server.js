@@ -185,9 +185,7 @@ class Music{
 }
 
 function textShortener(desc){
-    if (desc == null){
-        return null
-    }
+    if (desc == null) return null
 
     const firstIndex = desc.indexOf('.');
     const secondIndex = desc.indexOf('.', firstIndex + 1);

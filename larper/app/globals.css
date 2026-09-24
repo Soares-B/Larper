@@ -3,7 +3,8 @@
 :root {
   --background: #000000;
   --backgroundLight: #ffffff;
-  --backgroundTransparent: #88888888;
+  --backgroundGlass: #88888844;
+  --backgroundTransparent: #88888800;
 
   --text: #ffffff;
   --textLight: #000000;
