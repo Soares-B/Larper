@@ -5,7 +5,7 @@ With **Larper** you can find data about any `anime`, `manga`, `video game`, `boo
 ## APIs used
 |API|Media|
 |---|---|
-|[Tenrai](https://tenrai.org/)Aanimes & Mangas|
+|[Tenrai](https://tenrai.org/)|Aanimes & Mangas|
 |[IGDB](https://www.igdb.com/api) & [Twitch](https://dev.twitch.tv/api)|Games|
 |[GoogleBooks](https://developers.google.com/books)|Books|
 |[TMDB](https://developer.themoviedb.org/docs/getting-started)|Series & Movies|
