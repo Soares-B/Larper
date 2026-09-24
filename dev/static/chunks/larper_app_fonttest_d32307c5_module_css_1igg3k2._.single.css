@@ -1,0 +1,25 @@
+/* [project]/larper/app/fonttest_d32307c5.module.css [app-client] (css) */
+@font-face {
+  font-family: fontTest;
+  src: url("../media/Outfit_VariableFont_wght-s.p.3tyakrq6r4z19.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: fontTest Fallback;
+  src: local(Arial);
+  ascent-override: 100.84%;
+  descent-override: 26.22%;
+  line-gap-override: 0.0%;
+  size-adjust: 99.17%;
+}
+
+.fonttest_d32307c5-module__J9fGea__className {
+  font-family: fontTest, fontTest Fallback;
+}
+
+.fonttest_d32307c5-module__J9fGea__variable {
+  --font-test: "fontTest", "fontTest Fallback";
+}
+
+/*# sourceMappingURL=larper_app_fonttest_d32307c5_module_css_1igg3k2._.single.css.map*/
