@@ -4,8 +4,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import FormMedia from "@/components/main/Form";
-import DataShow from "@/components/main/DataShow";
+import FormMedia from "@/components/Details/Form";
+import ShowData from "@/components/Details/DataShow";
 
 type result = {
   review: {
@@ -192,7 +192,7 @@ export default function Details() {
             </div>
           )}
 
-          <DataShow results={results} spoiler={spoiler} setSpoiler={setSpoiler} openField={openField} theme={theme}/>
+          <ShowData results={results} spoiler={spoiler} setSpoiler={setSpoiler} openField={openField} theme={theme}/>
 
           <p
             className={`${
