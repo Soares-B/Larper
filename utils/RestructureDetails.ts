@@ -24,7 +24,9 @@ class Movie{
     vote_count: number | null;
     original_language: string | null;
     budget: string | null;
+    budgetNumber: number | null;
     revenue: string | null;
+    revenueNumber: number | null;
     recommendations: string[] | null;
     keywords: string[] | null;
     similar: string[] | null;
@@ -36,10 +38,12 @@ class Movie{
             style: 'currency',
             currency: 'USD'
             }) ?? null;
+        this.budgetNumber = obj.dataDetails.budget ?? null;
         this.revenue = obj.dataDetails.revenue?.toLocaleString('en-US', {
             style: 'currency',
             currency: 'USD'
             }) ?? null;
+        this.revenueNumber = obj.dataDetails.revenue ?? null;
         this.recommendations = obj.infoRecommendations?.map(r => r.title) ?? null;
         this.keywords = obj.infoKeywords?.map(k => k.name) ?? null;
         this.similar = obj.infoSimilar?.map(s => s.title) ?? null;

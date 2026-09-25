@@ -33,7 +33,9 @@ type Result = {
   };
   vote_count?: number;
   budget?: number;
+  budgetNumber: number;
   revenue?: number;
+  revenueNumber?: number;
 };
 
 export default function DataShow({results, spoiler, setSpoiler, openField, theme}: {results: Result, spoiler: boolean, setSpoiler: any, openField: boolean, theme: string}){
@@ -233,7 +235,7 @@ export default function DataShow({results, spoiler, setSpoiler, openField, theme
                         : "text-[var(--textLight)]"
                   } m-[6px_9px] font-xl`}
                 >
-                  {results.type === "music" ? "Album" : "budget/Revenue"}
+                  {results.type === "music" ? "Album" : "Budget/Revenue"}
                 </p>
 
                 <p className="absolute text-lg left-[4%] top-[30%]">
@@ -243,7 +245,7 @@ export default function DataShow({results, spoiler, setSpoiler, openField, theme
                         <>
                         Budget: {results.budget}
                         <br />
-                        Revenue: {results.revenue}
+                        Revenue: <span className={`${results.revenueNumber ? results.budgetNumber ? results.budgetNumber * 2 < results.revenueNumber ? theme === 'light' ? 'text-[var(--greatLight)]' : 'text-[var(--great)]' : results.budgetNumber * 1.5 < results.revenueNumber ? theme === 'light' ? 'text-[var(--mediumLight)]' : 'text-[var(--medium)]' : theme === 'light' ? 'text-[var(--badLight)]' : 'text-[var(--bad)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--text)]': theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--text)]'} `}>{results.revenue}</span>
                         </>)}
                 </p>
               </div>

@@ -74,44 +74,6 @@ export default function Details() {
     music: false,
   });
 
-  async function search(queryToSearch: string) {
-    if (!queryToSearch.trim()) {
-      return;
-    }
-
-    setOpenField(true);
-    setSuggestions([]);
-
-    try {
-      const response = await fetch("/api/search", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: queryToSearch,
-          filters,
-          type: "detailed",
-        }),
-      });
-
-      const data: SearchData = await response.json();
-
-      console.log(data)
-
-      setMedia(data);
-      setCurrent(1);
-    } catch (error) {
-      console.error("Erro ao pesquisar:", error);
-    }
-  }
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    search(query);
-  }
-
   function handleClick(arrow: string) {
     if (!media || media.length <= 1) {
       return;

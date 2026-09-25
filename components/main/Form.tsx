@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   Combobox,
   ComboboxInput,
@@ -9,6 +8,7 @@ import {
 } from "@headlessui/react";
 import Theme from "@/components/Theme";
 import Menu from "@/components/Types";
+import Simple from "../Simple";
 
 type result = {
   review: {
@@ -72,6 +72,8 @@ export default function FormMedia({ theme, setTheme, setOpenField, setMedia, set
       });
 
       const data: SearchData = await response.json();
+
+      console.log(data)
 
       console.log(data)
 
@@ -208,6 +210,7 @@ export default function FormMedia({ theme, setTheme, setOpenField, setMedia, set
             >
             Search
             </button>
+            <Simple theme={theme}/>
             <Menu filters={filters} setFilters={setFilters} theme={theme} />
             <Theme theme={theme} setTheme={setTheme} />
         </form>
