@@ -36,6 +36,10 @@ type Result = {
   budgetNumber: number;
   revenue?: number;
   revenueNumber?: number;
+
+  recommendations?: string[];
+  keywords?: string[];
+  similar?: string[];
 };
 
 export default function DataShow({results, spoiler, setSpoiler, openField, theme}: {results: Result, spoiler: boolean, setSpoiler: any, openField: boolean, theme: string}){
@@ -247,6 +251,78 @@ export default function DataShow({results, spoiler, setSpoiler, openField, theme
                         <br />
                         Revenue: <span className={`${results.revenueNumber ? results.budgetNumber ? results.budgetNumber * 2 < results.revenueNumber ? theme === 'light' ? 'text-[var(--greatLight)]' : 'text-[var(--great)]' : results.budgetNumber * 1.5 < results.revenueNumber ? theme === 'light' ? 'text-[var(--mediumLight)]' : 'text-[var(--medium)]' : theme === 'light' ? 'text-[var(--badLight)]' : 'text-[var(--bad)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--text)]': theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--text)]'} `}>{results.revenue}</span>
                         </>)}
+                </p>
+              </div>
+
+              <div
+                className={`relative ${
+                  theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
+                } w-[90%] h-[80%] rounded-[20px]`}
+              >
+                <p
+                  className={`${
+                    theme === "dark"
+                      ? "text-[var(--middleTone)]"
+                      : theme === "light"
+                        ? "text-[var(--middleToneLight)]"
+                        : "text-[var(--textLight)]"
+                  } m-[6px_9px] font-xl`}
+                >
+                  {results.type === "music" ? "Album" : "Movie recommendations"}
+                </p>
+
+                <p className="absolute text-lg left-[4%] top-[30%]">
+                  {results.type === "music"
+                    ? results.album?.name
+                    : results.recommendations?.join(", ")}
+                </p>
+              </div>
+
+              <div
+                className={`relative ${
+                  theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
+                } w-[90%] h-[80%] rounded-[20px]`}
+              >
+                <p
+                  className={`${
+                    theme === "dark"
+                      ? "text-[var(--middleTone)]"
+                      : theme === "light"
+                        ? "text-[var(--middleToneLight)]"
+                        : "text-[var(--textLight)]"
+                  } m-[6px_9px] font-xl`}
+                >
+                  {results.type === "music" ? "Album" : "Keywords"}
+                </p>
+
+                <p className="absolute text-lg left-[4%] top-[30%]">
+                  {results.type === "music"
+                    ? results.album?.name
+                    : results.keywords?.join(", ")}
+                </p>
+              </div>
+
+              <div
+                className={`relative ${
+                  theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
+                } w-[90%] h-[80%] rounded-[20px]`}
+              >
+                <p
+                  className={`${
+                    theme === "dark"
+                      ? "text-[var(--middleTone)]"
+                      : theme === "light"
+                        ? "text-[var(--middleToneLight)]"
+                        : "text-[var(--textLight)]"
+                  } m-[6px_9px] font-xl`}
+                >
+                  {results.type === "music" ? "Album" : "Similar movies"}
+                </p>
+
+                <p className="absolute text-lg left-[4%] top-[30%]">
+                  {results.type === "music"
+                    ? results.album?.name
+                    : results.similar?.join(", ")}
                 </p>
               </div>
 
