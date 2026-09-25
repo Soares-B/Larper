@@ -5,13 +5,14 @@ import GoogleBooks from "@/lib/GoogleBooks";
 import { TMDBMovie, TMDBSerie } from "@/lib/TMDB";
 import Deezer from "@/lib/Deezer";
 import Restructure from "@/utils/Restructure";
+import RestructureDetails from "@/utils/RestructureDetails";
 
 type fullSearch = [string[], ...any[]];
 
 export async function POST(req: Request){
 
     try{
-        const { query, filters } = await req.json();
+        const { query, filters, type } = await req.json();
 
         let anime, manga, game, book, music, serie, movie = null
         let searchVar, restructure
@@ -23,8 +24,14 @@ export async function POST(req: Request){
 
             if(searchVar){
                 anime = await searchVar.json();
-                restructure = Restructure(anime, "anime")
-                anime = await restructure?.json() ?? null;
+
+                if (type === 'simple'){
+                    restructure = Restructure(anime, "anime")
+                }else{
+                    restructure = RestructureDetails(anime, "anime")
+                }
+                
+                anime = restructure ?? null;
             }
 
             if (anime !== null){
@@ -38,8 +45,14 @@ export async function POST(req: Request){
 
             if(searchVar){
                 manga = await searchVar.json();
-                restructure = Restructure(manga, "manga")
-                manga = await restructure?.json() ?? null;
+
+                if (type === 'simple'){
+                    restructure = Restructure(manga, "manga")
+                }else{
+                    restructure = RestructureDetails(manga, "manga")
+                }
+                
+                manga = restructure ?? null;
             }
 
             if (manga !== null){
@@ -53,8 +66,14 @@ export async function POST(req: Request){
 
             if(searchVar){
                 game = await searchVar.json();
-                restructure = Restructure(game, "game")
-                game = await restructure?.json() ?? null;
+
+                if (type === 'simple'){
+                    restructure = Restructure(game, "game")
+                }else{
+                    restructure = RestructureDetails(game, "game")
+                }
+                
+                game = restructure ?? null;
             }
 
             if (game !== null){
@@ -68,8 +87,14 @@ export async function POST(req: Request){
 
             if(searchVar){
                 book = await searchVar.json();
-                restructure = Restructure(book, "book")
-                book = await restructure?.json() ?? null;
+                
+                if (type === 'simple'){
+                    restructure = Restructure(book, "book")
+                }else{
+                    restructure = RestructureDetails(book, "book")
+                }
+
+                book = restructure ?? null;
             }
 
             if (book !== null){
@@ -83,8 +108,14 @@ export async function POST(req: Request){
 
             if(searchVar){
                 serie = await searchVar.json();
-                restructure = Restructure(serie, "serie")
-                serie = await restructure?.json() ?? null;
+                
+                if (type === 'simple'){
+                    restructure = Restructure(serie, "serie")
+                }else{
+                    restructure = RestructureDetails(serie, "serie")
+                }
+
+                serie = restructure ?? null;
             }
 
             if (serie !== null){
@@ -98,8 +129,14 @@ export async function POST(req: Request){
 
             if(searchVar){
                 movie = await searchVar.json();
-                restructure = Restructure(movie, "movie")
-                movie = await restructure?.json() ?? null;
+
+                if (type === 'simple'){
+                    restructure = Restructure(movie, "movie")
+                }else{
+                    restructure = RestructureDetails(movie, "movie")
+                }
+
+                movie = restructure ?? null;
             }
 
             if (movie !== null){
@@ -113,8 +150,14 @@ export async function POST(req: Request){
 
             if(searchVar){
                 music = await searchVar.json();
-                restructure = Restructure(music, "music")
-                music = await restructure?.json() ?? null;
+
+                if (type === 'simple'){
+                    restructure = Restructure(music, "music")
+                }else{
+                    restructure = RestructureDetails(music, "music")
+                }
+
+                music = restructure ?? null;
             }
 
             if (music !== null){

@@ -1,5 +1,3 @@
-import { NextResponse } from "next/server"
-
 type TenraiShape = {
     info: {
         title_japanese: string,
@@ -531,47 +529,47 @@ export default function Restructure(media: any, type: string){
     if (type === "anime"){
         const data = new Anime(media)
 
-        return NextResponse.json(data)
+        return data
 
     } else if (type === "manga"){
         const data = new Manga(media)
 
-        return NextResponse.json(data)
+        return data
 
     }
 
     else if (type === "game"){
         const data = new Game(media)
 
-        return NextResponse.json(data)
+        return data
 
     }
 
     else if (type === "book"){
         const data = new Book(media)
 
-        return NextResponse.json(data)
+        return data
 
     }
 
     else if (type === "serie"){
         const data = new Serie(media)
 
-        return NextResponse.json(data)
+        return data
 
     }
 
     else if (type === "movie"){
         const data = new Movie(media)
 
-        return NextResponse.json(data)
+        return data
 
     }
 
     else if (type === "music"){
         const data = new Music(media)
 
-        return NextResponse.json(data)
+        return data
 
     }
 }
