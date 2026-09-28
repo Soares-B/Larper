@@ -417,13 +417,17 @@ export default function DataShow({
                 <>
                   {results.recommendations?.map((r) => {
                     return (
-                      <Link
-                        key={r}
-                        href=""
-                        onClick={() => handleSubmit(r, "serie")}
-                      >
-                        {r},{" "}
-                      </Link>
+                      <span>
+                        <Link
+                          key={r}
+                          href=""
+                          className="underline"
+                          onClick={() => handleSubmit(r, "serie")}
+                        >
+                          {r}
+                        </Link>
+                        ,{" "}  
+                      </span>
                     );
                   })}
                 </>
@@ -431,13 +435,17 @@ export default function DataShow({
                 <>
                   {results.recommendations?.map((r) => {
                     return (
-                      <Link
-                        key={r}
-                        href=""
-                        onClick={() => handleSubmit(r, "movie")}
-                      >
-                        {r},{" "}
-                      </Link>
+                      <span>
+                        <Link
+                          key={r}
+                          href=""
+                          className="underline"
+                          onClick={() => handleSubmit(r, "movie")}
+                        >
+                          {r}
+                        </Link>
+                        ,{" "}  
+                      </span>
                     );
                   })}
                 </>
@@ -515,13 +523,17 @@ export default function DataShow({
                 <>
                   {results.recoms?.map((r) => {
                     return (
-                      <Link
-                        key={r}
-                        href=""
-                        onClick={() => handleSubmit(r, "anime")}
-                      >
-                        {r},{" "}
-                      </Link>
+                      <span>
+                        <Link
+                          key={r}
+                          href=""
+                          className="underline"
+                          onClick={() => handleSubmit(r, "anime")}
+                        >
+                          {r}
+                        </Link>
+                        ,{" "}  
+                      </span>
                     );
                   })}
                 </>
@@ -529,13 +541,17 @@ export default function DataShow({
                 <>
                   {results.recoms?.map((r) => {
                     return (
-                      <Link
-                        key={r}
-                        href=""
-                        onClick={() => handleSubmit(r, "manga")}
-                      >
-                        {r},{" "}
-                      </Link>
+                      <span>
+                        <Link
+                          key={r}
+                          href=""
+                          className="underline"
+                          onClick={() => handleSubmit(r, "manga")}
+                        >
+                          {r}
+                        </Link>
+                        ,{" "}  
+                      </span>
                     );
                   })}
                 </>
@@ -543,13 +559,17 @@ export default function DataShow({
                 <>
                   {results.similar?.map((s) => {
                     return (
-                      <Link
-                        key={s}
-                        href=""
-                        onClick={() => handleSubmit(s, "serie")}
-                      >
-                        {s},{" "}
-                      </Link>
+                      <span>
+                        <Link
+                          key={s}
+                          href=""
+                          className="underline"
+                          onClick={() => handleSubmit(s, "serie")}
+                        >
+                          {s}
+                        </Link>
+                        ,{" "}  
+                      </span>
                     );
                   })}
                 </>
@@ -557,13 +577,17 @@ export default function DataShow({
                 <>
                   {results.similar?.map((s) => {
                     return (
-                      <Link
-                        key={s}
-                        href=""
-                        onClick={() => handleSubmit(s, "movie")}
-                      >
-                        {s},{" "}
-                      </Link>
+                      <span>
+                        <Link
+                          key={s}
+                          href=""
+                          className="underline"
+                          onClick={() => handleSubmit(s, "movie")}
+                        >
+                          {s}
+                        </Link>
+                        ,{" "}  
+                      </span>
                     );
                   })}
                 </>

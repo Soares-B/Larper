@@ -34,7 +34,7 @@ export async function POST(req: Request){
                 anime = restructure ?? null;
             }
 
-            if (anime !== null){
+            if (anime){
                 fullSearch.push(anime)
                 fullSearch[0].push('anime')
             }
@@ -55,7 +55,7 @@ export async function POST(req: Request){
                 manga = restructure ?? null;
             }
 
-            if (manga !== null){
+            if (manga){
                 fullSearch.push(manga)
                 fullSearch[0].push('manga')
             }
@@ -76,7 +76,7 @@ export async function POST(req: Request){
                 game = restructure ?? null;
             }
 
-            if (game !== null){
+            if (game){
                 fullSearch.push(game)
                 fullSearch[0].push('game')
             }
@@ -97,7 +97,7 @@ export async function POST(req: Request){
                 book = restructure ?? null;
             }
 
-            if (book !== null){
+            if (book){
                 fullSearch.push(book)
                 fullSearch[0].push('book')
             }
@@ -118,7 +118,7 @@ export async function POST(req: Request){
                 serie = restructure ?? null;
             }
 
-            if (serie !== null){
+            if (serie){
                 fullSearch.push(serie)
                 fullSearch[0].push('serie')
             }
@@ -139,7 +139,7 @@ export async function POST(req: Request){
                 movie = restructure ?? null;
             }
 
-            if (movie !== null){
+            if (movie){
                 fullSearch.push(movie)
                 fullSearch[0].push('movie')
             }
@@ -160,7 +160,7 @@ export async function POST(req: Request){
                 music = restructure ?? null;
             }
 
-            if (music !== null){
+            if (music){
 
                 fullSearch.push(music)
                 fullSearch[0].push('music')

@@ -62,7 +62,7 @@ export async function TenraiManga(query: string){
 
         const responseRecoms = await fetch(url + '/' + info.mal_id + '/' + 'recommendations')
         const dataRecoms = await responseRecoms.json();
-        const infoRecoms = dataRecoms.data.slice(0, 3)
+        const infoRecoms = dataRecoms.data?.slice(0, 3) ?? null;
 
         return NextResponse.json({info, infoReview, infoFull, infoRecoms})
     }catch(err){
