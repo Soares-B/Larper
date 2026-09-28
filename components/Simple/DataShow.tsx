@@ -31,11 +31,8 @@ type Result = {
   album?: {
     name: string;
   };
-  vote_count?: number;
-  budget?: number;
-  budgetNumber: number;
-  revenue?: number;
-  revenueNumber?: number;
+
+  game_type?: string;
 };
 
 export default function ShowData({results, spoiler, setSpoiler, openField, theme}: {results: Result, spoiler: boolean, setSpoiler: any, openField: boolean, theme: string}){
@@ -76,7 +73,7 @@ export default function ShowData({results, spoiler, setSpoiler, openField, theme
                         : "text-[var(--textLight)]"
                   } m-[6px_9px] font-xl`}
                 >
-                  Runtime
+                  {results.type === 'game' ? 'Game type' : 'Runtime'}
                 </p>
 
                 <p
@@ -94,7 +91,7 @@ export default function ShowData({results, spoiler, setSpoiler, openField, theme
                 >
                   {results.type === "anime"
                     ? `Episodes: ${results.totalEpisode}`
-                    : results.type === "movie"
+                    : results.type === 'game' ? results.game_type : results.type === "movie"
                       ? results.runtime
                       : results.type === "manga"
                         ? (

@@ -80,10 +80,26 @@ export async function TMDBSerie(query: string){
         const dataReviews = await responseReview.json();
         const infoReview = dataReviews.results[0];
 
+        const responseRecommendations = await fetch(urlDetails + info.id + '/recommendations', options)
+        const dataRecommendations = await responseRecommendations.json();
+
+        const infoRecommendations = dataRecommendations.results.slice(0, 3);
+
+        const responseKeywords = await fetch(urlDetails + info.id + '/keywords', options)
+        const dataKeywords = await responseKeywords.json();
+        const infoKeywords = dataKeywords.results.slice(0, 5);
+
+        const responseSimilar = await fetch(urlDetails + info.id + '/similar', options)
+        const dataSimilar = await responseSimilar.json();
+        const infoSimilar = dataSimilar.results.slice(0, 3);
+
         return NextResponse.json({
             info,
             dataDetails,
-            infoReview
+            infoReview,
+            infoRecommendations,
+            infoKeywords,
+            infoSimilar
         })
 
     }catch(err){

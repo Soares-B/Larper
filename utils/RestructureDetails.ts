@@ -1,5 +1,61 @@
 import Restructure from "./Restructure";
 
+type AnimeShape = {
+    info: {
+        scored_by: number | null
+    },
+    infoFull: {
+        type: string | null,
+        source: string | null,
+        duration: string | null,
+    },
+    infoRecoms: {
+        entry: {
+            title: string | null
+        }
+    }[]
+}
+
+type MangaShape = {
+    info: {
+        scored_by: number | null
+    },
+    infoFull: {
+        type: string | null,
+        status: string | null,
+        authors: {
+            name: string | null;
+        }[]
+    },
+    infoRecoms: {
+        entry: {
+            title: string | null
+        }
+    }[]
+}
+
+type SerieShape = {
+    info: {
+        vote_count: number | null,
+        original_language: string | null,
+    },
+    dataDetails: {
+        episode_run_time: (number | null)[],
+        last_episode_to_air: {
+            runtime: number | null
+        }
+    },
+    infoRecommendations: {
+        name: string
+    }[],
+    infoKeywords: {
+        name: string
+    }[],
+    infoSimilar: {
+        name: string
+    }[]
+}
+
 type MovieShape = {
     info: {
         vote_count: number | null,
@@ -18,6 +74,70 @@ type MovieShape = {
     infoSimilar: {
         title: string
     }[]
+}
+
+class Anime{
+    typeData: string | null;
+    votes: number | null;
+    source: string | null;
+    duration: string | null
+    recoms: (string | null)[]
+
+    constructor(obj: AnimeShape){
+        this.typeData = obj.infoFull.type ?? null;
+        this.votes = obj.info.scored_by ?? null;
+        this.source = obj.infoFull.source ?? null;
+        this.duration = obj.infoFull.duration ?? null;
+        this.recoms = obj.infoRecoms?.map(r => r.entry.title);
+    }
+}
+
+class Manga{
+    typeData: string | null;
+    votes: number | null;
+    status: string | null;
+    authors: (string | null)[]
+    recoms: (string | null)[]
+
+    constructor(obj: MangaShape){
+        this.typeData = obj.infoFull.type ?? null;
+        this.votes = obj.info.scored_by ?? null;
+        this.status = obj.infoFull.status ?? null;
+        this.authors = obj.infoFull.authors?.map(a => a.name) ?? null;
+        this.recoms = obj.infoRecoms?.map(r => r.entry.title);
+    }
+}
+
+class Game{
+
+    constructor(obj: any){
+
+    }
+}
+
+class Serie{
+    vote_count: number | null;
+    original_language: string | null;
+    episode_runtime: string | null
+    recommendations: string[] | null;
+    keywords: string[] | null;
+    similar: string[] | null;
+
+    constructor(obj: SerieShape){
+        this.vote_count = obj.info.vote_count ?? null;
+        this.original_language = obj.info.original_language ?? null;
+
+        if (obj.dataDetails.episode_run_time?.length > 0){
+            this.episode_runtime = `${obj.dataDetails.episode_run_time} minutes`;
+        }else if (obj.dataDetails.last_episode_to_air.runtime){
+            this.episode_runtime = `${obj.dataDetails.last_episode_to_air.runtime} minutes`;
+        }else{
+            this.episode_runtime = 'No data (ㆆࡇㆆ")';
+        }
+        this.recommendations = obj.infoRecommendations?.map(r => r.name) ?? null;
+        this.keywords = obj.infoKeywords?.map(k => k.name) ?? null;
+        this.similar = obj.infoSimilar?.map(s => s.name) ?? null;
+    }
 }
 
 class Movie{
@@ -61,12 +181,32 @@ function insertData(data: any, obj: any){
 }
 
 export default function RestructureDetails(media: any, type: string){
-    if (type === 'movie'){
-        const data = new Movie(media)
-        const restructure = Restructure(media, 'movie')
 
-        const dataFinal = insertData(data, restructure)
-
-        return dataFinal
+    switch (type){
+        case 'anime':
+            return insertData(
+                new Anime(media),
+                Restructure(media, 'anime')
+            );
+        case 'manga':
+            return insertData(
+                new Manga(media),
+                Restructure(media, 'manga')
+            );
+        case 'game':
+            return insertData(
+                new Game(media),
+                Restructure(media, 'game')
+            );
+        case 'serie':
+            return insertData(
+                new Serie(media),
+                Restructure(media, 'serie')
+            );
+        case 'movie':
+            return insertData(
+                new Movie(media),
+                Restructure(media, 'movie')
+            );
     }
 }

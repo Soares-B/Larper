@@ -20,7 +20,15 @@ export async function TenraiAnime(query: string){
         const dataReview = await responseReview.json();
         const infoReview = dataReview.data?.[0] ?? null;
 
-        return NextResponse.json({info, infoReview})
+        const responseFull = await fetch(url + '/' + info.mal_id + '/full')
+        const dataFull = await responseFull.json();
+        const infoFull = dataFull.data
+
+        const responseRecoms = await fetch(url + '/' + info.mal_id + '/' + 'recommendations')
+        const dataRecoms = await responseRecoms.json();
+        const infoRecoms = dataRecoms.data.slice(0, 3)
+
+        return NextResponse.json({info, infoReview, infoFull, infoRecoms})
     }catch(err){
         console.log(err)
         return NextResponse.json({
@@ -48,7 +56,15 @@ export async function TenraiManga(query: string){
         const dataReview = await responseReview.json();
         const infoReview = dataReview.data?.[0] ?? null;
 
-        return NextResponse.json({info, infoReview})
+        const responseFull = await fetch(url + '/' + info.mal_id + '/full')
+        const dataFull = await responseFull.json();
+        const infoFull = dataFull.data
+
+        const responseRecoms = await fetch(url + '/' + info.mal_id + '/' + 'recommendations')
+        const dataRecoms = await responseRecoms.json();
+        const infoRecoms = dataRecoms.data.slice(0, 3)
+
+        return NextResponse.json({info, infoReview, infoFull, infoRecoms})
     }catch(err){
         console.log(err)
         return NextResponse.json({

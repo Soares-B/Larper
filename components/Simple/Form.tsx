@@ -67,7 +67,7 @@ export default function MediaForm({ theme, setTheme, setOpenField, setMedia, set
         body: JSON.stringify({
           query: queryToSearch,
           filters,
-          type: "detailed",
+          type: "simple",
         }),
       });
 

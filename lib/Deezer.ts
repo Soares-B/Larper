@@ -8,6 +8,8 @@ export default async function Deezer(query:string){
         const data = await response.json();
         const info = data.data[0]
 
+        console.log(info)
+
         if (!info){
             return null;
         }

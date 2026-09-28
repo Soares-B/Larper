@@ -131,7 +131,7 @@ export default function Details() {
           type="button"
           className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${
             theme === "dark" ? "text-[var(--text)]" : "text-[var(--textLight)]"
-          } w-[50px] h-[50px] rounded-full absolute left-[15%] hover:cursor-pointer ${
+          } w-[50px] h-[50px] rounded-full absolute left-[3%] hover:cursor-pointer ${
             openField && media?.[0]?.length > 1 ? "block" : "hidden"
           }`}
           onClick={() => handleClick("left")}
@@ -162,7 +162,7 @@ export default function Details() {
                 height={700}
                 alt={results.name}
                 className={`absolute block scale-[.50] rounded-[25px] ${
-                  results.type === "music" ? "top-[-5%]" : "top-[-32%]"
+                  results.type === "music" ? "top-[-5%]" : "top-[-30%]"
                 } left-[-10%] w-[45%]`}
               />
             </Link>
@@ -192,7 +192,7 @@ export default function Details() {
             </div>
           )}
 
-          <ShowData results={results} spoiler={spoiler} setSpoiler={setSpoiler} openField={openField} theme={theme}/>
+          <ShowData results={results} spoiler={spoiler} setSpoiler={setSpoiler} openField={openField} theme={theme} setMedia={setMedia} setCurrent={setCurrent}/>
 
           <p
             className={`${
@@ -220,7 +220,7 @@ export default function Details() {
           type="button"
           className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${
             theme === "dark" ? "text-[var(--text)]" : "text-[var(--textLight)]"
-          } w-[50px] h-[50px] rounded-full absolute right-[15%] hover:cursor-pointer ${
+          } w-[50px] h-[50px] rounded-full absolute right-[3%] hover:cursor-pointer ${
             openField
               ? media && media?.[0]?.length > 1
                 ? "block"
