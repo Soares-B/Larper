@@ -1,74 +1,200 @@
 import { NextResponse } from "next/server";
 
+const animeUrl = "https://api.tenrai.org/v1/anime";
+const mangaUrl = "https://api.tenrai.org/v1/manga";
 
-export async function TenraiAnime(query: string){
-    try{
-        const url = 'https://api.tenrai.org/v1/anime';
-
-        const response = await fetch(url + '?q=' + query);
+export async function TenraiAnime(query: string) {
+    try {
+        const response = await fetch(
+            `${animeUrl}?q=${encodeURIComponent(query)}`,
+            {
+                cache: "no-store",
+            }
+        );
 
         const data = await response.json();
+        const info = data.data?.[0];
 
-        const info = data.data[0]
-
-        if (!info){
+        if (!info) {
             return null;
         }
-        
-        const responseReview = await fetch(url + '/' + info.mal_id + '/reviews');
+
+        const responseReview = await fetch(
+            `${animeUrl}/${info.mal_id}/reviews`,
+            {
+                cache: "no-store",
+            }
+        );
 
         const dataReview = await responseReview.json();
         const infoReview = dataReview.data?.[0] ?? null;
 
-        const responseFull = await fetch(url + '/' + info.mal_id + '/full')
+        const responseFull = await fetch(
+            `${animeUrl}/${info.mal_id}/full`,
+            {
+                cache: "no-store",
+            }
+        );
+
         const dataFull = await responseFull.json();
-        const infoFull = dataFull.data
+        const infoFull = dataFull.data ?? null;
 
-        const responseRecoms = await fetch(url + '/' + info.mal_id + '/' + 'recommendations')
+        const responseRecoms = await fetch(
+            `${animeUrl}/${info.mal_id}/recommendations`,
+            {
+                cache: "no-store",
+            }
+        );
+
         const dataRecoms = await responseRecoms.json();
-        const infoRecoms = dataRecoms.data.slice(0, 3)
+        const infoRecoms = dataRecoms.data?.slice(0, 3) ?? [];
 
-        return NextResponse.json({info, infoReview, infoFull, infoRecoms})
-    }catch(err){
-        console.log(err)
         return NextResponse.json({
-            message: `Erro! ${err}`
-        }, {status: 500})
+            info,
+            infoReview,
+            infoFull,
+            infoRecoms,
+        });
+    } catch (err) {
+        console.log(err);
+
+        return NextResponse.json(
+            {
+                message: `Erro! ${err}`,
+            },
+            {
+                status: 500,
+            }
+        );
     }
 }
 
-export async function TenraiManga(query: string){
-    try{
-        const url = 'https://api.tenrai.org/v1/manga';
-
-        const response = await fetch(url + '?q=' + query);
+export async function TenraiManga(query: string) {
+    try {
+        const response = await fetch(
+            `${mangaUrl}?q=${encodeURIComponent(query)}`,
+            {
+                cache: "no-store",
+            }
+        );
 
         const data = await response.json();
+        const info = data.data?.[0];
 
-        const info = data.data[0]
-
-        if (!info){
+        if (!info) {
             return null;
         }
-        
-        const responseReview = await fetch(url + '/' + info.mal_id + '/reviews');
+
+        const responseReview = await fetch(
+            `${mangaUrl}/${info.mal_id}/reviews`,
+            {
+                cache: "no-store",
+            }
+        );
 
         const dataReview = await responseReview.json();
         const infoReview = dataReview.data?.[0] ?? null;
 
-        const responseFull = await fetch(url + '/' + info.mal_id + '/full')
+        const responseFull = await fetch(
+            `${mangaUrl}/${info.mal_id}/full`,
+            {
+                cache: "no-store",
+            }
+        );
+
         const dataFull = await responseFull.json();
-        const infoFull = dataFull.data
+        const infoFull = dataFull.data ?? null;
 
-        const responseRecoms = await fetch(url + '/' + info.mal_id + '/' + 'recommendations')
+        const responseRecoms = await fetch(
+            `${mangaUrl}/${info.mal_id}/recommendations`,
+            {
+                cache: "no-store",
+            }
+        );
+
         const dataRecoms = await responseRecoms.json();
-        const infoRecoms = dataRecoms.data?.slice(0, 3) ?? null;
+        const infoRecoms = dataRecoms.data?.slice(0, 3) ?? [];
 
-        return NextResponse.json({info, infoReview, infoFull, infoRecoms})
-    }catch(err){
-        console.log(err)
         return NextResponse.json({
-            message: `Erro! ${err}`
-        }, {status: 500})
+            info,
+            infoReview,
+            infoFull,
+            infoRecoms,
+        });
+    } catch (err) {
+        console.log(err);
+
+        return NextResponse.json(
+            {
+                message: `Erro! ${err}`,
+            },
+            {
+                status: 500,
+            }
+        );
+    }
+}
+
+export async function TenraiRandomAnime() {
+    try {
+        const response = await fetch(
+            `https://api.tenrai.org/v1/random/anime`,
+            {
+                cache: "no-store",
+            }
+        );
+
+        const data = await response.json();
+
+        const results = await TenraiAnime(data.title);
+
+        if (!results) {
+            return null;
+        }
+
+        return results;
+    } catch (err) {
+        console.log(err);
+
+        return NextResponse.json(
+            {
+                message: `Erro! ${err}`,
+            },
+            {
+                status: 500,
+            }
+        );
+    }
+}
+
+export async function TenraiRandomManga() {
+    try {
+        const response = await fetch(
+            `https://api.tenrai.org/v1/random/manga`,
+            {
+                cache: "no-store",
+            }
+        );
+
+        const data = await response.json();
+
+        const results = await TenraiManga(data.title);
+
+        if (!results) {
+            return null;
+        }
+
+        return results;
+    } catch (err) {
+        console.log(err);
+
+        return NextResponse.json(
+            {
+                message: `Erro! ${err}`,
+            },
+            {
+                status: 500,
+            }
+        );
     }
 }

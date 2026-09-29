@@ -376,7 +376,23 @@ export default function DataShow({
                   <br />
                   Revenue:{" "}
                   <span
-                    className={`${results.revenueNumber ? (results.budgetNumber ? (results.budgetNumber * 2 < results.revenueNumber ? (theme === "light" ? "text-[var(--greatLight)]" : "text-[var(--great)]") : results.budgetNumber * 1.5 < results.revenueNumber ? (theme === "light" ? "text-[var(--mediumLight)]" : "text-[var(--medium)]") : theme === "light" ? "text-[var(--badLight)]" : "text-[var(--bad)]") : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--text)]") : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--text)]"} `}
+                    className={
+                      results.revenueNumber && results.budgetNumber
+                        ? results.budgetNumber * 2 < results.revenueNumber
+                          ? theme === "light"
+                            ? "text-[var(--greatLight)]"
+                            : "text-[var(--great)]"
+                          : results.budgetNumber * 1.5 < results.revenueNumber
+                            ? theme === "light"
+                              ? "text-[var(--mediumLight)]"
+                              : "text-[var(--medium)]"
+                            : theme === "light"
+                              ? "text-[var(--badLight)]"
+                              : "text-[var(--bad)]"
+                        : theme === "light"
+                          ? "text-[var(--textLight)]"
+                          : "text-[var(--text)]"
+                    }
                   >
                     {results.revenue}
                   </span>
@@ -523,7 +539,7 @@ export default function DataShow({
                 <>
                   {results.recoms?.map((r) => {
                     return (
-                      <span>
+                      <span key={r}>
                         <Link
                           key={r}
                           href=""

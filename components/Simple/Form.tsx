@@ -6,9 +6,9 @@ import {
   ComboboxOption,
   ComboboxOptions,
 } from "@headlessui/react";
-import Theme from "@/components/Theme";
-import Menu from "@/components/Types";
-import Details from "../Details";
+import Theme from "@/components/Themes";
+import Menu from "@/components/Types Simple";
+import Details from "../Details Button";
 
 type result = {
   review: {

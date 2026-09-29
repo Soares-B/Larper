@@ -7,50 +7,11 @@ import Link from "next/link";
 import FormMedia from "@/components/Details/Form";
 import ShowData from "@/components/Details/DataShow";
 
-type result = {
-  review: {
-    [key: string]: any;
-  };
-  name: string;
-  subname?: string | null;
-  description?: string | null;
-  background?: string | null;
-  cover?: string | null;
-  id?: string | null;
-  rating?: number | null;
-  genres?: string[] | null;
-  link: string;
-  status?: string | null;
-  type: string;
-  date: string | null;
-
-  totalEpisode?: string;
-  season?: string | null;
-  runtime?: string | null;
-  volumes?: string | null;
-  chapters?: string | null;
-  totalSeason?: string | null;
-  pages?: string | null;
-  tagline?: string | null;
-
-  time?: string;
-  artist?: {
-    name: string;
-  };
-  album?: {
-    name: string;
-  };
-  vote_count?: number;
-  budget?: number;
-  revenue?: number;
-};
-
 type Suggestion = {
   name: string;
   type: string;
 };
 
-type SearchData = [string[], ...result[]];
 
 export default function Details() {
   const [media, setMedia] = useState<any>(null);
@@ -94,6 +55,34 @@ export default function Details() {
     }
   }
 
+async function search(type: string) {
+    setOpenField(true);
+    setSuggestions([]);
+
+    try {
+        const response = await fetch("/api/random", {
+            method: "POST",
+            cache: "no-store",
+            headers: {
+                "Content-Type": "application/json",
+                "Cache-Control": "no-cache",
+            },
+            body: JSON.stringify({
+                type,
+            }),
+        });
+
+        const info = await response.json();
+        const data = info.fullSearch;
+
+        setMedia(data);
+        setCurrent(1);
+    } catch (error) {
+        console.error("Erro ao pesquisar:", error);
+    }
+}
+
+
   return (
     <div className="relative grid w-screen h-screen grid-rows-[18%_1fr] overflow-hidden">
       {results ? (
@@ -123,8 +112,19 @@ export default function Details() {
           height={170}
           className="block ml-[-20%] w-fit row-1"
         />
-        <FormMedia theme={theme} setTheme={setTheme} setOpenField={setOpenField} setMedia={setMedia} setCurrent={setCurrent} query={query} setQuery={setQuery} suggestions={suggestions} setSuggestions={setSuggestions} filters={filters} setFilters={setFilters}/>
-
+        <FormMedia
+          theme={theme}
+          setTheme={setTheme}
+          setOpenField={setOpenField}
+          setMedia={setMedia}
+          setCurrent={setCurrent}
+          query={query}
+          setQuery={setQuery}
+          suggestions={suggestions}
+          setSuggestions={setSuggestions}
+          filters={filters}
+          setFilters={setFilters}
+        />
       </div>
       <div className="relative row-2 flex items-center justify-center w-full h-full">
         <button
@@ -155,83 +155,112 @@ export default function Details() {
           } rounded-[10px] m-[0_auto] transition-[1s] top-[-2%]`}
         >
           {results && (
-            <Link href={results.link} target="_blank" className="select-none">
-              <Image
-                src={results.cover!}
-                width={600}
-                height={700}
-                alt={results.name}
-                className={`absolute block scale-[.50] rounded-[25px] ${
-                  results.type === "music" ? "top-[-5%]" : "top-[-30%]"
-                } left-[-10%] w-[45%]`}
+            <>
+              <Link href={results.link} target="_blank" className="select-none">
+                <Image
+                  src={results.cover!}
+                  width={600}
+                  height={700}
+                  alt={results.name}
+                  className={`absolute block w-[750px] h-[1100px] scale-[.50] rounded-[25px] ${
+                    results.type === "music" ? "top-[-5%]" : "top-[-32%]"
+                  } left-[-10%] w-[45%]`}
+                />
+              </Link>
+            
+
+
+              <div
+                className={`${
+                  openField ? "flex" : "hidden"
+                } flex-col items-baseline gap-[0px] w-[70%] h-[7%] absolute left-[25%] top-[4%] font-5xl`}
+              >
+                <p className="flex-1 min-w-[0] overflow-hidden text-ellipsis whitespace-nowrap text-xl">
+                  {results.name}
+                </p>
+
+                <p
+                  className={`flex-1 text-xl ${
+                    theme === "dark"
+                      ? "text-[var(--middleTone)]"
+                      : theme === "light"
+                        ? "text-[var(--middleToneLight)]"
+                        : "text-[var(--textLight)]"
+                  } text-ellipsis whitespace-nowrap overflow-hidden`}
+                >
+                  {results.subname}
+                </p>
+              </div>
+
+
+            
+
+              <ShowData
+                results={results}
+                spoiler={spoiler}
+                setSpoiler={setSpoiler}
+                openField={openField}
+                theme={theme}
+                setMedia={setMedia}
+                setCurrent={setCurrent}
               />
-            </Link>
+
+              {(results.type === 'anime' || results.type === 'manga') && (
+                <div className="w-[23%] h-[20%] absolute bottom-[5%] left-[1.5%]">
+                  <button
+                    className={`inline-flex rounded-[5px] w-fit p-3 items-center justify-center ${
+                      theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
+                    } ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} text-violet11 shadow-blackA4 outline-none hover:bg-violet3 hover:cursor-pointer m-[0px_10px_0px_20px] absolute top-[50%] left-[50%] translate-[-50%]`}
+                    onClick={() => search(results.type)}
+                  >
+                    Random {results.type}
+                  </button>
+                </div>
+              )}
+            </>
           )}
 
           {results && (
-            <div
+            <p
               className={`${
-                openField ? "flex" : "hidden"
-              } flex-col items-baseline gap-[0px] w-[70%] h-[7%] absolute left-[25%] top-[4%] font-5xl`}
+                openField ? "inline" : "hidden"
+              } absolute bottom-[3%] left-[3%] ${
+                theme === "dark"
+                  ? "drop-shadow-[var(--dropShadow)]"
+                  : theme === "light"
+                    ? "drop-shadow-[var(--dropShadowLigth)]"
+                    : "drop-shadow-[var(--dropShadowLight)]"
+              } drop-shadow-[0px_0px_5px] select-none`}
             >
-              <p className="flex-1 min-w-[0] overflow-hidden text-ellipsis whitespace-nowrap text-xl">
-                {results.name}
-              </p>
-
-              <p
-                className={`flex-1 text-xl ${
-                  theme === "dark"
-                    ? "text-[var(--middleTone)]"
-                    : theme === "light"
-                      ? "text-[var(--middleToneLight)]"
-                      : "text-[var(--textLight)]"
-                } text-ellipsis whitespace-nowrap overflow-hidden`}
-              >
-                {results.subname}
-              </p>
-            </div>
+              {results && results.type === "anime"
+                ? `${results.season} - ${results.type}`
+                : (results && results.type === "movie" && results.tagline) ||
+                    (results && results.type === "serie" && results.tagline)
+                  ? `${results.tagline} - ${results.type}`
+                  : results && results.type
+                    ? results.type
+                    : ""}
+            </p>
           )}
 
-          <ShowData results={results} spoiler={spoiler} setSpoiler={setSpoiler} openField={openField} theme={theme} setMedia={setMedia} setCurrent={setCurrent}/>
-
-          <p
-            className={`${
-              openField ? "inline" : "hidden"
-            } absolute bottom-[3%] left-[3%] ${
-              theme === "dark"
-                ? "drop-shadow-[var(--dropShadow)]"
-                : theme === "light"
-                  ? "drop-shadow-[var(--dropShadowLigth)]"
-                  : "drop-shadow-[var(--dropShadowLight)]"
-            } drop-shadow-[0px_0px_5px] select-none`}
-          >
-            {results && results.type === "anime"
-              ? `${results.season} - ${results.type}`
-              : (results && results.type === "movie" && results.tagline) ||
-                  (results && results.type === "serie" && results.tagline)
-                ? `${results.tagline} - ${results.type}`
-                : results && results.type
-                  ? results.type
-                  : ""}
-          </p>
         </div>
-
-        <button
-          type="button"
-          className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${
-            theme === "dark" ? "text-[var(--text)]" : "text-[var(--textLight)]"
-          } w-[50px] h-[50px] rounded-full absolute right-[3%] hover:cursor-pointer ${
-            openField
-              ? media && media?.[0]?.length > 1
-                ? "block"
+          <button
+            type="button"
+            className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${
+              theme === "dark" ? "text-[var(--text)]" : "text-[var(--textLight)]"
+            } w-[50px] h-[50px] rounded-full absolute right-[3%] hover:cursor-pointer ${
+              openField
+                ? media && media?.[0]?.length > 1
+                  ? "block"
+                  : "hidden"
                 : "hidden"
-              : "hidden"
-          }`}
-          onClick={() => handleClick("right")}
-        >
-          <ArrowRight className="w-[50px] h-[30px]" />
-        </button>
+            }`}
+            onClick={() => handleClick("right")}
+          >
+            <ArrowRight className="w-[50px] h-[30px]" />
+          </button>
       </div>
+      
     </div>
   );
 }

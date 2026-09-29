@@ -6,9 +6,9 @@ import {
   ComboboxOption,
   ComboboxOptions,
 } from "@headlessui/react";
-import Theme from "@/components/Theme";
-import Menu from "@/components/Types";
-import Simple from "../Simple";
+import Theme from "@/components/Themes";
+import Menu from "@/components/Types Detailed";
+import Simple from "../Simple Button";
 
 type result = {
   review: {
@@ -72,8 +72,6 @@ export default function FormMedia({ theme, setTheme, setOpenField, setMedia, set
       });
 
       const data: SearchData = await response.json();
-
-      console.log(data)
 
       console.log(data)
 

@@ -7,171 +7,206 @@ import Deezer from "@/lib/Deezer";
 import Restructure from "@/utils/Restructure";
 import RestructureDetails from "@/utils/RestructureDetails";
 
-type fullSearch = [string[], ...any[]];
+type FullSearch = [string[], ...any[]];
 
-export async function POST(req: Request){
-
-    try{
+export async function POST(req: Request) {
+    try {
         const { query, filters, type } = await req.json();
 
-        let anime, manga, game, book, music, serie, movie = null
-        let searchVar, restructure
-        let fullSearch: fullSearch = [[]]
-        const encodeQuery = encodeURIComponent(query)
-        
-        if (filters.anime){
-            searchVar = await TenraiAnime(encodeQuery)
+        let anime = null;
+        let manga = null;
+        let game = null;
+        let book = null;
+        let music = null;
+        let serie = null;
+        let movie = null;
 
-            if(searchVar){
-                anime = await searchVar.json();
+        let searchVar;
+        let restructure;
 
-                if (type === 'simple'){
-                    restructure = Restructure(anime, "anime")
-                }else{
-                    restructure = RestructureDetails(anime, "anime")
+        const fullSearch: FullSearch = [[]];
+
+        const encodeQuery = encodeURIComponent(query);
+
+        /*
+         * ANIME
+         */
+        if (filters.anime) {
+            const response = await TenraiAnime(query);
+
+            if (response) {
+                const data = await response.json();
+
+                if (type === "simple") {
+                    restructure = Restructure(data, "anime");
+                } else {
+                    restructure = RestructureDetails(data, "anime");
                 }
-                
+
                 anime = restructure ?? null;
             }
 
-            if (anime){
-                fullSearch.push(anime)
-                fullSearch[0].push('anime')
+            if (anime) {
+                fullSearch.push(anime);
+                fullSearch[0].push("anime");
             }
         }
-        
-        if (filters.manga){
-            searchVar = await TenraiManga(encodeQuery)
 
-            if(searchVar){
-                manga = await searchVar.json();
+        /*
+         * MANGA
+         */
+        if (filters.manga) {
+            const response = await TenraiManga(query);
 
-                if (type === 'simple'){
-                    restructure = Restructure(manga, "manga")
-                }else{
-                    restructure = RestructureDetails(manga, "manga")
+            if (response) {
+                const data = await response.json();
+
+                if (type === "simple") {
+                    restructure = Restructure(data, "manga");
+                } else {
+                    restructure = RestructureDetails(data, "manga");
                 }
-                
+
                 manga = restructure ?? null;
             }
 
-            if (manga){
-                fullSearch.push(manga)
-                fullSearch[0].push('manga')
+            if (manga) {
+                fullSearch.push(manga);
+                fullSearch[0].push("manga");
             }
         }
 
-        if (filters.game){
-            searchVar = await IGDB(encodeQuery)
+        /*
+         * GAME
+         */
+        if (filters.game) {
+            searchVar = await IGDB(encodeQuery);
 
-            if(searchVar){
+            if (searchVar) {
                 game = await searchVar.json();
 
-                if (type === 'simple'){
-                    restructure = Restructure(game, "game")
-                }else{
-                    restructure = RestructureDetails(game, "game")
+                if (type === "simple") {
+                    restructure = Restructure(game, "game");
+                } else {
+                    restructure = RestructureDetails(game, "game");
                 }
-                
+
                 game = restructure ?? null;
             }
 
-            if (game){
-                fullSearch.push(game)
-                fullSearch[0].push('game')
+            if (game) {
+                fullSearch.push(game);
+                fullSearch[0].push("game");
             }
         }
 
-        if (filters.book){
-            searchVar = await GoogleBooks(encodeQuery)
+        /*
+         * BOOK
+         */
+        if (filters.book) {
+            searchVar = await GoogleBooks(encodeQuery);
 
-            if(searchVar){
+            if (searchVar) {
                 book = await searchVar.json();
-                
-                if (type === 'simple'){
-                    restructure = Restructure(book, "book")
-                }else{
-                    restructure = RestructureDetails(book, "book")
+
+                if (type === "simple") {
+                    restructure = Restructure(book, "book");
+                } else {
+                    restructure = RestructureDetails(book, "book");
                 }
 
                 book = restructure ?? null;
             }
 
-            if (book){
-                fullSearch.push(book)
-                fullSearch[0].push('book')
+            if (book) {
+                fullSearch.push(book);
+                fullSearch[0].push("book");
             }
         }
 
-        if (filters.serie){
-            searchVar = await TMDBSerie(encodeQuery)
+        /*
+         * SERIE
+         */
+        if (filters.serie) {
+            searchVar = await TMDBSerie(encodeQuery);
 
-            if(searchVar){
+            if (searchVar) {
                 serie = await searchVar.json();
-                
-                if (type === 'simple'){
-                    restructure = Restructure(serie, "serie")
-                }else{
-                    restructure = RestructureDetails(serie, "serie")
+
+                if (type === "simple") {
+                    restructure = Restructure(serie, "serie");
+                } else {
+                    restructure = RestructureDetails(serie, "serie");
                 }
 
                 serie = restructure ?? null;
             }
 
-            if (serie){
-                fullSearch.push(serie)
-                fullSearch[0].push('serie')
+            if (serie) {
+                fullSearch.push(serie);
+                fullSearch[0].push("serie");
             }
         }
 
-        if (filters.movie){
-            searchVar = await TMDBMovie(encodeQuery)
+        /*
+         * MOVIE
+         */
+        if (filters.movie) {
+            searchVar = await TMDBMovie(encodeQuery);
 
-            if(searchVar){
+            if (searchVar) {
                 movie = await searchVar.json();
 
-                if (type === 'simple'){
-                    restructure = Restructure(movie, "movie")
-                }else{
-                    restructure = RestructureDetails(movie, "movie")
+                if (type === "simple") {
+                    restructure = Restructure(movie, "movie");
+                } else {
+                    restructure = RestructureDetails(movie, "movie");
                 }
 
                 movie = restructure ?? null;
             }
 
-            if (movie){
-                fullSearch.push(movie)
-                fullSearch[0].push('movie')
+            if (movie) {
+                fullSearch.push(movie);
+                fullSearch[0].push("movie");
             }
         }
 
-        if (filters.music){
-           searchVar = await Deezer(encodeQuery)
+        /*
+         * MUSIC
+         */
+        if (filters.music) {
+            searchVar = await Deezer(encodeQuery);
 
-            if(searchVar){
+            if (searchVar) {
                 music = await searchVar.json();
 
-                if (type === 'simple'){
-                    restructure = Restructure(music, "music")
-                }else{
-                    restructure = RestructureDetails(music, "music")
+                if (type === "simple") {
+                    restructure = Restructure(music, "music");
+                } else {
+                    restructure = RestructureDetails(music, "music");
                 }
 
                 music = restructure ?? null;
             }
 
-            if (music){
-
-                fullSearch.push(music)
-                fullSearch[0].push('music')
+            if (music) {
+                fullSearch.push(music);
+                fullSearch[0].push("music");
             }
         }
 
-        return NextResponse.json(fullSearch)
-    } catch(err){
-        console.log(err)
-        return NextResponse.json({
-            message: `Error! ${err}`
-        }, {status: 500})
-    } 
+        return NextResponse.json(fullSearch);
+    } catch (err) {
+        console.log(err);
+
+        return NextResponse.json(
+            {
+                message: `Error! ${err}`,
+            },
+            {
+                status: 500,
+            }
+        );
+    }
 }
