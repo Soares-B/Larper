@@ -57,7 +57,10 @@ type Result = {
   recoms?: string[];
   votes?: number
 
-  authors?: string[];
+  authors?: {
+    name?: string;
+    link?: string;
+  }[];
 
   episode_runtime?: string;
 };
@@ -312,7 +315,7 @@ export default function DataShow({
             >
               {results.type === "music"
                 ? results.artist?.name
-                : results.genres?.join(", ")}
+                : results.genres ? results.genres.length > 0 ? results.genres.join(", ") : 'No data ( ._. )""' : 'No data ( ._. )""'}
             </p>
           </div>
 
@@ -498,11 +501,12 @@ export default function DataShow({
                   {results.authors?.map((a) => {
                     return (
                       <Link
-                        key={a}
-                        href=""
-                        // onClick={() => handleSubmit(a, "author")}
+                        key={a.name}
+                        className="underline"
+                        href={typeof a.link === 'string' ? a.link : ''}
+                        target="_blank"
                       >
-                        {a},{" "}
+                        {a.name},{" "}
                       </Link>
                     );
                   })}
@@ -537,7 +541,7 @@ export default function DataShow({
             <p className="absolute text-lg left-[4%] top-[30%]">
               {results.type === "anime" ? (
                 <>
-                  {results.recoms?.map((r) => {
+                  {results.recoms ? results.recoms.length > 0 ? results.recoms.map((r) => {
                     return (
                       <span key={r}>
                         <Link
@@ -551,13 +555,13 @@ export default function DataShow({
                         ,{" "}  
                       </span>
                     );
-                  })}
+                  }) : 'No data ∘ ∘ ∘ ( °ヮ° ) ?' : 'No data ∘ ∘ ∘ ( °ヮ° ) ?'}
                 </>
               ) : results.type === "manga" ? (
                 <>
-                  {results.recoms?.map((r) => {
+                  {results.recoms ? results.recoms.length > 0 ? results.recoms?.map((r) => {
                     return (
-                      <span>
+                      <span key={r}>
                         <Link
                           key={r}
                           href=""
@@ -569,7 +573,7 @@ export default function DataShow({
                         ,{" "}  
                       </span>
                     );
-                  })}
+                  }) : 'No data (  •̀⤙•́  )' : 'No data (  •̀⤙•́  )'}
                 </>
               ) : results.type === 'game' ? results.language ? results.language.languages?.join(", ") : 'No data ( ˶°ㅁ°) !!' : results.type === "serie" ? (
                 <>
@@ -645,7 +649,7 @@ export default function DataShow({
             </p>
 
             <p className="absolute text-md left-[2%] top-[30%] w-[95%] text-justify">
-              {results.review ? results.review.content : "No review :‹"}
+              {results.review ? results.review.content ? results.review.content : 'No review :‹' : 'No review :‹'}
             </p>
 
             <p className="absolute text-md bottom-[2%] right-[5%]">

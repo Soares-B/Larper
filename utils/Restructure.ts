@@ -49,8 +49,8 @@ type MangaShape = TenraiShape & {
             from: string | null,
             to?: string | null,
         } | null,
-        chapters?: number | null,
-        volumes?: number | null,
+        chapters?: number | string,
+        volumes?: number | string,
         publishing?: boolean | null
     }
 }
@@ -215,12 +215,12 @@ class Tenrai{
     } | object
 
 
-    constructor(obj: TenraiShape){
+    constructor(obj: TenraiShape, style: string){
         this.review = {};
         this.name = obj.info.title_japanese;
         this.subname = obj.info.title ?? null;
-        this.description = textShortener(obj.info.synopsis ?? null);
-        this.background = textShortener(obj.info.background ?? null);
+        this.description = textShortener(obj.info.synopsis ?? null, style);
+        this.background = textShortener(obj.info.background ?? null, style);
         this.cover = obj.info.images?.jpg?.large_image_url ?? null;
         this.background_image = this.cover
         this.id = obj.info.mal_id;
@@ -235,7 +235,7 @@ class Tenrai{
                 author: obj.infoReview.user.username,
                 rating: obj.infoReview.score,
                 opinion: obj.infoReview.tags[0] ?? "",
-                content: textShortener(obj.infoReview.review)
+                content: textShortener(obj.infoReview.review, style)
             };
         }
     }
@@ -243,7 +243,7 @@ class Tenrai{
 
 class Anime extends Tenrai{
 
-    date: string | null | undefined;
+    date: string | string | null;
     type: string;
     totalEpisode: number | null;
     season: string | null;
@@ -251,9 +251,9 @@ class Anime extends Tenrai{
     age_rating: string | null;
     source: string | null
 
-    constructor(obj: AnimeShape){
-        super(obj)
-        this.date = obj.info.aired ? obj.info.aired["from"]?.slice(0, 10) : null;
+    constructor(obj: AnimeShape, style: string){
+        super(obj, style)
+        this.date = obj.info.aired ? obj.info.aired["from"] ? obj.info.aired["from"].slice(0, 10) : obj.info.status ? obj.info.status : 'No data (๑•́ -•̀)' : obj.info.status ? obj.info.status : 'No data (๑•́ -•̀)' ;
         this.type = 'anime';
         this.totalEpisode = obj.info.episodes ?? null;
         this.season = obj.info.season ?? null;
@@ -267,16 +267,16 @@ class Manga extends Tenrai{
 
     date: string | null | undefined;
     type: string;
-    chapters: number | null;
-    volumes: number | null;
+    chapters: number | string;
+    volumes: number | string;
     publishing: boolean | null;
 
-    constructor(obj: MangaShape){
-        super(obj)
+    constructor(obj: MangaShape, style: string){
+        super(obj, style)
         this.date = obj.info.published? obj.info.published["from"]?.slice(0, 10) : null;
         this.type = 'manga';
-        this.chapters = obj.info.chapters ?? null;
-        this.volumes = obj.info.volumes ?? null;
+        this.chapters = obj.info.chapters ?? 'Unknow';
+        this.volumes = obj.info.volumes ?? 'Unknow';
         this.publishing = obj.info.publishing ?? null;
     }
 }
@@ -306,11 +306,11 @@ class Game{
         locale: (string | null)[]
     } | null;
 
-    constructor(obj: IGDBShape) {
+    constructor(obj: IGDBShape, style: string) {
         
         this.id = obj.info.id;
         this.name = obj.info.name;
-        this.description = textShortener(obj.info.summary);
+        this.description = textShortener(obj.info.summary, style);
         this.storyline = obj.info.storyline ?? null;
         this.age_rating = obj.info.age_ratings ? obj.info.age_ratings.find(age => age.synopsis)?.synopsis ?? null : null;
         this.cover = obj.info.cover?.url ? `https:${obj.info.cover.url}` : null;
@@ -355,11 +355,11 @@ class Book{
     type: string;
     background: string | null;
 
-    constructor(obj: BookShape){
+    constructor(obj: BookShape, style: string){
         this.name = obj.info.title;
         this.subname = obj.info.subtitle;
         this.author = obj.info.authors;
-        this.description = textShortener(obj.info.description);
+        this.description = textShortener(obj.info.description, style);
         this.rating = obj.info.averageRating ? obj.info.averageRating * 2 : null;
         this.genres = obj.info.categories?.map(genre => genre) ?? null;
         this.cover = obj.info.imageLinks?.["thumbnail"];
@@ -389,7 +389,7 @@ class TMDB{
     } | null
 
 
-    constructor(obj: TMDBShape){
+    constructor(obj: TMDBShape, style: string){
         this.description = obj.info.overview ? obj.info.overview : null;
         this.cover = `https://image.tmdb.org/t/p/w500${obj.info.poster_path}`;
         this.background = `https://image.tmdb.org/t/p/w500${obj.info.backdrop_path}`;
@@ -402,7 +402,7 @@ class TMDB{
             this.review = {
                 author: obj.infoReview.author ?? null,
                 rating: Number(obj.infoReview.author_details?.rating?.toFixed(1)) ?? null,
-                content: textShortener(obj.infoReview.content ?? null)
+                content: textShortener(obj.infoReview.content ?? null, style)
             };
         } else {
             this.review = null;
@@ -420,8 +420,8 @@ class Serie extends TMDB{
     totalSeason: number | null;
     link: string | null;
 
-    constructor(obj: SerieShape){
-        super(obj)
+    constructor(obj: SerieShape, style: string){
+        super(obj, style)
         this.name = obj.info.original_name;
         this.subname = obj.info.name;
         this.date = obj.info.first_air_date;       
@@ -442,8 +442,8 @@ class Movie extends TMDB{
     link: string | null;
 
 
-    constructor (obj: MovieShape){
-        super(obj)
+    constructor (obj: MovieShape, style: string){
+        super(obj, style)
         this.name = obj.info.original_title;
         this.subname = obj.info.title;
         this.date = obj.info.release_date;
@@ -500,76 +500,47 @@ class Music{
     }
 }
 
-function textShortener(desc: string | null) {
+function textShortener(desc: string | null, style: string) {
+    const maxLength = style === 'simple' ? 300 : 500
+
   if (!desc) return null;
 
-  const MAX_LENGTH = 200;
-
-  if (desc.length <= MAX_LENGTH) {
+  if (desc.length <= maxLength) {
     return desc;
   }
 
-  const firstPeriod = desc.indexOf(".");
-  
-  if (firstPeriod === -1 || firstPeriod >= MAX_LENGTH) {
-    return "Very long text :(";
+  const text = desc.slice(0, maxLength);
+  const lastPeriod = text.lastIndexOf(".");
+
+  if (lastPeriod === -1) {
+    return text.trim() + "...";
   }
 
-  const secondPeriod = desc.indexOf(".", firstPeriod + 1);
-
-  if (secondPeriod === -1 || secondPeriod >= MAX_LENGTH) {
-    return desc.slice(0, firstPeriod + 1);
-  }
-
-  return desc.slice(0, secondPeriod + 1);
+  return text.slice(0, lastPeriod + 1);
 }
 
-
-export default function Restructure(media: any, type: string){
-    if (type === "anime"){
-        const data = new Anime(media)
-
-        return data
-
-    } else if (type === "manga"){
-        const data = new Manga(media)
-
-        return data
-
-    }
-
-    else if (type === "game"){
-        const data = new Game(media)
-
-        return data
-
-    }
-
-    else if (type === "book"){
-        const data = new Book(media)
-
-        return data
-
-    }
-
-    else if (type === "serie"){
-        const data = new Serie(media)
-
-        return data
-
-    }
-
-    else if (type === "movie"){
-        const data = new Movie(media)
-
-        return data
-
-    }
-
-    else if (type === "music"){
-        const data = new Music(media)
-
-        return data
-
+export default function Restructure(media: any, type: string, style: string){
+    switch(type){
+        case 'anime': {
+            return new Anime(media, style)
+        }
+        case 'manga': {
+            return new Manga(media, style)
+        }
+        case 'game': {
+            return new Game(media, style)
+        }
+        case 'book': {
+            return new Book(media, style)
+        }
+        case 'serie': {
+            return new Serie(media, style)
+        }
+        case 'movie': {
+            return new Movie(media, style)
+        }
+        case 'music': {
+            return new Music(media)
+        }
     }
 }

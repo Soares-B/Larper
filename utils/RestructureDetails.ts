@@ -25,6 +25,7 @@ type MangaShape = {
         status: string | null,
         authors: {
             name: string | null;
+            link: string | null;
         }[]
     },
     infoRecoms: {
@@ -97,17 +98,20 @@ class Manga {
     typeData: string | null;
     votes: number | null;
     status: string | null;
-    authors: (string | null)[] | null;
-    recoms: (string | null)[] | null;
+    authors: ({
+        name: string | null,
+        link: string | null,
+    } | null)[] | null;
+    recoms: (string | null)[] | string;
 
     constructor(obj: MangaShape) {
         this.typeData = obj.infoFull?.type ?? null;
         this.votes = obj.info?.scored_by ?? null;
         this.status = obj.infoFull?.status ?? null;
         this.authors =
-            obj.infoFull?.authors?.map(a => a.name) ?? null;
+            obj.infoFull?.authors?.map(a => ({name: a.name, link: a.link})) ?? null;
         this.recoms =
-            obj.infoRecoms?.map(r => r.entry.title) ?? null;
+            obj.infoRecoms?.map(r => r.entry.title) ?? 'No data ∘ ∘ ∘ ( °ヮ° ) ?';
     }
 }
 
@@ -189,27 +193,27 @@ export default function RestructureDetails(media: any, type: string){
         case 'anime':
             return insertData(
                 new Anime(media),
-                Restructure(media, 'anime')
+                Restructure(media, 'anime', 'detailed')
             );
         case 'manga':
             return insertData(
                 new Manga(media),
-                Restructure(media, 'manga')
+                Restructure(media, 'manga', 'detailed')
             );
         case 'game':
             return insertData(
                 new Game(media),
-                Restructure(media, 'game')
+                Restructure(media, 'game', 'detailed')
             );
         case 'serie':
             return insertData(
                 new Serie(media),
-                Restructure(media, 'serie')
+                Restructure(media, 'serie', 'detailed')
             );
         case 'movie':
             return insertData(
                 new Movie(media),
-                Restructure(media, 'movie')
+                Restructure(media, 'movie', 'detailed')
             );
     }
 }

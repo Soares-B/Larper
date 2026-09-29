@@ -38,7 +38,7 @@ export async function POST(req: Request) {
                 const data = await response.json();
 
                 if (type === "simple") {
-                    restructure = Restructure(data, "anime");
+                    restructure = Restructure(data, "anime", 'simple');
                 } else {
                     restructure = RestructureDetails(data, "anime");
                 }
@@ -62,7 +62,7 @@ export async function POST(req: Request) {
                 const data = await response.json();
 
                 if (type === "simple") {
-                    restructure = Restructure(data, "manga");
+                    restructure = Restructure(data, "manga", 'simple');
                 } else {
                     restructure = RestructureDetails(data, "manga");
                 }
@@ -86,7 +86,7 @@ export async function POST(req: Request) {
                 game = await searchVar.json();
 
                 if (type === "simple") {
-                    restructure = Restructure(game, "game");
+                    restructure = Restructure(game, "game", 'simple');
                 } else {
                     restructure = RestructureDetails(game, "game");
                 }
@@ -110,7 +110,7 @@ export async function POST(req: Request) {
                 book = await searchVar.json();
 
                 if (type === "simple") {
-                    restructure = Restructure(book, "book");
+                    restructure = Restructure(book, "book", 'simple');
                 } else {
                     restructure = RestructureDetails(book, "book");
                 }
@@ -134,7 +134,7 @@ export async function POST(req: Request) {
                 serie = await searchVar.json();
 
                 if (type === "simple") {
-                    restructure = Restructure(serie, "serie");
+                    restructure = Restructure(serie, "serie", 'simple');
                 } else {
                     restructure = RestructureDetails(serie, "serie");
                 }
@@ -158,7 +158,7 @@ export async function POST(req: Request) {
                 movie = await searchVar.json();
 
                 if (type === "simple") {
-                    restructure = Restructure(movie, "movie");
+                    restructure = Restructure(movie, "movie", 'simple');
                 } else {
                     restructure = RestructureDetails(movie, "movie");
                 }
@@ -182,7 +182,7 @@ export async function POST(req: Request) {
                 music = await searchVar.json();
 
                 if (type === "simple") {
-                    restructure = Restructure(music, "music");
+                    restructure = Restructure(music, "music", 'simple');
                 } else {
                     restructure = RestructureDetails(music, "music");
                 }

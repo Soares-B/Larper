@@ -55,32 +55,32 @@ export default function Details() {
     }
   }
 
-async function search(type: string) {
-    setOpenField(true);
-    setSuggestions([]);
+  async function search(type: string) {
+      setOpenField(true);
+      setSuggestions([]);
 
-    try {
-        const response = await fetch("/api/random", {
-            method: "POST",
-            cache: "no-store",
-            headers: {
-                "Content-Type": "application/json",
-                "Cache-Control": "no-cache",
-            },
-            body: JSON.stringify({
-                type,
-            }),
-        });
+      try {
+          const response = await fetch("/api/random", {
+              method: "POST",
+              cache: "no-store",
+              headers: {
+                  "Content-Type": "application/json",
+                  "Cache-Control": "no-cache",
+              },
+              body: JSON.stringify({
+                  type,
+              }),
+          });
 
-        const info = await response.json();
-        const data = info.fullSearch;
+          const info = await response.json();
+          const data = info.fullSearch;
 
-        setMedia(data);
-        setCurrent(1);
-    } catch (error) {
-        console.error("Erro ao pesquisar:", error);
-    }
-}
+          setMedia(data);
+          setCurrent(1);
+      } catch (error) {
+          console.error("Erro ao pesquisar:", error);
+      }
+  }
 
 
   return (
