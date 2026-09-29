@@ -232,7 +232,7 @@ export default function DataShow({
 
             <p
               className={`absolute text-3xl left-[4%] bottom-[10%] w-full ${
-                results.rating && results.rating >= 7.5
+                results.rating ? results.rating >= 7.5
                   ? theme === "light"
                     ? "text-[var(--greatLight)]"
                     : "text-[var(--great)]"
@@ -242,7 +242,9 @@ export default function DataShow({
                       : "text-[var(--medium)]"
                     : theme === "light"
                       ? "text-[var(--badLight)]"
-                      : "text-[var(--bad)]"
+                      : "text-[var(--bad)]" : theme === "light"
+                      ? "text-[var(--textLight)]" : theme === "glass" ? "text-[var(--textLight)]"
+                      : theme === "transparent" ? "text-[var(--textLight)]" : "text-[var(--text)]"
               }`}
             >
               {results.rating ? (
