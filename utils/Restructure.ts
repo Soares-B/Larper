@@ -22,10 +22,16 @@ type TenraiShape = {
         is_spoiler: boolean,
         user: {
             username: string,
+            images: {
+                jpg: {
+                    image_url: string | null
+                }
+            }
         }
         score: number,
         tags: string[],
-        review: string
+        review: string,
+        url: string,
     }
 }
 
@@ -142,8 +148,10 @@ type TMDBShape = {
         author?: string | null,
         author_details?: {
             rating?: number | null,
+            avatar_path?: string | null
         } | null,
-        content?: string | null
+        content?: string | null,
+        url: string | null,
     }
 }
 
@@ -205,13 +213,16 @@ class Tenrai{
     link: string;
     status: string | null;
     background_image: string | null
+    favorite: boolean
     
     review: {
         spoiler: boolean;
         author: string;
         rating: number;
         opinion: string;
-        content: string
+        content: string;
+        avatar: string;
+        link: string;
     } | object
 
 
@@ -227,7 +238,8 @@ class Tenrai{
         this.rating = obj.info.score ?? null;
         this.genres = obj.info.genres?.map(g => g.name) ?? null;
         this.link = obj.info.url;
-        this.status = obj.info.status ?? null;   
+        this.status = obj.info.status ?? null;
+        this.favorite = false;   
         
         if (obj.infoReview){
             this.review = {
@@ -235,7 +247,9 @@ class Tenrai{
                 author: obj.infoReview.user.username,
                 rating: obj.infoReview.score,
                 opinion: obj.infoReview.tags[0] ?? "",
-                content: textShortener(obj.infoReview.review, style)
+                content: textShortener(obj.infoReview.review, style),
+                avatar: obj.infoReview.user.images?.jpg?.image_url ?? null,
+                link: obj.infoReview.url ?? null,
             };
         }
     }
@@ -299,6 +313,7 @@ class Game{
     game_type: string | null;
     type: string;
     background: string | null;
+    favorite: false;
 
     language: {
         languages: (string | null)[]
@@ -324,6 +339,7 @@ class Game{
         this.link = obj.info.url;
         this.game_type = obj.info.game_type?.type ?? null;
         this.type = 'game'
+        this.favorite = false;
 
         if (obj.languagesData){
             this.language = {
@@ -354,6 +370,7 @@ class Book{
     link: string | null;
     type: string;
     background: string | null;
+    favorite: false
 
     constructor(obj: BookShape, style: string){
         this.name = obj.info.title;
@@ -369,6 +386,7 @@ class Book{
         this.date = obj.info.publishedDate;
         this.link = obj.info.infoLink;
         this.type = 'book';
+        this.favorite = false;
     }
 }
 
@@ -381,11 +399,14 @@ class TMDB{
     rating: number | null;
     genres: any[] | null;
     tagline: string | null;
+    favorite: false;
 
     review: {
         author: string | null;
         rating: number | null;
         content: string | null;
+        avatar: string | null;
+        link: string
     } | null
 
 
@@ -397,12 +418,15 @@ class TMDB{
         this.rating = Number(obj.info.vote_average?.toFixed(2)) ?? null;
         this.genres = obj.dataDetails.genres?.map(g => g.name) ?? null;
         this.tagline = obj.dataDetails.tagline ? obj.dataDetails.tagline : null;
+        this.favorite = false;
 
         if (obj.infoReview) {
             this.review = {
                 author: obj.infoReview.author ?? null,
                 rating: Number(obj.infoReview.author_details?.rating?.toFixed(1)) ?? null,
-                content: textShortener(obj.infoReview.content ?? null, style)
+                content: textShortener(obj.infoReview.content ?? null, style),
+                avatar: obj.infoReview.author_details?.avatar_path ? `https://image.tmdb.org/t/p/w500${obj.infoReview.author_details.avatar_path}` : null,
+                link: obj.infoReview.url ?? '',
             };
         } else {
             this.review = null;
@@ -463,6 +487,7 @@ class Music{
     id: number;
     type: string;
     background: string | null;
+    favorite: boolean;
 
     artist: {
         name: string | null;
@@ -481,6 +506,7 @@ class Music{
         this.cover = `https://e-cdns-images.dzcdn.net/images/cover/${obj.info.md5_image}/750x750.jpg`
         this.background = this.cover
         this.link = obj.info.link
+        this.favorite = false;
         const duration = obj.info.duration ?? 0;
 
         this.time = `${Math.floor(duration / 60)}m${String(duration % 60).padStart(2, "0")}s`;
@@ -501,7 +527,7 @@ class Music{
 }
 
 function textShortener(desc: string | null, style: string) {
-    const maxLength = style === 'simple' ? 300 : 500
+    const maxLength = style === 'simple' ? 200 : 500
 
   if (!desc) return null;
 

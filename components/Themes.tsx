@@ -1,5 +1,4 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import * as React from "react";
 import {
     DotFilledIcon
 } from "@radix-ui/react-icons";
@@ -13,7 +12,7 @@ export default function Theme({theme, setTheme}: {theme: string, setTheme: any})
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild>
 				<button
-					className={`inline-flex size-[35px] w-[55px] items-center justify-center rounded-full ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === 'dark' ? 'text-[var(--text)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--textLight)]'} shadow-blackA4 outline-none hover:bg-violet3 hover:cursor-pointer m-[0px_0px_0px_10px]`}
+					className={`inline-flex size-[35px] w-[57px] items-center justify-center rounded-full ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === 'dark' ? 'text-[var(--text)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--textLight)]'} shadow-blackA4 outline-none hover:bg-violet3 hover:cursor-pointer m-[0px_5px_0px_5px]`}
 					aria-label="Customise options "
 				>
 					<Palette className="m-[0_auto]"/>

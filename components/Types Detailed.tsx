@@ -11,7 +11,7 @@ export default function Menu ({filters, setFilters, theme}: {filters: any, setFi
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild>
 				<button
-					className={`inline-flex size-[35px] w-[55px] items-center justify-center rounded-full ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === 'dark' ? 'text-[var(--text)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--textLight)]'} text-violet11 shadow-blackA4 outline-none hover:bg-violet3 hover:cursor-pointer m-[0px_10px_0px_20px]`}
+					className={`inline-flex size-[35px] w-[55px] items-center justify-center rounded-full ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === 'dark' ? 'text-[var(--text)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--textLight)]'} text-violet11 shadow-blackA4 outline-none hover:bg-violet3 hover:cursor-pointer m-[0px_5px_0px_10px]`}
 					aria-label="Customise options"
 				>
 					<HamburgerMenuIcon className="m-[0_auto]"/>
@@ -70,11 +70,11 @@ export default function Menu ({filters, setFilters, theme}: {filters: any, setFi
 					</DropdownMenu.CheckboxItem>
 					<DropdownMenu.CheckboxItem
 						className="group relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[5px] text-[13px] leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1"
-						checked={filters.book}
+						checked={filters.serie}
 						onCheckedChange={(value) =>
 							setFilters((prev: any) => ({
 							...prev,
-							book: value,
+							serie: value,
 							}))
 						}
 					>

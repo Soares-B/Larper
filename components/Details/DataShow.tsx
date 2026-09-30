@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AvatarReview from "../ui/Avatar";
 
 type Result = {
   review: {
@@ -395,8 +396,8 @@ export default function DataShow({
                               ? "text-[var(--badLight)]"
                               : "text-[var(--bad)]"
                         : theme === "light"
-                          ? "text-[var(--textLight)]"
-                          : "text-[var(--text)]"
+                      ? "text-[var(--textLight)]" : theme === "glass" ? "text-[var(--textLight)]"
+                      : theme === "transparent" ? "text-[var(--textLight)]" : "text-[var(--text)]"
                     }
                   >
                     {results.revenue}
@@ -438,7 +439,7 @@ export default function DataShow({
                 <>
                   {results.recommendations?.map((r) => {
                     return (
-                      <span>
+                      <span key={r}>
                         <Link
                           key={r}
                           href=""
@@ -456,7 +457,7 @@ export default function DataShow({
                 <>
                   {results.recommendations?.map((r) => {
                     return (
-                      <span>
+                      <span key={r}>
                         <Link
                           key={r}
                           href=""
@@ -502,14 +503,16 @@ export default function DataShow({
                 <>
                   {results.authors?.map((a) => {
                     return (
-                      <Link
-                        key={a.name}
-                        className="underline"
-                        href={typeof a.link === 'string' ? a.link : ''}
-                        target="_blank"
-                      >
-                        {a.name},{" "}
-                      </Link>
+                      <span key={a.name}>
+                        <Link
+                          key={a.name}
+                          className="underline"
+                          href={typeof a.link === 'string' ? a.link : ''}
+                          target="_blank"
+                        >
+                          {a.name}
+                        </Link>,{" "}
+                      </span>
                     );
                   })}
                 </>
@@ -581,7 +584,7 @@ export default function DataShow({
                 <>
                   {results.similar?.map((s) => {
                     return (
-                      <span>
+                      <span key={s}>
                         <Link
                           key={s}
                           href=""
@@ -599,7 +602,7 @@ export default function DataShow({
                 <>
                   {results.similar?.map((s) => {
                     return (
-                      <span>
+                      <span key={s}>
                         <Link
                           key={s}
                           href=""
@@ -617,21 +620,11 @@ export default function DataShow({
             </p>
           </div>
 
-          <div
-            className={`bg-[#141414]/75 w-[100%] h-full col-span-full row-4 rounded-[20px] z-1 absolute row-2 transition-[1s] backdrop-blur-sm ${
-              spoiler ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <div className="w-full h-full relative">
-              <button
-                type="button"
-                className="absolute top-[50%] left-[50%] translate-[-50%] w-full h-full text-xl hover:cursor-pointer"
-                onClick={() => setSpoiler(false)}
-              >
-                Contain spoilers! Click to open
-              </button>
-            </div>
-          </div>
+          <Link
+            href={results.review?.link ?  results.review.link : ''}
+            target="_blank"
+            className="w-[100%] h-full col-span-full row-4 rounded-[20px] z-1 absolute row-2"
+          />
 
           <div
             className={`relative ${
@@ -654,27 +647,33 @@ export default function DataShow({
               {results.review ? results.review.content ? results.review.content : 'No review :‹' : 'No review :‹'}
             </p>
 
-            <p className="absolute text-md bottom-[2%] right-[5%]">
-              <span
-                className={`${
-                  results.review && results.review.rating >= 7.5
-                    ? theme === "light"
-                      ? "text-[var(--greatLight)]"
-                      : "text-[var(--great)]"
-                    : results.review && results.review.rating >= 5
-                      ? theme === "light"
-                        ? "text-[var(--mediumLight)]"
-                        : "text-[var(--medium)]"
-                      : theme === "light"
-                        ? "text-[var(--badLight)]"
-                        : "text-[var(--bad)]"
-                }`}
-              >
-                {results.review && results.review.rating?.toFixed(1)}
-              </span>{" "}
-              - {results.review && results.review.author}
-            </p>
+            {results.review && results.review.author && (
+              <div className="absolute text-md bottom-[2%] right-[5%] w-[300px] flex items-center justify-end">
+                <p className="mr-[5px]">
+                  <span
+                    className={`${
+                      results.review && results.review.rating >= 7.5
+                        ? theme === "light"
+                          ? "text-[var(--greatLight)]"
+                          : "text-[var(--great)]"
+                        : results.review && results.review.rating >= 5
+                          ? theme === "light"
+                            ? "text-[var(--mediumLight)]"
+                            : "text-[var(--medium)]"
+                          : theme === "light"
+                            ? "text-[var(--badLight)]"
+                            : "text-[var(--bad)]"
+                    }`}
+                  >
+                    {results.review && results.review.rating?.toFixed(1)}
+                  </span>{" "}
+                  - {results.review && results.review.author}
+                </p>
+                <AvatarReview path={results.review?.avatar} name={results.review?.author}/>
+              </div>
+            )}
           </div>
+
         </div>
       )}
     </>

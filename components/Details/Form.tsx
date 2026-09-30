@@ -9,6 +9,7 @@ import {
 import Theme from "@/components/Themes";
 import Menu from "@/components/Types Detailed";
 import Simple from "../Simple Button";
+import Favorites from "../Favorites";
 
 type result = {
   review: {
@@ -48,7 +49,13 @@ type Filters = {
     [key: string]: boolean
 }
 
-export default function FormMedia({ theme, setTheme, setOpenField, setMedia, setCurrent, query, setQuery, suggestions, setSuggestions, filters, setFilters}: {theme: string, setTheme: any, setOpenField: any, setMedia: any, setCurrent: any, query: string, setQuery: any, suggestions: Suggestion | any, setSuggestions: any, filters: Filters, setFilters: any}){
+type Favorite = {
+  name: string
+  type: string
+  image: string
+}
+
+export default function FormMedia({ theme, setTheme, setOpenField, setMedia, setCurrent, query, setQuery, suggestions, setSuggestions, filters, setFilters, favorites, favorite}: {theme: string, setTheme: any, setOpenField: any, setMedia: any, setCurrent: any, query: string, setQuery: any, suggestions: Suggestion | any, setSuggestions: any, filters: Filters, setFilters: any, favorites: Favorite[], favorite: any}){
 
     async function search(queryToSearch: string) {
     if (!queryToSearch.trim()) {
@@ -211,6 +218,7 @@ export default function FormMedia({ theme, setTheme, setOpenField, setMedia, set
             <Simple theme={theme}/>
             <Menu filters={filters} setFilters={setFilters} theme={theme} />
             <Theme theme={theme} setTheme={setTheme} />
+            <Favorites theme={theme} favorites={favorites} setOpenField={setOpenField} setSuggestions={setSuggestions} setMedia={setMedia} setCurrent={setCurrent}/>
         </form>
     );
 }

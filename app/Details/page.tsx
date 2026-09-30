@@ -6,12 +6,19 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import FormMedia from "@/components/Details/Form";
 import ShowData from "@/components/Details/DataShow";
+import { Heart } from "lucide-react";
+import { useEffect } from "react";
 
 type Suggestion = {
   name: string;
   type: string;
 };
 
+type Favorite = {
+  name: string
+  type: string
+  image: string
+}
 
 export default function Details() {
   const [media, setMedia] = useState<any>(null);
@@ -19,6 +26,19 @@ export default function Details() {
   const results = media?.[current] ?? null;
   const [theme, setTheme] = useState("dark");
   const [openField, setOpenField] = useState(false);
+  const [favorites, setFavorites] = useState<Favorite[]>([]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("Favorites");
+
+    if (saved) {
+      setFavorites(JSON.parse(saved));
+    }
+  }, []);
+
+  const isFavorite = results
+    ? favorites.some((f) => f.image === results.cover)
+    : false;
 
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -56,32 +76,54 @@ export default function Details() {
   }
 
   async function search(type: string) {
-      setOpenField(true);
-      setSuggestions([]);
+    setOpenField(true);
+    setSuggestions([]);
 
-      try {
-          const response = await fetch("/api/random", {
-              method: "POST",
-              cache: "no-store",
-              headers: {
-                  "Content-Type": "application/json",
-                  "Cache-Control": "no-cache",
-              },
-              body: JSON.stringify({
-                  type,
-              }),
-          });
+    try {
+      const response = await fetch("/api/random", {
+        method: "POST",
+        cache: "no-store",
+        headers: {
+          "Content-Type": "application/json",
+          "Cache-Control": "no-cache",
+        },
+        body: JSON.stringify({
+          type,
+        }),
+      });
 
-          const info = await response.json();
-          const data = info.fullSearch;
+      const info = await response.json();
+      const data = info.fullSearch;
 
-          setMedia(data);
-          setCurrent(1);
-      } catch (error) {
-          console.error("Erro ao pesquisar:", error);
-      }
+      setMedia(data);
+      setCurrent(1);
+    } catch (error) {
+      console.error("Erro ao pesquisar:", error);
+    }
   }
 
+  function favorite() {
+    if (!results) return;
+
+    setFavorites((prev) => {
+      const exist = prev.some((f) => f.image === results.cover);
+
+      const updated = exist
+        ? prev.filter((f) => f.image !== results.cover)
+        : [
+            ...prev,
+            {
+              name: results.name,
+              type: results.type,
+              image: results.cover,
+            },
+          ];
+
+      localStorage.setItem("Favorites", JSON.stringify(updated));
+
+      return updated;
+    });
+  }
 
   return (
     <div className="relative grid w-screen h-screen grid-rows-[18%_1fr] overflow-hidden">
@@ -124,6 +166,8 @@ export default function Details() {
           setSuggestions={setSuggestions}
           filters={filters}
           setFilters={setFilters}
+          favorites={favorites}
+          favorite={favorite}
         />
       </div>
       <div className="relative row-2 flex items-center justify-center w-full h-full">
@@ -167,8 +211,6 @@ export default function Details() {
                   } left-[-10%] w-[45%]`}
                 />
               </Link>
-            
-
 
               <div
                 className={`${
@@ -192,9 +234,6 @@ export default function Details() {
                 </p>
               </div>
 
-
-            
-
               <ShowData
                 results={results}
                 spoiler={spoiler}
@@ -205,7 +244,7 @@ export default function Details() {
                 setCurrent={setCurrent}
               />
 
-              {(results.type === 'anime' || results.type === 'manga') && (
+              {(results.type === "anime" || results.type === "manga") && (
                 <div className="w-[23%] h-[20%] absolute bottom-[5%] left-[1.5%]">
                   <button
                     className={`inline-flex rounded-[5px] w-fit p-3 items-center justify-center ${
@@ -221,46 +260,37 @@ export default function Details() {
           )}
 
           {results && (
-            <p
+            <div
               className={`${
-                openField ? "inline" : "hidden"
-              } absolute bottom-[3%] left-[3%] ${
-                theme === "dark"
-                  ? "drop-shadow-[var(--dropShadow)]"
-                  : theme === "light"
-                    ? "drop-shadow-[var(--dropShadowLigth)]"
-                    : "drop-shadow-[var(--dropShadowLight)]"
-              } drop-shadow-[0px_0px_5px] select-none`}
+                openField ? "flex" : "hidden"
+              } absolute bottom-[3%] left-[3%] select-none gap-4 items-center`}
             >
-              {results && results.type === "anime"
-                ? `${results.season} - ${results.type}`
-                : (results && results.type === "movie" && results.tagline) ||
-                    (results && results.type === "serie" && results.tagline)
-                  ? `${results.tagline} - ${results.type}`
-                  : results && results.type
-                    ? results.type
-                    : ""}
-            </p>
+              <button className="size-[40px] border-0 rounded-full flex items-center justify-center" onClick={() => favorite()}>
+                <Heart strokeWidth={1.5} className="size-[25px]" fill={isFavorite ? '#ff2222' : 'none'} color={isFavorite ? "#ff2222" : "currentColor"}/>
+              </button>
+              <p className="w-fit">
+                {results &&
+                  results.type[0].toUpperCase() + results.type.slice(1)}
+              </p>
+            </div>
           )}
-
         </div>
-          <button
-            type="button"
-            className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${
-              theme === "dark" ? "text-[var(--text)]" : "text-[var(--textLight)]"
-            } w-[50px] h-[50px] rounded-full absolute right-[3%] hover:cursor-pointer ${
-              openField
-                ? media && media?.[0]?.length > 1
-                  ? "block"
-                  : "hidden"
+        <button
+          type="button"
+          className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${
+            theme === "dark" ? "text-[var(--text)]" : "text-[var(--textLight)]"
+          } w-[50px] h-[50px] rounded-full absolute right-[3%] hover:cursor-pointer ${
+            openField
+              ? media && media?.[0]?.length > 1
+                ? "block"
                 : "hidden"
-            }`}
-            onClick={() => handleClick("right")}
-          >
-            <ArrowRight className="w-[50px] h-[30px]" />
-          </button>
+              : "hidden"
+          }`}
+          onClick={() => handleClick("right")}
+        >
+          <ArrowRight className="w-[50px] h-[30px]" />
+        </button>
       </div>
-      
     </div>
   );
 }

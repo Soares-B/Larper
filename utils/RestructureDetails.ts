@@ -79,14 +79,14 @@ type MovieShape = {
 
 class Anime {
     typeData: string | null;
-    votes: number | null;
+    votes: string | null;
     source: string | null;
     duration: string | null;
     recoms: (string | null)[] | null;
 
     constructor(obj: AnimeShape) {
         this.typeData = obj.infoFull?.type ?? null;
-        this.votes = obj.info?.scored_by ?? null;
+        this.votes = obj.info?.scored_by?.toLocaleString('en-US') ?? null;
         this.source = obj.infoFull?.source ?? null;
         this.duration = obj.infoFull?.duration ?? null;
         this.recoms =
@@ -96,7 +96,7 @@ class Anime {
 
 class Manga {
     typeData: string | null;
-    votes: number | null;
+    votes: string | null;
     status: string | null;
     authors: ({
         name: string | null,
@@ -106,7 +106,7 @@ class Manga {
 
     constructor(obj: MangaShape) {
         this.typeData = obj.infoFull?.type ?? null;
-        this.votes = obj.info?.scored_by ?? null;
+        this.votes = obj.info?.scored_by?.toLocaleString('en-US')?? null;
         this.status = obj.infoFull?.status ?? null;
         this.authors =
             obj.infoFull?.authors?.map(a => ({name: a.name, link: a.link})) ?? null;
@@ -123,7 +123,7 @@ class Game{
 }
 
 class Serie{
-    vote_count: number | null;
+    vote_count: string | null;
     original_language: string | null;
     episode_runtime: string | null
     recommendations: string[] | null;
@@ -131,7 +131,7 @@ class Serie{
     similar: string[] | null;
 
     constructor(obj: SerieShape){
-        this.vote_count = obj.info.vote_count ?? null;
+        this.vote_count = obj.info.vote_count?.toLocaleString('en-US') ?? null;
         this.original_language = obj.info.original_language ?? null;
 
         if (obj.dataDetails.episode_run_time?.length > 0){
@@ -148,7 +148,7 @@ class Serie{
 }
 
 class Movie{
-    vote_count: number | null;
+    vote_count: string | null;
     original_language: string | null;
     budget: string | null;
     budgetNumber: number | null;
@@ -159,7 +159,7 @@ class Movie{
     similar: string[] | null;
 
     constructor(obj: MovieShape){
-        this.vote_count = obj.info.vote_count ?? null;
+        this.vote_count = obj.info.vote_count?.toLocaleString('en-US') ?? null;
         this.original_language = obj.info.original_language ?? null;
         this.budget = obj.dataDetails.budget?.toLocaleString('en-US', {
             style: 'currency',
