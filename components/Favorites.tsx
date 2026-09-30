@@ -1,6 +1,7 @@
 import { DropdownMenu } from "radix-ui";
 import { Heart } from "lucide-react";
 import Image from "next/image";
+import { Fragment } from "react";
 
 type Favorite = {
   name: string;
@@ -113,7 +114,7 @@ export default function Favorites({ theme, favorites, setOpenField, setSuggestio
           {favorites &&
             favorites.map((f) => {
               return (
-                <>
+                <Fragment key={f.name}>
                   <DropdownMenu.Item
                     className={`relative flex h-[25px] select-none items-center rounded-[3px] pl-[10px] pr-[5px] text-[13px] leading-none ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1 mt-[20px] hover:cursor-pointer`}
                     key={f.name}
@@ -131,7 +132,7 @@ export default function Favorites({ theme, favorites, setOpenField, setSuggestio
                     />
 
                     <div className="flex w-fit items-center">
-                      <p className="w-[100px] mr-[20px]">{f.name}</p>
+                      <p className="w-[125px] mr-[20px]">{f.name}</p>
                       <p
                         className={`w-fit ${
                           theme === "dark"
@@ -146,7 +147,7 @@ export default function Favorites({ theme, favorites, setOpenField, setSuggestio
                     </div>
                   </DropdownMenu.Item>
                   <br />
-                </>
+                </Fragment>
               );
             })}
 
