@@ -144,10 +144,10 @@ export async function TenraiManga(query: string) {
     }
 }
 
-export async function TenraiRandomAnime() {
+export async function TenraiRandomAnime(NSFW: boolean) {
     try {
         const response = await fetch(
-            `https://api.tenrai.org/v1/random/anime`,
+            `https://api.tenrai.org/v1/random/anime${NSFW ? '' : '?sfw-strict='}`,
             {
                 cache: "no-store",
             }
@@ -206,10 +206,10 @@ export async function TenraiRandomAnime() {
     }
 }
 
-export async function TenraiRandomManga() {
+export async function TenraiRandomManga(NSFW: boolean) {
     try {
         const response = await fetch(
-            `https://api.tenrai.org/v1/random/manga`,
+            `https://api.tenrai.org/v1/random/manga${NSFW ? '' : '?sfw-strict='}`,
             {
                 cache: "no-store",
             }

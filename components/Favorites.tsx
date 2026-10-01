@@ -45,8 +45,6 @@ export default function Favorites({ theme, favorites, setOpenField, setSuggestio
 
         const data: SearchData = await response.json();
 
-        console.log(data)
-
         setMedia(data);
         setCurrent(1);
         } catch (error) {
@@ -92,7 +90,7 @@ export default function Favorites({ theme, favorites, setOpenField, setSuggestio
 
       <DropdownMenu.Portal>
         <DropdownMenu.Content
-          className={`min-w-[275px] max-h-[300px] rounded-md ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade overflow-y-scroll scrollbar-thin ${
+          className={`min-w-[275px] max-h-[300px] rounded-md ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade ${favorites && favorites.length > 3 ? 'overflow-y-scroll scrollbar-thin' : 'overflow-auto scrollbar-none'} ${
                           theme === "dark"
                             ? "scrollbar-track-[var(--middleDownTone)]"
                             : theme === "light"
@@ -111,7 +109,7 @@ export default function Favorites({ theme, favorites, setOpenField, setSuggestio
           >
             Favorites
           </DropdownMenu.Label>
-          {favorites &&
+          {favorites && favorites.length > 0 ?
             favorites.map((f) => {
               return (
                 <Fragment key={f.name}>
@@ -149,7 +147,11 @@ export default function Favorites({ theme, favorites, setOpenField, setSuggestio
                   <br />
                 </Fragment>
               );
-            })}
+            }) : <DropdownMenu.Item
+                    className={`relative flex h-[25px] select-none items-center rounded-[3px] pl-[10px] pr-[5px] text-[13px] leading-none ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1 mb-[20px] ml-[10px] hover:cursor-pointer`}
+                  >
+                    "Nobody but us chickens"
+                  </DropdownMenu.Item>}
 
           <DropdownMenu.Arrow className="fill-white" />
         </DropdownMenu.Content>

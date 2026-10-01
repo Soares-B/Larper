@@ -8,6 +8,7 @@ import FormMedia from "@/components/Details/Form";
 import ShowData from "@/components/Details/DataShow";
 import { Heart } from "lucide-react";
 import { useEffect } from "react";
+import NSFWButton from "@/components/NSFW Button";
 
 type Suggestion = {
   name: string;
@@ -27,6 +28,7 @@ export default function Details() {
   const [theme, setTheme] = useState("dark");
   const [openField, setOpenField] = useState(false);
   const [favorites, setFavorites] = useState<Favorite[]>([]);
+  const [NSFW, setNSFW] = useState(false)
 
   useEffect(() => {
     const saved = localStorage.getItem("Favorites");
@@ -75,7 +77,7 @@ export default function Details() {
     }
   }
 
-  async function search(type: string) {
+  async function search(type: string, NSFW: boolean) {
     setOpenField(true);
     setSuggestions([]);
 
@@ -89,6 +91,7 @@ export default function Details() {
         },
         body: JSON.stringify({
           type,
+          NSFW
         }),
       });
 
@@ -146,7 +149,7 @@ export default function Details() {
           }}
         />
       )}
-      <div className="w-[80%] h-[50%] flex justify-center">
+      <div className="w-[80%] max-[1441px]:h-[40%] h-[50%] flex justify-center">
         <Image
           src="/Imagens/Logo2.png"
           alt="logo"
@@ -175,18 +178,18 @@ export default function Details() {
           type="button"
           className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${
             theme === "dark" ? "text-[var(--text)]" : "text-[var(--textLight)]"
-          } w-[50px] h-[50px] rounded-full absolute left-[3%] hover:cursor-pointer ${
+          } size-[50px] max-[1025px]:size-[40px] rounded-full absolute left-[3%] max-[1025px]:left-[2%] hover:cursor-pointer ${
             openField && media?.[0]?.length > 1 ? "block" : "hidden"
           }`}
           onClick={() => handleClick("left")}
         >
-          <ArrowLeft className="w-[50px] h-[30px]" />
+          <ArrowLeft className="w-[50px] max-[1025px]:w-[40px] h-[30px]" />
         </button>
 
         <div
           className={`relative row-2 ${
             openField ? "w-[85vw]" : "w-[0vw]"
-          } h-[100%] ${
+          } h-[95%] ${
             theme === "dark"
               ? "bg-[var(--background)]"
               : theme === "light"
@@ -196,21 +199,21 @@ export default function Details() {
                   : "bg-[var(--backgroundTransparent)] backdrop-blur-md"
           } ${
             theme === "dark" ? "text-[var(--text)]" : "text-[var(--textLight)]"
-          } rounded-[10px] m-[0_auto] transition-[1s] top-[-2%]`}
+          } rounded-[10px] m-[0_auto] transition-[1s] top-[-2%] grid grid-cols-[1fr_3fr] grid-rows-[2.5fr_1fr]`}
         >
           {results && (
             <>
-              <Link href={results.link} target="_blank" className="select-none">
-                <Image
-                  src={results.cover!}
-                  width={600}
-                  height={700}
-                  alt={results.name}
-                  className={`absolute block w-[750px] h-[1100px] scale-[.50] rounded-[25px] ${
-                    results.type === "music" ? "top-[-5%]" : "top-[-32%]"
-                  } left-[-10%] w-[45%]`}
-                />
-              </Link>
+              <div className={`block w-fit col-1 row-1 w-full p-[10%]`}>
+                <Link href={results.link} target="_blank" className="block w-[320px] h-[490px] select-none">
+                  <Image
+                    src={results.cover!}
+                    width={750}
+                    height={1100}
+                    alt={results.name}
+                    className={`rounded-[25px] w-full h-full object-cover`}
+                  />
+                </Link>
+              </div>
 
               <div
                 className={`${
@@ -245,15 +248,18 @@ export default function Details() {
               />
 
               {(results.type === "anime" || results.type === "manga") && (
-                <div className="w-[23%] h-[20%] absolute bottom-[5%] left-[1.5%]">
+                <div className="col-1 row-2 w-full h-full flex items-center justify-center gap-5">
                   <button
-                    className={`inline-flex rounded-[5px] w-fit p-3 items-center justify-center ${
+                    className={`inline-flex rounded-[5px] w-fit max-[1025px]:text-sm p-3 items-center justify-center ${
                       theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-                    } ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} text-violet11 shadow-blackA4 outline-none hover:bg-violet3 hover:cursor-pointer m-[0px_10px_0px_20px] absolute top-[50%] left-[50%] translate-[-50%]`}
-                    onClick={() => search(results.type)}
+                    } ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} text-violet11 shadow-blackA4 outline-none hover:bg-violet3 hover:cursor-pointer`}
+                    onClick={() => search(results.type, NSFW)}
                   >
                     Random {results.type}
                   </button>
+
+                  <NSFWButton theme={theme} NSFW={NSFW} setNSFW={setNSFW}/>
+
                 </div>
               )}
             </>
@@ -279,7 +285,7 @@ export default function Details() {
           type="button"
           className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${
             theme === "dark" ? "text-[var(--text)]" : "text-[var(--textLight)]"
-          } w-[50px] h-[50px] rounded-full absolute right-[3%] hover:cursor-pointer ${
+          } size-[50px] max-[1025px]:size-[40px] rounded-full absolute right-[3%] max-[1025px]:right-[2%] hover:cursor-pointer ${
             openField
               ? media && media?.[0]?.length > 1
                 ? "block"
@@ -288,7 +294,7 @@ export default function Details() {
           }`}
           onClick={() => handleClick("right")}
         >
-          <ArrowRight className="w-[50px] h-[30px]" />
+          <ArrowRight className="w-[50px] max-[1025px]:w-[40px] h-[30px]" />
         </button>
       </div>
     </div>

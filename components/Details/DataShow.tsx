@@ -105,10 +105,6 @@ export default function DataShow({
 
       const data: SearchData = await response.json();
 
-      console.log(data);
-
-      console.log(data);
-
       setMedia(data);
       setCurrent(1);
     } catch (error) {
@@ -155,7 +151,7 @@ export default function DataShow({
                 : theme === "light"
                   ? "text-[var(--middleToneLight)]"
                   : "text-[var(--textLight)]"
-            } col-span-full text-xl text-justify`}
+            } col-span-full text-xl max-[1281px]:text-base text-justify`}
           >
             {results.description}
           </p>
@@ -163,7 +159,7 @@ export default function DataShow({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px]`}
+            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
           >
             <p
               className={`${
@@ -172,7 +168,7 @@ export default function DataShow({
                   : theme === "light"
                     ? "text-[var(--middleToneLight)]"
                     : "text-[var(--textLight)]"
-              } m-[6px_9px] font-xl`}
+              } m-[6px_9px]`}
             >
               {results.type === 'game' ? 'Game type' : 'Runtime'}
             </p>
@@ -180,11 +176,11 @@ export default function DataShow({
             <p
               className={`absolute ${
                 results.type === "manga" || results.type === "serie"
-                  ? "text-lg"
-                  : "text-3xl"
+                  ? "text-lg max-[1281px]:text-sm"
+                  : "text-3xl max-[1441px]:text-2xl max-[1281px]:text-xl max-[1025px]:text-base"
               } left-[4%] ${
                 results.type === "manga" || results.type === "serie"
-                  ? "bottom-[5%]"
+                  ? "bottom-[15%]"
                   : "bottom-[10%]"
               }`}
             >
@@ -217,7 +213,7 @@ export default function DataShow({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px]`}
+            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
           >
             <p
               className={`${
@@ -226,13 +222,13 @@ export default function DataShow({
                   : theme === "light"
                     ? "text-[var(--middleToneLight)]"
                     : "text-[var(--textLight)]"
-              } m-[6px_9px] font-xl`}
+              } m-[6px_9px]`}
             >
               Rating
             </p>
 
             <p
-              className={`absolute text-3xl left-[4%] bottom-[10%] w-full ${
+              className={`absolute text-3xl max-[1441px]:text-2xl max-[1281px]:text-xl max-[1025px]:text-lg left-[4%] bottom-[10%] w-full ${
                 results.rating ? results.rating >= 7.5
                   ? theme === "light"
                     ? "text-[var(--greatLight)]"
@@ -260,7 +256,7 @@ export default function DataShow({
                             : theme === "light"
                               ? "text-[var(--middleToneLight)]"
                               : "text-[var(--textLight)]"
-                        }`}
+                        } max-[1025px]:text-[10px]`}
                       >
                         votes: {results.vote_count}
                       </span>
@@ -273,13 +269,13 @@ export default function DataShow({
                     <>
                       {results.rating}
                       <span
-                        className={`text-sm ml-[5%] ${
+                        className={`text-sm ml-[5%] max-[1025px]:ml-[3%] ${
                           theme === "dark"
                             ? "text-[var(--middleTone)]"
                             : theme === "light"
                               ? "text-[var(--middleToneLight)]"
                               : "text-[var(--textLight)]"
-                        }`}
+                        } max-[1025px]:text-[10px]`}
                       >
                         votes: {results.votes}
                       </span>
@@ -299,7 +295,7 @@ export default function DataShow({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px]`}
+            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
           >
             <p
               className={`${
@@ -308,13 +304,13 @@ export default function DataShow({
                   : theme === "light"
                     ? "text-[var(--middleToneLight)]"
                     : "text-[var(--textLight)]"
-              } m-[6px_9px] font-xl`}
+              } m-[6px_9px]`}
             >
-              {results.type === "music" ? "Artist" : "Genres"}
+              Genres
             </p>
 
             <p
-              className={`absolute ${results.type !== "music" ? (results.genres && results.genres.join("").length > 38 ? "text-md" : "text-lg") : "text-lg"} left-[4%] top-[30%]`}
+              className={`absolute text-lg max-[1281px]:text-sm max-[1025px]:text-xs left-[4%] top-[30%] max-[1281px]:top-[40%]`}
             >
               {results.type === "music"
                 ? results.artist?.name
@@ -325,7 +321,7 @@ export default function DataShow({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px]`}
+            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
           >
             <p
               className={`${
@@ -334,15 +330,13 @@ export default function DataShow({
                   : theme === "light"
                     ? "text-[var(--middleToneLight)]"
                     : "text-[var(--textLight)]"
-              } m-[6px_9px] font-xl`}
+              } m-[6px_9px]`}
             >
               {results.type === "music" ? "Album" : "Release date"}
             </p>
 
-            <p className="absolute text-lg left-[4%] top-[30%]">
-              {results.type === "music"
-                ? results.album?.name
-                : results.date?.replaceAll("-", "/")}
+            <p className="absolute text-lg max-[1281px]:text-base max-[1025px]:text-sm left-[4%] top-[30%] max-[1281px]:top-[40%]">
+              {results.date?.replaceAll("-", "/")}
             </p>
           </div>
 
@@ -353,7 +347,7 @@ export default function DataShow({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-hidden`}
+            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
           >
             <p
               className={`${
@@ -362,7 +356,7 @@ export default function DataShow({
                   : theme === "light"
                     ? "text-[var(--middleToneLight)]"
                     : "text-[var(--textLight)]"
-              } m-[6px_9px] font-xl`}
+              } m-[6px_9px]`}
             >
               {results.type === "anime" || results.type === "manga"
                 ? "Type"
@@ -371,7 +365,7 @@ export default function DataShow({
                   : "Budget/Revenue"}
             </p>
 
-            <p className="absolute text-lg left-[4%] top-[30%]">
+            <p className={`absolute ${results.type === 'movie' ? 'max-[1441px]:text-sm max-[1281px]:text-xs max-[1025px]:text-[10px]' : 'text-lg max-[1281px]:text-base max-[1025px]:text-sm'} left-[4%] top-[30%]`}>
               {results.type === "anime" || results.type === "manga" ? (
                 results.typeData
               ) : results.type === 'game' ? results.game_modes?.join(", ") : results.type === "serie" ? (
@@ -407,10 +401,13 @@ export default function DataShow({
             </p>
           </div>
 
+
+
+
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-hidden`}
+            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
           >
             <p
               className={`${
@@ -419,7 +416,7 @@ export default function DataShow({
                   : theme === "light"
                     ? "text-[var(--middleToneLight)]"
                     : "text-[var(--textLight)]"
-              } m-[6px_9px] font-xl`}
+              } m-[6px_9px] ${results.type === 'movie' || results.type === 'serie' ? 'max-[1441px]:text-sm max-[1281px]:text-xs max-[1025px]:text-[10px]' : ''}`}
             >
               {results.type === "anime"
                 ? "Source"
@@ -430,7 +427,7 @@ export default function DataShow({
                     : "Movie recommendations"}
             </p>
 
-            <p className="absolute text-lg left-[4%] top-[30%]">
+            <p className={`absolute ${results.type === 'serie' || results.type === 'movie' ? 'max-[1441px]:text-sm max-[1025px]:text-xs' : 'text-lg max-[1281px]:text-base max-[1025px]:text-sm'} left-[4%] top-[30%]`}>
               {results.type === "anime" ? (
                 results.source
               ) : results.type === "manga" ? (
@@ -475,10 +472,13 @@ export default function DataShow({
             </p>
           </div>
 
+
+
+
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-hidden`}
+            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
           >
             <p
               className={`${
@@ -487,7 +487,7 @@ export default function DataShow({
                   : theme === "light"
                     ? "text-[var(--middleToneLight)]"
                     : "text-[var(--textLight)]"
-              } m-[6px_9px] font-xl`}
+              } m-[6px_9px]`}
             >
               {results.type === "anime"
                 ? "Duration"
@@ -496,7 +496,7 @@ export default function DataShow({
                   : results.type === 'game' ? 'Themes' : "Keywords"}
             </p>
 
-            <p className="absolute text-lg left-[4%] top-[30%]">
+            <p className={`absolute ${results.type === 'manga' || results.type === 'serie' || results.type === 'movie' ? 'max-[1281]:text-sm max-[1025px]:text-xs' : 'max-[1281]:text-base max-[1025px]:text-sm'} left-[4%] top-[30%]`}>
               {results.type === "anime" ? (
                 results.duration
               ) : results.type === "manga" ? (
@@ -522,10 +522,13 @@ export default function DataShow({
             </p>
           </div>
 
+
+
+
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-hidden`}
+            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
           >
             <p
               className={`${
@@ -534,7 +537,7 @@ export default function DataShow({
                   : theme === "light"
                     ? "text-[var(--middleToneLight)]"
                     : "text-[var(--textLight)]"
-              } m-[6px_9px] font-xl`}
+              } m-[6px_9px] max-[1441px]:text-sm max-[1281px]:text-xs max-[1025px]:text-[10px]`}
             >
               {results.type === "anime"
                 ? "Anime recommendations"
@@ -543,7 +546,7 @@ export default function DataShow({
                   : "Similar movies"}
             </p>
 
-            <p className="absolute text-lg left-[4%] top-[30%]">
+            <p className={`absolute text-lg max-[1441px]:text-base max-[1281px]:text-sm max-[1025px]:text-xs left-[4%] top-[30%]`}>
               {results.type === "anime" ? (
                 <>
                   {results.recoms ? results.recoms.length > 0 ? results.recoms.map((r) => {
@@ -620,16 +623,19 @@ export default function DataShow({
             </p>
           </div>
 
+
+
+
           <Link
             href={results.review?.link ?  results.review.link : ''}
             target="_blank"
-            className="w-[100%] h-full col-span-full row-4 rounded-[20px] z-1 absolute row-2"
+            className="w-[100%] h-full col-span-full row-4 rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-mlg max-[1281px]:text-sm z-1 absolute row-2"
           />
 
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[100%] h-full col-span-full row-4 rounded-[20px]`}
+            } w-[100%] h-full col-span-full row-4 rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
           >
             <p
               className={`${
@@ -638,17 +644,17 @@ export default function DataShow({
                   : theme === "light"
                     ? "text-[var(--middleToneLight)]"
                     : "text-[var(--textLight)]"
-              } m-[6px_9px] font-xl`}
+              } m-[6px_9px]`}
             >
               Review
             </p>
 
-            <p className="absolute text-md left-[2%] top-[30%] w-[95%] text-justify">
+            <p className="absolute text-base max-[1441px]:text-sm max-[1281px]:text-xs max-[1025px]:text-[10px] left-[2%] top-[30%] w-[95%] text-justify">
               {results.review ? results.review.content ? results.review.content : 'No review :‹' : 'No review :‹'}
             </p>
 
             {results.review && results.review.author && (
-              <div className="absolute text-md bottom-[2%] right-[5%] w-[300px] flex items-center justify-end">
+              <div className="absolute text-base max-[1281px]:text-sm bottom-[2%] right-[5%] w-[300px] flex items-center justify-end">
                 <p className="mr-[5px]">
                   <span
                     className={`${

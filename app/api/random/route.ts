@@ -9,13 +9,13 @@ type FullSearch = [string[], ...any[]];
 
 export async function POST(req: Request) {
     try {
-        const { type } = await req.json();
+        const { type, NSFW } = await req.json();
 
         const fullSearch: FullSearch = [[]];
 
         switch (type) {
             case "anime": {
-                const response = await TenraiRandomAnime();
+                const response = await TenraiRandomAnime(NSFW);
 
                 const data = await response?.json();
 
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
             }
 
             case "manga": {
-                const response = await TenraiRandomManga();
+                const response = await TenraiRandomManga(NSFW);
 
                 const data = await response?.json();
 

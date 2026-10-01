@@ -80,8 +80,6 @@ export async function TMDBSerie(query: string){
         const dataReviews = await responseReview.json();
         const infoReview = dataReviews.results[0];
 
-                console.log(infoReview)
-
         const responseRecommendations = await fetch(urlDetails + info.id + '/recommendations', options)
         const dataRecommendations = await responseRecommendations.json();
 

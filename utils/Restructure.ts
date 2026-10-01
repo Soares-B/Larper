@@ -2,6 +2,7 @@ type TenraiShape = {
     info: {
         title_japanese: string,
         title?: string | null,
+        title_english?: string | null,
         synopsis?: string | null,
         background?: string | null,
         images?: {
@@ -229,7 +230,7 @@ class Tenrai{
     constructor(obj: TenraiShape, style: string){
         this.review = {};
         this.name = obj.info.title_japanese;
-        this.subname = obj.info.title ?? null;
+        this.subname = obj.info.title_english ?? obj.info.title ?? null;
         this.description = textShortener(obj.info.synopsis ?? null, style);
         this.background = textShortener(obj.info.background ?? null, style);
         this.cover = obj.info.images?.jpg?.large_image_url ?? null;
@@ -259,7 +260,7 @@ class Anime extends Tenrai{
 
     date: string | string | null;
     type: string;
-    totalEpisode: number | null;
+    totalEpisode: number | string;
     season: string | null;
     airing: boolean | null;
     age_rating: string | null;
@@ -269,7 +270,7 @@ class Anime extends Tenrai{
         super(obj, style)
         this.date = obj.info.aired ? obj.info.aired["from"] ? obj.info.aired["from"].slice(0, 10) : obj.info.status ? obj.info.status : 'No data (๑•́ -•̀)' : obj.info.status ? obj.info.status : 'No data (๑•́ -•̀)' ;
         this.type = 'anime';
-        this.totalEpisode = obj.info.episodes ?? null;
+        this.totalEpisode = obj.info.episodes ?? 'Unknow';
         this.season = obj.info.season ?? null;
         this.airing = obj.info.airing ?? null;
         this.age_rating = obj.info.rating ?? null;
