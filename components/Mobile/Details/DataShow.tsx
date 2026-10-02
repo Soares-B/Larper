@@ -1,5 +1,5 @@
 import Link from "next/link";
-import AvatarReview from "../ui/Avatar";
+import AvatarReview from "../../ui/Avatar";
 
 type Result = {
   review: {
@@ -68,7 +68,7 @@ type Result = {
 
 type SearchData = [string[]];
 
-export default function DataShow({
+export default function DataShowMobile({
   results,
   spoiler,
   setSpoiler,
@@ -142,19 +142,8 @@ export default function DataShow({
         <div
           className={`${
             openField ? "grid" : "hidden"
-          } absolute justify-center w-[70%] h-[80%] top-[13%] left-[25%] grid-rows-[1fr_1fr_1fr_1fr] grid-cols-[1fr_1fr_1fr_1fr]`}
+          } justify-center w-full p-5 h-full grid-rows-[1fr_1fr_1fr_1fr] grid-cols-[1fr_1fr_1fr_1fr]`}
         >
-          <p
-            className={`${
-              theme === "dark"
-                ? "text-[var(--middleTone)]"
-                : theme === "light"
-                  ? "text-[var(--middleToneLight)]"
-                  : "text-[var(--textLight)]"
-            } col-span-full text-xl max-[1281px]:text-base text-justify`}
-          >
-            {results.description}
-          </p>
 
           <div
             className={`relative ${
@@ -635,7 +624,7 @@ export default function DataShow({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[100%] h-full col-span-full row-4 rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
+            } w-[100%] h-full col-span-full row-[3/5] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
           >
             <p
               className={`${
@@ -649,7 +638,7 @@ export default function DataShow({
               Review
             </p>
 
-            <p className="absolute text-base max-[1441px]:text-sm max-[1281px]:text-xs max-[1025px]:text-[10px] left-[2%] top-[30%] w-[95%] text-justify">
+            <p className="absolute text-base max-[1441px]:text-sm max-[1281px]:text-xs max-[1025px]:text-[10px] max-[769px]:text-sm max-[769px]:top-[20%] left-[2%] top-[30%] w-[95%] text-justify">
               {results.review ? results.review.content ? results.review.content : 'No review :‹' : 'No review :‹'}
             </p>
 

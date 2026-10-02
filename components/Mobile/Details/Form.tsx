@@ -8,8 +8,8 @@ import {
 } from "@headlessui/react";
 import Theme from "@/components/Themes";
 import Menu from "@/components/Types Detailed";
-import Simple from "../Simple Button";
-import Favorites from "../Favorites";
+import Simple from "../../Simple Button";
+import Favorites from "../../Favorites";
 
 type result = {
   review: {
@@ -55,7 +55,7 @@ type Favorite = {
   image: string
 }
 
-export default function FormMedia({ theme, setTheme, setOpenField, setMedia, setCurrent, query, setQuery, suggestions, setSuggestions, filters, setFilters, favorites, favorite}: {theme: string, setTheme: any, setOpenField: any, setMedia: any, setCurrent: any, query: string, setQuery: any, suggestions: Suggestion | any, setSuggestions: any, filters: Filters, setFilters: any, favorites: Favorite[], favorite: any}){
+export default function FormMediaMobile({ theme, setTheme, setOpenField, setMedia, setCurrent, query, setQuery, suggestions, setSuggestions, filters, setFilters, favorites, favorite}: {theme: string, setTheme: any, setOpenField: any, setMedia: any, setCurrent: any, query: string, setQuery: any, suggestions: Suggestion | any, setSuggestions: any, filters: Filters, setFilters: any, favorites: Favorite[], favorite: any}){
 
     async function search(queryToSearch: string) {
     if (!queryToSearch.trim()) {

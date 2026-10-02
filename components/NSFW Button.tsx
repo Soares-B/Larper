@@ -11,7 +11,7 @@ export default function NSFWButton({theme, NSFW, setNSFW}: {theme: string, NSFW:
 		    <button
                 className={`inline-flex rounded-[5px] max-[1025px]:text-sm w-fit p-3 items-center justify-center ${
                     theme === "dark" ? on ? "bg-[#ffffff66]" : "bg-[#ffffff11]"  : on ? "bg-[#00000066]" : "bg-[#00000022]"
-                } ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} text-violet11 shadow-blackA4 outline-none hover:bg-violet3 hover:cursor-pointer`}
+                } ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} text-violet11 shadow-blackA4 outline-none hover:bg-violet3 hover:cursor-pointer max-[769px]:scale-[.75]`}
                 onClick={() => {
                     setOn(!on)
                     setNSFW(!NSFW)

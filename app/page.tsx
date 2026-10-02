@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import MediaForm from "@/components/Simple/Form";
-import ShowData from "@/components/Simple/DataShow";
+import ShowData from "@/components/Simple/ShowData";
 
 type result = {
   review: {
