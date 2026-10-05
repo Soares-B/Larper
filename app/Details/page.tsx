@@ -150,7 +150,7 @@ export default function Details() {
           }}
         />
       )}
-      <div className="w-[80%] max-[1441px]:w-[85%] max-[1441px]:h-[40%] max-[1025px]:w-full h-[50%] max-[1441px]:ml-[3%] flex max-[769px]:flex-col max-[769px]:w-fit justify-center">
+      <div className="w-[80%] max-[1441px]:w-[85%] max-[1441px]:h-[40%] max-[1025px]:w-full h-[50%] max-[1441px]:ml-[3%] flex max-[768px]:flex-col max-[768px]:w-fit justify-center">
         <Image
           src="/Imagens/Logo2.png"
           alt="logo"
@@ -200,12 +200,12 @@ export default function Details() {
                   : "bg-[var(--backgroundTransparent)] backdrop-blur-md"
           } ${
             theme === "dark" ? "text-[var(--text)]" : "text-[var(--textLight)]"
-          } rounded-[10px] m-[0_auto] transition-[1s] top-[-2%] grid grid-cols-[1fr_3fr] grid-rows-[minmax(0,2.5fr)_minmax(0,1fr)] max-[1025px]:grid-rows-[2.5fr_1.5fr] max-[769px]:grid-rows-[1fr_1.7fr_0.3fr]`}
+          } rounded-[10px] m-[0_auto] transition-[1s] top-[-2%] grid grid-cols-[1fr_3fr] grid-rows-[minmax(0,2.5fr)_minmax(0,1fr)] max-[1025px]:grid-rows-[2.5fr_1.5fr] max-[768px]:grid-rows-[1fr_1.7fr_0.3fr]`}
         >
           {results && (
             <>
               <div className={`block w-fit col-1 row-1 w-full p-[10%]`}>
-                <Link href={results.link} target="_blank" className="block w-full h-full max-[1025]:h-[80%] max-[769px]:h-[80%] select-none">
+                <Link href={results.link} target="_blank" className="block w-full h-full max-[1025]:h-[80%] max-[768px]:h-[80%] select-none">
                   <Image
                     src={results.cover!}
                     width={750}
@@ -219,7 +219,7 @@ export default function Details() {
               <div
                 className={`${
                   openField ? "flex" : "hidden"
-                } flex-col  gap-[0px] w-[70%] h-fit absolute left-[25%] top-[4%] max-[769px]:top-[2%] font-5xl`}
+                } flex-col  gap-[0px] w-[70%] h-fit absolute left-[25%] top-[4%] max-[768px]:top-[2%] font-5xl`}
               >
                 <p className="flex-1 min-w-[0] w-fit h-fit overflow-hidden text-ellipsis whitespace-nowrap text-xl">
                   {results.name}
@@ -249,7 +249,7 @@ export default function Details() {
 
 
 
-              <div className="max-[769px]:hidden">
+              <div className="max-[768px]:hidden">
                 <DataShow
                   results={results}
                   spoiler={spoiler}
@@ -276,10 +276,10 @@ export default function Details() {
 
 
               {(results.type === "anime" || results.type === "manga") && (
-                <div className="col-1 row-2 w-full h-full flex items-center justify-center max-[769px]:row-1 max-[769px]:items-end ">
-                  <div className="flex items-center justify-center max-[1025px]:flex-col max-[769px]:flex-row max-[1281px]:mt-[-10%] max-[769px]:m-[0%] gap-5 max-[769px]:gap-0">
+                <div className="col-1 row-2 w-full h-full flex items-center justify-center max-[768px]:row-1 max-[768px]:items-end ">
+                  <div className="flex items-center justify-center max-[1025px]:flex-col max-[768px]:flex-row max-[1281px]:mt-[-10%] max-[768px]:m-[0%] gap-5 max-[768px]:gap-0">
                     <button
-                      className={`inline-flex rounded-[5px] w-fit max-[1025px]:text-sm max-[769px]:text-xs max-[769px]:p-3 max-[769px]:scale-[.8] p-3 items-center justify-center ${
+                      className={`inline-flex rounded-[5px] w-fit max-[1025px]:text-sm max-[768px]:text-xs max-[768px]:p-3 max-[768px]:scale-[.8] p-3 items-center justify-center ${
                         theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
                       } ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} text-violet11 shadow-blackA4 outline-none hover:bg-violet3 hover:cursor-pointer `}
                       onClick={() => search(results.type, NSFW)}
