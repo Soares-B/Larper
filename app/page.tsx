@@ -32,7 +32,7 @@ export default function Home() {
   const results = (media?.[current] as MediaResult | undefined) ?? null;
 
   useEffect(() => {
-    const result = media?.[current];
+    const result = media?.[current] as MediaResult | undefined;
 
     if (result?.type === "anime" || result?.type === "manga") {
       setSpoiler(result.review?.spoiler ?? false);
