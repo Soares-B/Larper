@@ -45,13 +45,13 @@ export default function DataShowMobile({
         <div
           className={`${
             openField ? "grid" : "hidden"
-          } justify-center w-full p-5 h-full grid-rows-[1fr_1fr_1fr_1fr] grid-cols-[1fr_1fr_1fr_1fr]`}
+          } w-full h-full min-h-0 grid-cols-2 auto-rows-[minmax(110px,auto)] content-start justify-center gap-3 overflow-y-auto p-3 max-[380px]:grid-cols-1`}
         >
 
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
+            } w-full min-h-[110px] h-auto rounded-[16px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
           >
             <p
               className={`${
@@ -105,7 +105,7 @@ export default function DataShowMobile({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
+            } w-full min-h-[110px] h-auto rounded-[16px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
           >
             <p
               className={`${
@@ -187,7 +187,7 @@ export default function DataShowMobile({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
+            } w-full min-h-[110px] h-auto rounded-[16px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
           >
             <p
               className={`${
@@ -213,7 +213,7 @@ export default function DataShowMobile({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
+            } w-full min-h-[110px] h-auto rounded-[16px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
           >
             <p
               className={`${
@@ -239,7 +239,7 @@ export default function DataShowMobile({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
+            } w-full min-h-[110px] h-auto rounded-[16px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
           >
             <p
               className={`${
@@ -299,7 +299,7 @@ export default function DataShowMobile({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
+            } w-full min-h-[110px] h-auto rounded-[16px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
           >
             <p
               className={`${
@@ -370,7 +370,7 @@ export default function DataShowMobile({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
+            } w-full min-h-[110px] h-auto rounded-[16px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
           >
             <p
               className={`${
@@ -420,7 +420,7 @@ export default function DataShowMobile({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
+            } w-full min-h-[110px] h-auto rounded-[16px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
           >
             <p
               className={`${
@@ -527,7 +527,7 @@ export default function DataShowMobile({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[100%] h-full col-span-full row-[3/5] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
+            } w-full min-h-[180px] h-auto col-span-full rounded-[16px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
           >
             <p
               className={`${
