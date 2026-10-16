@@ -1,15 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import type { Suggestion, Favorite } from "@/types/media";
-import { useState } from "react";
+import type { Favorite, Filters, Suggestion } from "@/types/media";
+import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import FormMedia from "@/components/Details/Form";
 import DataShow from "@/components/Details/DataShow";
 import DataShowMobile from "@/components/Mobile/Details/DataShow";
 import { Heart } from "lucide-react";
-import { useEffect } from "react";
 import NSFWButton from "@/components/NSFW Button";
 
 export default function Details() {
@@ -38,7 +37,7 @@ export default function Details() {
 
   const [spoiler, setSpoiler] = useState(false);
 
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<Filters>({
     anime: true,
     manga: false,
     game: false,
