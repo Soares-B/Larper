@@ -1,5 +1,6 @@
 "use client";
 
+import type { Dispatch, SetStateAction } from "react";
 import type { Filters, SearchData, Suggestion } from "@/types/media";
 import {
   Combobox,
@@ -11,7 +12,31 @@ import Theme from "@/components/Themes";
 import Menu from "@/components/Types Simple";
 import Details from "../Details Button";
 
-export default function MediaForm({ theme, setTheme, setOpenField, setMedia, setCurrent, query, setQuery, suggestions, setSuggestions, filters, setFilters}: {theme: string, setTheme: any, setOpenField: any, setMedia: any, setCurrent: any, query: string, setQuery: any, suggestions: Suggestion | any, setSuggestions: any, filters: Filters, setFilters: any}){
+export default function MediaForm({
+  theme,
+  setTheme,
+  setOpenField,
+  setMedia,
+  setCurrent,
+  query,
+  setQuery,
+  suggestions,
+  setSuggestions,
+  filters,
+  setFilters,
+}: {
+  theme: string;
+  setTheme: Dispatch<SetStateAction<string>>;
+  setOpenField: Dispatch<SetStateAction<boolean>>;
+  setMedia: (data: SearchData) => void;
+  setCurrent: Dispatch<SetStateAction<number>>;
+  query: string;
+  setQuery: Dispatch<SetStateAction<string>>;
+  suggestions: Suggestion[];
+  setSuggestions: Dispatch<SetStateAction<Suggestion[]>>;
+  filters: Filters;
+  setFilters: Dispatch<SetStateAction<Filters>>;
+}){
 
     async function search(queryToSearch: string) {
     if (!queryToSearch.trim()) {
