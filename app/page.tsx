@@ -96,7 +96,7 @@ export default function Home() {
   }
 
   return (
-    <div className="relative grid w-screen h-screen grid-rows-[20%_7%_1px_1fr] overflow-hidden">
+    <div className="relative grid min-h-dvh h-dvh w-full grid-rows-[auto_auto_1px_minmax(0,1fr)] overflow-hidden max-[640px]:h-auto max-[640px]:min-h-dvh max-[640px]:grid-rows-[auto_auto_1px_minmax(0,1fr)]">
       {results ? (
         <div
           className="absolute inset-0 -z-10 scale-110 bg-cover bg-center blur-sm"
@@ -117,12 +117,12 @@ export default function Home() {
         alt="logo"
         width={713}
         height={170}
-        className="block scale-[.75] m-[0_auto] pt-[30px]"
+        className="block w-[min(80vw,713px)] h-auto mx-auto pt-6 max-[640px]:w-[90vw] max-[640px]:pt-4"
       />
 
       <MediaForm theme={theme} setTheme={setTheme} setOpenField={setOpenField} setMedia={setMedia} setCurrent={setCurrent} query={query} setQuery={setQuery} suggestions={suggestions} setSuggestions={setSuggestions} filters={filters} setFilters={setFilters}/>
 
-      <div className="relative row-4 flex items-center justify-center w-full h-full">
+      <div className="relative row-start-4 flex min-h-0 items-center justify-center w-full h-full max-[640px]:items-stretch max-[640px]:py-3">
         <button
           type="button"
           className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${
@@ -140,9 +140,9 @@ export default function Home() {
         </button>
 
         <div
-          className={`relative row-4 ${
-            openField ? "w-[60vw]" : "w-[0vw]"
-          } h-[98%] ${
+          className={`relative row-start-4 ${
+            openField ? "w-[60vw] max-[1024px]:w-[76vw] max-[640px]:w-[94vw]" : "w-[0vw]"
+          } h-[98%] max-[640px]:h-full max-[640px]:min-h-[560px] ${
             theme === "dark"
               ? "bg-[var(--background)]"
               : theme === "light"
@@ -171,7 +171,7 @@ export default function Home() {
                   results.type === "music"
                     ? "top-[-5%]"
                     : "top-[-10%]"
-                } left-[-3%] w-[45%]`}
+                } left-[-3%] w-[45%] max-[640px]:w-[42%] max-[640px]:left-[-1%]`}
               />
             </Link>
           )}
@@ -180,7 +180,7 @@ export default function Home() {
             <div
               className={`${
                 openField ? "flex" : "hidden"
-              } flex-row items-baseline gap-[10px] w-[60%] h-[7%] absolute right-[2%] top-[5%] font-5xl`}
+              } flex-col items-start gap-1 w-[52%] h-fit absolute right-[2%] top-[5%] font-5xl max-[640px]:w-[53%]`}
             >
               <p className="flex-1 min-w-[0] overflow-hidden text-ellipsis whitespace-nowrap text-xl">
                 {results.name}
