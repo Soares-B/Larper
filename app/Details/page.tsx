@@ -47,6 +47,35 @@ export default function Details() {
     music: false,
   });
 
+  useEffect(() => {
+    const suggestionSearch = async () => {
+      if (!query.trim()) {
+        setSuggestions([]);
+        return;
+      }
+
+      try {
+        const response = await fetch("/api/suggestions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ query }),
+        });
+
+        const data = await response.json();
+        setSuggestions(data.suggestions ?? []);
+      } catch (error) {
+        console.error("Erro ao buscar sugestões:", error);
+        setSuggestions([]);
+      }
+    };
+
+    const delay = setTimeout(suggestionSearch, 500);
+
+    return () => clearTimeout(delay);
+  }, [query]);
+
   function handleClick(arrow: string) {
     if (!media || media.length <= 1) {
       return;
