@@ -9,7 +9,7 @@ export default function ShowData({results, spoiler, setSpoiler, openField, theme
             <div
               className={`${
                 openField ? "grid" : "hidden"
-              } absolute justify-center w-[60%] h-[76%] top-[15%] left-[38%] grid-rows-[1.5fr_1fr_1fr_1fr] grid-cols-[1fr_1fr]`}
+              } absolute justify-center w-[60%] h-[76%] top-[15%] left-[38%] grid-rows-[1.5fr_1fr_1fr_1fr] grid-cols-[minmax(0,1fr)_minmax(0,1fr)] max-[1024px]:w-[64%] max-[640px]:left-[3%] max-[640px]:top-[43%] max-[640px]:w-[94%] max-[640px]:h-[52%] max-[640px]:grid-rows-[auto_repeat(3,minmax(75px,1fr))] max-[640px]:gap-2`}
             >
               <p
                 className={`${
@@ -28,7 +28,7 @@ export default function ShowData({results, spoiler, setSpoiler, openField, theme
                   theme === "dark"
                     ? "bg-[#ffffff11]"
                     : "bg-[#00000022]"
-                } w-[70%] h-[80%] rounded-[20px]`}
+                } w-[90%] h-[80%] min-w-0 rounded-[20px] max-[640px]:w-full max-[640px]:h-auto max-[640px]:min-h-[75px] max-[640px]:rounded-[14px]`}
               >
                 <p
                   className={`${
@@ -46,7 +46,7 @@ export default function ShowData({results, spoiler, setSpoiler, openField, theme
                   className={`absolute ${
                     results.type === "manga" ||
                     results.type === "serie"
-                      ? "text-lg"
+                      ? "text-lg max-[640px]:text-sm"
                       : "text-3xl"
                   } left-[4%] ${
                     results.type === "manga" ||
@@ -88,7 +88,7 @@ export default function ShowData({results, spoiler, setSpoiler, openField, theme
                   theme === "dark"
                     ? "bg-[#ffffff11]"
                     : "bg-[#00000022]"
-                } w-[70%] h-[80%] rounded-[20px]`}
+                } w-[90%] h-[80%] min-w-0 rounded-[20px] max-[640px]:w-full max-[640px]:h-auto max-[640px]:min-h-[75px] max-[640px]:rounded-[14px]`}
               >
                 <p
                   className={`${
@@ -122,7 +122,7 @@ export default function ShowData({results, spoiler, setSpoiler, openField, theme
                   theme === "dark"
                     ? "bg-[#ffffff11]"
                     : "bg-[#00000022]"
-                } w-[70%] h-[80%] rounded-[20px]`}
+                } w-[90%] h-[80%] min-w-0 rounded-[20px] max-[640px]:w-full max-[640px]:h-auto max-[640px]:min-h-[75px] max-[640px]:rounded-[14px]`}
               >
                 <p
                   className={`${
@@ -138,7 +138,7 @@ export default function ShowData({results, spoiler, setSpoiler, openField, theme
                     : "Genres"}
                 </p>
 
-                <p className={`absolute ${results.type !== 'music' ? results.genres && results.genres.join('').length > 38 ? 'text-md' : 'text-lg' : 'text-lg'} left-[4%] top-[30%]`}>
+                <p className={`absolute ${results.type !== 'music' ? results.genres && results.genres.join('').length > 38 ? 'text-md' : 'text-lg max-[640px]:text-sm' : 'text-lg max-[640px]:text-sm'} left-[4%] top-[30%]`}>
                   {results.type === "music"
                     ? results.artist?.name
                     : results.genres?.join(", ")}
@@ -150,7 +150,7 @@ export default function ShowData({results, spoiler, setSpoiler, openField, theme
                   theme === "dark"
                     ? "bg-[#ffffff11]"
                     : "bg-[#00000022]"
-                } w-[70%] h-[80%] rounded-[20px]`}
+                } w-[90%] h-[80%] min-w-0 rounded-[20px] max-[640px]:w-full max-[640px]:h-auto max-[640px]:min-h-[75px] max-[640px]:rounded-[14px]`}
               >
                 <p
                   className={`${
@@ -166,7 +166,7 @@ export default function ShowData({results, spoiler, setSpoiler, openField, theme
                     : "Release date"}
                 </p>
 
-                <p className="absolute text-lg left-[4%] top-[30%]">
+                <p className="absolute text-lg max-[640px]:text-sm left-[4%] top-[30%]">
                   {results.type === "music"
                     ? results.album?.name
                     : results.date?.replaceAll("-", "/")}
