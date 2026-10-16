@@ -96,7 +96,7 @@ export default function Home() {
   }
 
   return (
-    <div className="relative grid min-h-dvh h-dvh w-full grid-rows-[auto_auto_1px_minmax(0,1fr)] overflow-hidden max-[640px]:h-auto max-[640px]:min-h-dvh max-[640px]:grid-rows-[auto_auto_1px_minmax(0,1fr)]">
+    <div className="relative grid min-h-dvh h-dvh w-full grid-rows-[auto_auto_1px_minmax(0,1fr)] overflow-hidden max-[640px]:h-auto max-[640px]:min-h-dvh max-[640px]:grid-rows-[auto_auto_1px_minmax(0,1fr)] max-[640px]:overflow-y-auto">
       {results ? (
         <div
           className="absolute inset-0 -z-10 scale-110 bg-cover bg-center blur-sm"
