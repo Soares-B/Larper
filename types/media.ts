@@ -23,6 +23,33 @@ export type MediaResult = {
   totalSeason?: string | null;
   pages?: string | null;
   tagline?: string | null;
+  time?: string;
+  artist?: { name: string };
+  album?: { name: string };
+  vote_count?: number;
+  budget?: number;
+  budgetNumber?: number;
+  revenue?: number;
+  revenueNumber?: number;
+  game_type?: string;
+  game_modes?: string[];
+  platforms?: string[];
+  themes?: string[];
+  language?: { languages?: string[] };
+  recommendations?: string[];
+  keywords?: string[];
+  similar?: string[];
+  typeData?: string;
+  source?: string;
+  duration?: string;
+  recoms?: string[];
+  votes?: number;
+  authors?: { name?: string; link?: string }[];
+  episode_runtime?: string;
+};
+
+export type DetailedMediaResult = MediaResult & {
+  budgetNumber: number;
 };
 
 export type SearchData = [string[], ...MediaResult[]];
