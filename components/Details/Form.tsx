@@ -12,7 +12,35 @@ import Menu from "@/components/Types Detailed";
 import Simple from "../Simple Button";
 import Favorites from "../Favorites";
 
-export default function FormMedia({ theme, setTheme, setOpenField, setMedia, setCurrent, query, setQuery, suggestions, setSuggestions, filters, setFilters, favorites, favorite}: {theme: string, setTheme: any, setOpenField: any, setMedia: any, setCurrent: any, query: string, setQuery: any, suggestions: Suggestion | any, setSuggestions: any, filters: Filters, setFilters: any, favorites: Favorite[], favorite: any}){
+export default function FormMedia({
+  theme,
+  setTheme,
+  setOpenField,
+  setMedia,
+  setCurrent,
+  query,
+  setQuery,
+  suggestions,
+  setSuggestions,
+  filters,
+  setFilters,
+  favorites,
+  favorite,
+}: {
+  theme: string;
+  setTheme: Dispatch<SetStateAction<string>>;
+  setOpenField: Dispatch<SetStateAction<boolean>>;
+  setMedia: (data: SearchData) => void;
+  setCurrent: Dispatch<SetStateAction<number>>;
+  query: string;
+  setQuery: Dispatch<SetStateAction<string>>;
+  suggestions: Suggestion[];
+  setSuggestions: Dispatch<SetStateAction<Suggestion[]>>;
+  filters: Filters;
+  setFilters: Dispatch<SetStateAction<Filters>>;
+  favorites: Favorite[];
+  favorite: () => void;
+}){
 
     async function search(queryToSearch: string) {
     if (!queryToSearch.trim()) {
