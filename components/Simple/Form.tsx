@@ -9,6 +9,7 @@ import {
   ComboboxOptions,
 } from "@headlessui/react";
 import Theme from "@/components/Themes";
+import { searchMedia, selectMedia } from "@/lib/mediaSearch";
 import Menu from "@/components/Types Simple";
 import Details from "../Details Button";
 
@@ -38,7 +39,7 @@ export default function MediaForm({
   setFilters: Dispatch<SetStateAction<Filters>>;
 }){
 
-    async function search(queryToSearch: string) {
+  async function search(queryToSearch: string) {
     if (!queryToSearch.trim()) {
       return;
     }
@@ -47,22 +48,7 @@ export default function MediaForm({
     setSuggestions([]);
 
     try {
-      const response = await fetch("/api/search", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: queryToSearch,
-          filters,
-          type: "simple",
-        }),
-      });
-
-      const data: SearchData = await response.json();
-
-
-
+      const data = await searchMedia(queryToSearch, filters, "simple");
       setMedia(data);
       setCurrent(1);
     } catch (error) {
@@ -92,23 +78,11 @@ export default function MediaForm({
               setSuggestions([]);
 
               try {
-                const response = await fetch("/api/selected", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    name: selectedItem.name,
-                    type: selectedItem.type,
-                  }),
-                });
-
-                const data: SearchData = await response.json();
-
-                setMedia(data);
-                setCurrent(1);
-                setOpenField(true);
-              } catch (error) {
+                  const data = await selectMedia(selectedItem.name, selectedItem.type);
+                  setMedia(data);
+                  setCurrent(1);
+                  setOpenField(true);
+                } catch (error) {
                 console.error(
                   "Erro ao buscar item selecionado:",
                   error
