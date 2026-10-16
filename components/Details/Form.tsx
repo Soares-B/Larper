@@ -127,7 +127,7 @@ export default function FormMedia({
                         : "bg-[var(--backgroundTransparent)] backdrop-blur-md"
                 } border border-[rgba(255,255,255,0.171)] rounded-[5px] overflow-hidden z-50 shadow-lg`}
                 >
-                {suggestions.map((item: any, index: any) => (
+                {suggestions.map((item, index) => (
                     <ComboboxOption
                     key={`${item.type}-${item.name}-${index}`}
                     value={item}
