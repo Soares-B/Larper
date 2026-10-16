@@ -1,39 +1,4 @@
-type Result = {
-  review: {
-    [key: string]: any;
-  };
-  name: string;
-  subname?: string | null;
-  description?: string | null;
-  background?: string | null;
-  cover?: string | null;
-  id?: string | null;
-  rating?: number | null;
-  genres?: string[] | null;
-  link: string;
-  status?: string | null;
-  type: string;
-  date: string | null;
-
-  totalEpisode?: string;
-  season?: string | null;
-  runtime?: string | null;
-  volumes?: string | null;
-  chapters?: string | null;
-  totalSeason?: string | null;
-  pages?: string | null;
-  tagline?: string | null;
-
-  time?: string;
-  artist?: {
-    name: string;
-  };
-  album?: {
-    name: string;
-  };
-
-  game_type?: string;
-};
+import type { MediaResult as Result } from "@/types/media";
 
 export default function ShowData({results, spoiler, setSpoiler, openField, theme}: {results: Result, spoiler: boolean, setSpoiler: any, openField: boolean, theme: string}){
 
