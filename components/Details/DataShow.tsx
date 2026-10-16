@@ -561,11 +561,11 @@ export default function DataShow({
                 <p className="mr-[5px]">
                   <span
                     className={`${
-                      results.review && results.review.rating >= 7.5
+                      results.review && typeof results.review.rating === "number" && results.review.rating >= 7.5
                         ? theme === "light"
                           ? "text-[var(--greatLight)]"
                           : "text-[var(--great)]"
-                        : results.review && results.review.rating >= 5
+                        : results.review && typeof results.review.rating === "number" && results.review.rating >= 5
                           ? theme === "light"
                             ? "text-[var(--mediumLight)]"
                             : "text-[var(--medium)]"
