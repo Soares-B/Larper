@@ -189,7 +189,7 @@ export default function Details() {
                   : "bg-[var(--backgroundTransparent)] backdrop-blur-md"
           } ${
             theme === "dark" ? "text-[var(--text)]" : "text-[var(--textLight)]"
-          } rounded-[10px] m-[0_auto] transition-[1s] top-[-2%] grid grid-cols-[1fr_3fr] grid-rows-[minmax(0,2.5fr)_minmax(0,1fr)] max-[1025px]:grid-rows-[2.5fr_1.5fr] max-[769px]:grid-rows-[minmax(0,0.8fr)_minmax(0,1.5fr)_auto] max-[640px]:grid-rows-[minmax(0,0.8fr)_minmax(0,1.5fr)_auto]`}
+          } rounded-[10px] m-[0_auto] transition-[1s] top-[-2%] grid min-w-0 grid-cols-[minmax(0,1fr)_minmax(0,3fr)] grid-rows-[minmax(0,2.5fr)_minmax(0,1fr)] max-[1025px]:grid-rows-[2.5fr_1.5fr] max-[769px]:grid-rows-[minmax(0,0.8fr)_minmax(0,1.5fr)_auto] max-[640px]:grid-rows-[minmax(0,0.8fr)_minmax(0,1.5fr)_auto]`}
         >
           {results && (
             <>
