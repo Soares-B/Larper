@@ -218,10 +218,10 @@ export default function ShowData({results, spoiler, setSpoiler, openField, theme
                   <span
                     className={`${
                       results.review &&
-                      results.review.rating >= 7.5
+                      typeof results.review.rating === "number" && results.review.rating >= 7.5
                         ? theme === 'light' ? "text-[var(--greatLight)]" : "text-[var(--great)]"
                         : results.review &&
-                            results.review.rating >= 5
+                            typeof results.review.rating === "number" && results.review.rating >= 5
                           ? theme === 'light' ? "text-[var(--mediumLight)]" : "text-[var(--medium)]"
                           : theme === 'light' ? "text-[var(--badLight)]" : "text-[var(--bad)]"
                     }`}
