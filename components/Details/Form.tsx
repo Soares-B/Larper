@@ -8,6 +8,7 @@ import {
   ComboboxOptions,
 } from "@headlessui/react";
 import Theme from "@/components/Themes";
+import { searchMedia, selectMedia } from "@/lib/mediaSearch";
 import Menu from "@/components/Types Detailed";
 import Simple from "../Simple Button";
 import Favorites from "../Favorites";
@@ -42,7 +43,7 @@ export default function FormMedia({
   favorite: () => void;
 }){
 
-    async function search(queryToSearch: string) {
+  async function search(queryToSearch: string) {
     if (!queryToSearch.trim()) {
       return;
     }
@@ -51,21 +52,7 @@ export default function FormMedia({
     setSuggestions([]);
 
     try {
-      const response = await fetch("/api/search", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: queryToSearch,
-          filters,
-          type: "detailed",
-        }),
-      });
-
-      const data: SearchData = await response.json();
-
-
+      const data = await searchMedia(queryToSearch, filters, "detailed");
       setMedia(data);
       setCurrent(1);
     } catch (error) {
@@ -93,20 +80,10 @@ export default function FormMedia({
                 setQuery(selectedItem.name);
                 setSuggestions([]);
                 try {
-                    const response = await fetch("/api/selected", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        name: selectedItem.name,
-                        type: selectedItem.type,
-                    }),
-                    });
-                    const data: SearchData = await response.json();
-                    setMedia(data);
-                    setCurrent(1);
-                    setOpenField(true);
+                  const data = await selectMedia(selectedItem.name, selectedItem.type);
+                  setMedia(data);
+                  setCurrent(1);
+                  setOpenField(true);
                 } catch (error) {
                     console.error("Erro ao buscar item selecionado:", error);
                 }
