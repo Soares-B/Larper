@@ -1,16 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import type { Suggestion } from "@/types/media";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import MediaForm from "@/components/Simple/Form";
 import ShowData from "@/components/Simple/ShowData";
-
-type Suggestion = {
-  name: string;
-  type: string;
-};
 
 export default function Home() {
   const [theme, setTheme] = useState("dark");
