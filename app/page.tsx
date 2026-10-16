@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import type { Filters, Suggestion } from "@/types/media";
+import type { Filters, MediaResult, SearchData, Suggestion } from "@/types/media";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -15,7 +15,7 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 
-  const [media, setMedia] = useState<any>(null);
+  const [media, setMedia] = useState<SearchData | null>(null);
   const [current, setCurrent] = useState(1);
   const [spoiler, setSpoiler] = useState(false);
 
@@ -29,13 +29,13 @@ export default function Home() {
     music: false,
   });
 
-  const results = media?.[current] ?? null;
+  const results = (media?.[current] as MediaResult | undefined) ?? null;
 
   useEffect(() => {
     const result = media?.[current];
 
     if (result?.type === "anime" || result?.type === "manga") {
-      setSpoiler(result.review?.spoiler);
+      setSpoiler(result.review?.spoiler ?? false);
     } else {
       setSpoiler(false);
     }
