@@ -6,6 +6,7 @@ export type MediaResult = {
   subname?: string | null;
   description?: string | null;
   background?: string | null;
+  background_image?: string | null;
   cover?: string | null;
   id?: string | null;
   rating?: number | null;
