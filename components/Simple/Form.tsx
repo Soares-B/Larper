@@ -1,6 +1,6 @@
 "use client";
 
-import type { Favorite, Filters, SearchData, Suggestion } from "@/types/media";
+import type { Filters, SearchData, Suggestion } from "@/types/media";
 import {
   Combobox,
   ComboboxInput,
