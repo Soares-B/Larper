@@ -64,10 +64,10 @@ export default function MediaForm({
 
     return(
         <form
-        className="block m-[0_auto] mt-[5px] mb-[30px] w-[40%] h-[40px] flex justify-between"
+        className="mx-auto mt-[5px] mb-5 flex min-h-[40px] w-[min(760px,94vw)] flex-wrap items-center justify-center gap-2 max-[1024px]:w-[90vw] max-[640px]:w-[calc(100%-24px)]"
         onSubmit={handleSubmit}
       >
-        <div className="w-[80%] relative">
+        <div className="relative w-[min(80%,620px)] max-[640px]:w-[calc(100%-82px)]">
           <Combobox
             onChange={async (selectedItem: Suggestion | null) => {
               if (!selectedItem) {
@@ -104,7 +104,7 @@ export default function MediaForm({
                 theme === "dark"
                   ? "text-[var(--text)]"
                   : "text-[var(--textLight)]"
-              } text-[rgba(255,255,255,0.455)] border-[rgba(255,255,255,0.171)] rounded-[5px] focus:outline-none text-xl pl-1`}
+              } text-[rgba(255,255,255,0.455)] border-[rgba(255,255,255,0.171)] rounded-[5px] focus:outline-none text-xl pl-1 max-[640px]:text-base`}
               onChange={(e) => {
                 setQuery(e.target.value);
               }}
@@ -166,7 +166,7 @@ export default function MediaForm({
         <button
           type="submit"
           aria-label="search"
-          className={`w-[20%] p-px ${
+          className={`w-[100px] shrink-0 p-px max-[640px]:w-[74px] ${
             theme === "dark"
               ? "bg-[var(--background)]"
               : theme === "light"
