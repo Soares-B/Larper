@@ -194,7 +194,7 @@ export default function Details() {
           {results && (
             <>
               <div className={`block w-fit col-1 row-1 w-full p-[10%]`}>
-                <Link href={results.link} target="_blank" className="block w-full h-full max-[1025]:h-[80%] max-[769px]:h-[80%] select-none">
+                <Link href={results.link} target="_blank" className="block w-full h-full max-[1025px]:h-[80%] max-[769px]:h-[80%] select-none">
                   <Image
                     src={results.cover!}
                     width={750}
