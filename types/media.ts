@@ -1,7 +1,14 @@
+export type MediaReview = {
+  link?: string | null;
+  spoiler?: boolean;
+  content?: string | null;
+  author?: string | null;
+  avatar?: string | null;
+  rating?: number | null;
+};
+
 export type MediaResult = {
-  review: {
-    [key: string]: any;
-  };
+  review?: MediaReview | null;
   name: string;
   subname?: string | null;
   description?: string | null;
@@ -49,7 +56,7 @@ export type MediaResult = {
 };
 
 export type DetailedMediaResult = MediaResult & {
-  budgetNumber: number;
+  budgetNumber?: number;
 };
 
 export type SearchData = [string[], ...MediaResult[]];
