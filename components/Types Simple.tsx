@@ -1,3 +1,5 @@
+import type { Dispatch, SetStateAction } from "react";
+import type { Filters } from "@/types/media";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import {
 	HamburgerMenuIcon,
@@ -5,7 +7,7 @@ import {
 } from "@radix-ui/react-icons";
 
 
-export default function Menu ({filters, setFilters, theme}: {filters: any, setFilters: any, theme: string}) {
+export default function Menu ({filters, setFilters, theme}: {filters: Filters, setFilters: Dispatch<SetStateAction<Filters>>, theme: string}) {
 
   return (
 		<DropdownMenu.Root>
@@ -27,9 +29,9 @@ export default function Menu ({filters, setFilters, theme}: {filters: any, setFi
 						className="group relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[5px] text-[13px] leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1"
 						checked={filters.anime}
 						onCheckedChange={(value) =>
-							setFilters((prev: any) => ({
+							setFilters((prev) => ({
 							...prev,
-							anime: value,
+							anime: value === true,
 							}))
 						}
 					>
@@ -42,9 +44,9 @@ export default function Menu ({filters, setFilters, theme}: {filters: any, setFi
 						className="group relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[5px] text-[13px] leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1"
 						checked={filters.manga}
 						onCheckedChange={(value) =>
-							setFilters((prev: any) => ({
+							setFilters((prev) => ({
 							...prev,
-							manga: value,
+							manga: value === true,
 							}))
 						}
 					>
@@ -57,9 +59,9 @@ export default function Menu ({filters, setFilters, theme}: {filters: any, setFi
 						className="group relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[5px] text-[13px] leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1"
 						checked={filters.game}
 						onCheckedChange={(value) =>
-							setFilters((prev: any) => ({
+							setFilters((prev) => ({
 							...prev,
-							game: value,
+							game: value === true,
 							}))
 						}
 					>
@@ -72,9 +74,9 @@ export default function Menu ({filters, setFilters, theme}: {filters: any, setFi
 						className="group relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[5px] text-[13px] leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1"
 						checked={filters.book}
 						onCheckedChange={(value) =>
-							setFilters((prev: any) => ({
+							setFilters((prev) => ({
 							...prev,
-							book: value,
+							book: value === true,
 							}))
 						}
 					>
@@ -87,9 +89,9 @@ export default function Menu ({filters, setFilters, theme}: {filters: any, setFi
 						className="group relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[5px] text-[13px] leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1"
 						checked={filters.serie}
 						onCheckedChange={(value) =>
-							setFilters((prev: any) => ({
+							setFilters((prev) => ({
 							...prev,
-							serie: value,
+							serie: value === true,
 							}))
 						}
 					>
@@ -102,9 +104,9 @@ export default function Menu ({filters, setFilters, theme}: {filters: any, setFi
 						className="group relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[5px] text-[13px] leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1"
 						checked={filters.movie}
 						onCheckedChange={(value) =>
-							setFilters((prev: any) => ({
+							setFilters((prev) => ({
 							...prev,
-							movie: value,
+							movie: value === true,
 							}))
 						}
 					>
@@ -117,9 +119,9 @@ export default function Menu ({filters, setFilters, theme}: {filters: any, setFi
 						className="group relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[5px] text-[13px] leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1"
 						checked={filters.music}
 						onCheckedChange={(value) =>
-							setFilters((prev: any) => ({
+							setFilters((prev) => ({
 							...prev,
-							music: value,
+							music: value === true,
 							}))
 						}
 					>
