@@ -1,9 +1,8 @@
-import type { DetailedMediaResult as Result } from "@/types/media";
+import type { Dispatch, SetStateAction } from "react";
+import type { DetailedMediaResult as Result, Filters, SearchData } from "@/types/media";
+import { filtersForType, searchMedia } from "@/lib/mediaSearch";
 import Link from "next/link";
 import AvatarReview from "../../ui/Avatar";
-
-
-type SearchData = [string[]];
 
 export default function DataShowMobile({
   results,
@@ -16,32 +15,19 @@ export default function DataShowMobile({
 }: {
   results: Result;
   spoiler: boolean;
-  setSpoiler: any;
+  setSpoiler: Dispatch<SetStateAction<boolean>>;
   openField: boolean;
   theme: string;
-  setMedia: any;
-  setCurrent: any;
+  setMedia: (data: SearchData) => void;
+  setCurrent: Dispatch<SetStateAction<number>>;
 }) {
-  async function search(queryToSearch: string, filters: any) {
+  async function search(queryToSearch: string, filters: Filters) {
     if (!queryToSearch.trim()) {
       return;
     }
 
     try {
-      const response = await fetch("/api/search", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: queryToSearch,
-          filters: filters,
-          type: "detailed",
-        }),
-      });
-
-      const data: SearchData = await response.json();
-
+      const data = await searchMedia(queryToSearch, filters, "detailed");
       setMedia(data);
       setCurrent(1);
     } catch (error) {
@@ -50,27 +36,7 @@ export default function DataShowMobile({
   }
 
   function handleSubmit(query: string, type: string) {
-    const filters: any = {};
-
-    switch (type) {
-      case "anime":
-        filters.anime = true;
-        break;
-
-      case "manga":
-        filters.manga = true;
-        break;
-
-      case "serie":
-        filters.serie = true;
-        break;
-
-      case "movie":
-        filters.movie = true;
-        break;
-    }
-
-    search(query, filters);
+    search(query, filtersForType(type));
   }
 
   return (
