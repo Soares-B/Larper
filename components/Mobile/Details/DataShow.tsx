@@ -329,14 +329,9 @@ export default function DataShowMobile({
                   {results.recommendations?.map((r) => {
                     return (
                       <span key={r}>
-                        <Link
-                          key={r}
-                          href=""
-                          className="underline"
-                          onClick={() => handleSubmit(r, "serie")}
-                        >
+                        <button type="button" key={r} className="underline" onClick={() => handleSubmit(r, "serie")}>
                           {r}
-                        </Link>
+                        </button>
                         ,{" "}  
                       </span>
                     );
@@ -347,14 +342,9 @@ export default function DataShowMobile({
                   {results.recommendations?.map((r) => {
                     return (
                       <span key={r}>
-                        <Link
-                          key={r}
-                          href=""
-                          className="underline"
-                          onClick={() => handleSubmit(r, "movie")}
-                        >
+                        <button type="button" key={r} className="underline" onClick={() => handleSubmit(r, "movie")}>
                           {r}
-                        </Link>
+                        </button>
                         ,{" "}  
                       </span>
                     );
@@ -444,14 +434,9 @@ export default function DataShowMobile({
                   {results.recoms ? results.recoms.length > 0 ? results.recoms.map((r) => {
                     return (
                       <span key={r}>
-                        <Link
-                          key={r}
-                          href=""
-                          className="underline"
-                          onClick={() => handleSubmit(r, "anime")}
-                        >
+                        <button type="button" key={r} className="underline" onClick={() => handleSubmit(r, "anime")}>
                           {r}
-                        </Link>
+                        </button>
                         ,{" "}  
                       </span>
                     );
@@ -462,14 +447,9 @@ export default function DataShowMobile({
                   {results.recoms ? results.recoms.length > 0 ? results.recoms?.map((r) => {
                     return (
                       <span key={r}>
-                        <Link
-                          key={r}
-                          href=""
-                          className="underline"
-                          onClick={() => handleSubmit(r, "manga")}
-                        >
+                        <button type="button" key={r} className="underline" onClick={() => handleSubmit(r, "manga")}>
                           {r}
-                        </Link>
+                        </button>
                         ,{" "}  
                       </span>
                     );
@@ -480,14 +460,9 @@ export default function DataShowMobile({
                   {results.similar?.map((s) => {
                     return (
                       <span key={s}>
-                        <Link
-                          key={s}
-                          href=""
-                          className="underline"
-                          onClick={() => handleSubmit(s, "serie")}
-                        >
+                        <button type="button" key={s} className="underline" onClick={() => handleSubmit(s, "serie")}>
                           {s}
-                        </Link>
+                        </button>
                         ,{" "}  
                       </span>
                     );
@@ -498,14 +473,9 @@ export default function DataShowMobile({
                   {results.similar?.map((s) => {
                     return (
                       <span key={s}>
-                        <Link
-                          key={s}
-                          href=""
-                          className="underline"
-                          onClick={() => handleSubmit(s, "movie")}
-                        >
+                        <button type="button" key={s} className="underline" onClick={() => handleSubmit(s, "movie")}>
                           {s}
-                        </Link>
+                        </button>
                         ,{" "}  
                       </span>
                     );
