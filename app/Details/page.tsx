@@ -119,7 +119,7 @@ export default function Details() {
   }
 
   return (
-    <div className="relative grid w-screen h-screen grid-rows-[18%_minmax(0,1fr)] overflow-hidden">
+    <div className="relative grid min-h-dvh h-dvh w-full grid-rows-[auto_minmax(0,1fr)] overflow-hidden max-[640px]:h-dvh max-[640px]:grid-rows-[auto_minmax(0,1fr)]">
       {results ? (
         <div
           className="absolute inset-0 -z-10 scale-110 bg-cover bg-center blur-sm"
@@ -139,13 +139,13 @@ export default function Details() {
           }}
         />
       )}
-      <div className="w-[80%] max-[1441px]:w-[85%] max-[1441px]:h-[40%] max-[1025px]:w-full h-[50%] max-[1441px]:ml-[3%] flex max-[769px]:flex-col max-[769px]:w-fit justify-center">
+      <div className="flex h-fit w-[min(1200px,94vw)] items-center justify-center gap-6 py-4 max-[1025px]:w-[96vw] max-[769px]:flex-col max-[769px]:gap-3 max-[640px]:w-full max-[640px]:px-3 max-[640px]:py-3">
         <Image
           src="/Imagens/Logo2.png"
           alt="logo"
           width={713}
           height={170}
-          className="block ml-[-20%] w-fit row-1"
+          className="block h-auto w-[min(36vw,420px)] shrink-0 row-start-1 max-[769px]:w-[min(65vw,360px)] max-[640px]:w-[min(78vw,320px)]"
         />
         <FormMedia
           theme={theme}
@@ -163,7 +163,7 @@ export default function Details() {
           favorite={favorite}
         />
       </div>
-      <div className="relative row-2 flex items-center justify-center w-full h-full">
+      <div className="relative row-start-2 flex min-h-0 items-center justify-center w-full h-full max-[640px]:py-2">
         <button
           type="button"
           className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${
@@ -178,7 +178,7 @@ export default function Details() {
 
         <div
           className={`relative row-2 ${
-            openField ? "w-[85vw]" : "w-[0vw]"
+            openField ? "w-[85vw] max-[1024px]:w-[92vw] max-[640px]:w-[96vw]" : "w-[0vw]"
           } h-[95%] ${
             theme === "dark"
               ? "bg-[var(--background)]"
@@ -189,7 +189,7 @@ export default function Details() {
                   : "bg-[var(--backgroundTransparent)] backdrop-blur-md"
           } ${
             theme === "dark" ? "text-[var(--text)]" : "text-[var(--textLight)]"
-          } rounded-[10px] m-[0_auto] transition-[1s] top-[-2%] grid grid-cols-[1fr_3fr] grid-rows-[minmax(0,2.5fr)_minmax(0,1fr)] max-[1025px]:grid-rows-[2.5fr_1.5fr] max-[769px]:grid-rows-[1fr_1.7fr_0.3fr]`}
+          } rounded-[10px] m-[0_auto] transition-[1s] top-[-2%] grid grid-cols-[1fr_3fr] grid-rows-[minmax(0,2.5fr)_minmax(0,1fr)] max-[1025px]:grid-rows-[2.5fr_1.5fr] max-[769px]:grid-rows-[minmax(0,0.8fr)_minmax(0,1.5fr)_auto] max-[640px]:grid-rows-[minmax(0,0.8fr)_minmax(0,1.5fr)_auto]`}
         >
           {results && (
             <>
