@@ -1,5 +1,6 @@
 "use client";
 
+import type { Favorite, Filters, SearchData, Suggestion } from "@/types/media";
 import {
   Combobox,
   ComboboxInput,
@@ -10,50 +11,6 @@ import Theme from "@/components/Themes";
 import Menu from "@/components/Types Detailed";
 import Simple from "../Simple Button";
 import Favorites from "../Favorites";
-
-type result = {
-  review: {
-    [key: string]: any;
-  };
-  name: string;
-  subname?: string | null;
-  description?: string | null;
-  background?: string | null;
-  cover?: string | null;
-  id?: string | null;
-  rating?: number | null;
-  genres?: string[] | null;
-  link: string;
-  status?: string | null;
-  type: string;
-  date: string | null;
-
-  totalEpisode?: string;
-  season?: string | null;
-  runtime?: string | null;
-  volumes?: string | null;
-  chapters?: string | null;
-  totalSeason?: string | null;
-  pages?: string | null;
-  tagline?: string | null;
-};
-
-type SearchData = [string[], ...result[]];
-
-type Suggestion = {
-  name: string;
-  type: string;
-};
-
-type Filters = {
-    [key: string]: boolean
-}
-
-type Favorite = {
-  name: string
-  type: string
-  image: string
-}
 
 export default function FormMedia({ theme, setTheme, setOpenField, setMedia, setCurrent, query, setQuery, suggestions, setSuggestions, filters, setFilters, favorites, favorite}: {theme: string, setTheme: any, setOpenField: any, setMedia: any, setCurrent: any, query: string, setQuery: any, suggestions: Suggestion | any, setSuggestions: any, filters: Filters, setFilters: any, favorites: Favorite[], favorite: any}){
 
