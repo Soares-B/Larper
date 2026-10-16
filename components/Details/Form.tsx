@@ -1,5 +1,6 @@
 "use client";
 
+import type { Dispatch, FormEvent, SetStateAction } from "react";
 import type { Favorite, Filters, SearchData, Suggestion } from "@/types/media";
 import {
   Combobox,
@@ -41,7 +42,7 @@ export default function FormMedia({
   setFilters: Dispatch<SetStateAction<Filters>>;
   favorites: Favorite[];
   favorite: () => void;
-}){
+}) {
 
   async function search(queryToSearch: string) {
     if (!queryToSearch.trim()) {
@@ -60,7 +61,7 @@ export default function FormMedia({
     }
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     search(query);
