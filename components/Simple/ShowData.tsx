@@ -1,6 +1,7 @@
+import type { Dispatch, SetStateAction } from "react";
 import type { MediaResult as Result } from "@/types/media";
 
-export default function ShowData({results, spoiler, setSpoiler, openField, theme}: {results: Result, spoiler: boolean, setSpoiler: any, openField: boolean, theme: string}){
+export default function ShowData({results, spoiler, setSpoiler, openField, theme}: {results: Result, spoiler: boolean, setSpoiler: Dispatch<SetStateAction<boolean>>, openField: boolean, theme: string}){
 
     return(
         <>
