@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import type { Suggestion } from "@/types/media";
+import type { Filters, Suggestion } from "@/types/media";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -19,7 +19,7 @@ export default function Home() {
   const [current, setCurrent] = useState(1);
   const [spoiler, setSpoiler] = useState(false);
 
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<Filters>({
     anime: true,
     manga: false,
     game: false,
