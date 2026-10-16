@@ -69,10 +69,10 @@ export default function FormMedia({
 
     return(
         <form
-            className="block ml-[2%] m-[auto_0] w-[50%] max-[1441px]:w-[60%] h-[40px] flex justify-between row-1"
+            className="ml-[2%] my-auto flex min-h-[40px] w-[min(820px,62vw)] flex-wrap items-center justify-start gap-2 row-start-1 max-[1441px]:w-[70vw] max-[1024px]:ml-0 max-[1024px]:w-[90vw] max-[640px]:w-[calc(100%-24px)] max-[640px]:justify-center"
             onSubmit={handleSubmit}
         >
-            <div className="w-[80%] relative">
+            <div className="relative w-[min(80%,620px)] max-[640px]:w-[calc(100%-82px)]">
             <Combobox
                 onChange={async (selectedItem: Suggestion | null) => {
                 if (!selectedItem) {
@@ -104,7 +104,7 @@ export default function FormMedia({
                     theme === "dark"
                     ? "text-[var(--text)]"
                     : "text-[var(--textLight)]"
-                } text-[rgba(255,255,255,0.455)] border-[rgba(255,255,255,0.171)] rounded-[5px] focus:outline-none text-xl pl-1`}
+                } text-[rgba(255,255,255,0.455)] border-[rgba(255,255,255,0.171)] rounded-[5px] focus:outline-none text-xl pl-1 max-[640px]:text-base`}
                 onChange={(e) => {
                     setQuery(e.target.value);
                 }}
@@ -161,7 +161,7 @@ export default function FormMedia({
             <button
             type="submit"
             aria-label="search"
-            className={`w-[20%] p-px ${
+            className={`w-[100px] shrink-0 p-px max-[640px]:w-[74px] ${
                 theme === "dark"
                 ? "bg-[var(--background)]"
                 : theme === "light"
