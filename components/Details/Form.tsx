@@ -142,7 +142,7 @@ export default function FormMedia({
                         ? "data-[focus]:bg-zinc-800"
                         : theme === "light"
                             ? "data-[focus]:bg-zinc-300"
-                            : "data-[focus]:bg-[var(--backgroundTransparent)] data-[focus]:backdrop-blur-sx"
+                            : "data-[focus]:bg-[var(--backgroundTransparent)] data-[focus]:backdrop-blur-xs"
                     } cursor-pointer flex justify-between items-center`}
                     >
                     <span>{item.name}</span>
