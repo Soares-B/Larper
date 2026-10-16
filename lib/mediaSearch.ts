@@ -37,3 +37,24 @@ export async function selectMedia(
 
   return response.json();
 }
+
+export function filtersForType(type: string): Filters {
+  const filters: Filters = {};
+
+  switch (type) {
+    case "anime":
+      filters.anime = true;
+      break;
+    case "manga":
+      filters.manga = true;
+      break;
+    case "serie":
+      filters.serie = true;
+      break;
+    case "movie":
+      filters.movie = true;
+      break;
+  }
+
+  return filters;
+}
