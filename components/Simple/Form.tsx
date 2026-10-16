@@ -1,6 +1,6 @@
 "use client";
 
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch, FormEvent, SetStateAction } from "react";
 import type { Filters, SearchData, Suggestion } from "@/types/media";
 import {
   Combobox,
@@ -37,7 +37,7 @@ export default function MediaForm({
   setSuggestions: Dispatch<SetStateAction<Suggestion[]>>;
   filters: Filters;
   setFilters: Dispatch<SetStateAction<Filters>>;
-}){
+}) {
 
   async function search(queryToSearch: string) {
     if (!queryToSearch.trim()) {
@@ -56,7 +56,7 @@ export default function MediaForm({
     }
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     search(query);
