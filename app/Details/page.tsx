@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import type { Favorite, Filters, Suggestion } from "@/types/media";
+import type { Favorite, Filters, MediaResult, SearchData, Suggestion } from "@/types/media";
 import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -12,9 +12,9 @@ import { Heart } from "lucide-react";
 import NSFWButton from "@/components/NSFW Button";
 
 export default function Details() {
-  const [media, setMedia] = useState<any>(null);
+  const [media, setMedia] = useState<SearchData | null>(null);
   const [current, setCurrent] = useState(1);
-  const results = media?.[current] ?? null;
+  const results = (media?.[current] as MediaResult | undefined) ?? null;
   const [theme, setTheme] = useState("dark");
   const [openField, setOpenField] = useState(false);
   const [favorites, setFavorites] = useState<Favorite[]>([]);
