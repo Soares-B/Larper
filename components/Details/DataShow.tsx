@@ -399,7 +399,7 @@ export default function DataShow({
                   : results.type === 'game' ? 'Themes' : "Keywords"}
             </p>
 
-            <p className={`absolute ${results.type === 'manga' || results.type === 'serie' || results.type === 'movie' ? 'max-[1281]:text-sm max-[1025px]:text-xs' : 'max-[1281]:text-base max-[1025px]:text-sm'} left-[4%] top-[30%]`}>
+            <p className={`absolute ${results.type === 'manga' || results.type === 'serie' || results.type === 'movie' ? 'max-[1281px]:text-sm max-[1025px]:text-xs' : 'max-[1281px]:text-base max-[1025px]:text-sm'} left-[4%] top-[30%]`}>
               {results.type === "anime" ? (
                 results.duration
               ) : results.type === "manga" ? (
@@ -532,7 +532,7 @@ export default function DataShow({
           <Link
             href={results.review?.link ?  results.review.link : ''}
             target="_blank"
-            className="w-[100%] h-full col-span-full row-4 rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-mlg max-[1281px]:text-sm z-1 absolute row-2"
+            className="w-[100%] h-full col-span-full row-4 rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm z-1 absolute row-2"
           />
 
           <div
