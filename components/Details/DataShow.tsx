@@ -45,7 +45,7 @@ export default function DataShow({
         <div
           className={`${
             openField ? "grid" : "hidden"
-          } absolute justify-center w-[70%] h-[80%] top-[13%] left-[25%] grid-rows-[1fr_1fr_1fr_1fr] grid-cols-[repeat(4,minmax(0,1fr))] max-[1024px]:left-[24%] max-[1024px]:w-[73%] max-[1024px]:grid-cols-2 max-[1024px]:grid-rows-[auto_repeat(4,minmax(95px,1fr))] max-[1024px]:gap-2`}
+          } absolute justify-center w-[70%] h-[80%] top-[13%] left-[25%] grid-rows-[1fr_1fr_1fr_1fr] grid-cols-[repeat(4,minmax(0,1fr))] max-[1024px]:left-[24%] max-[1024px]:w-[73%] max-[1024px]:grid-cols-2 max-[1024px]:grid-rows-[auto] max-[1024px]:auto-rows-[minmax(95px,auto)] max-[1024px]:gap-2 max-[1024px]:overflow-y-auto`}
         >
           <p
             className={`${
