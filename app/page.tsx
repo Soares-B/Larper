@@ -129,7 +129,7 @@ export default function Home() {
             theme === "dark"
               ? "text-[var(--text)]"
               : "text-[var(--textLight)]"
-          } w-[50px] h-[50px] rounded-full absolute left-[15%] hover:cursor-pointer ${
+          } w-[50px] h-[50px] rounded-full absolute left-[3%] max-[640px]:left-[1%] hover:cursor-pointer ${
             openField && media?.[0]?.length > 1
               ? "block"
               : "hidden"
@@ -234,7 +234,7 @@ export default function Home() {
             theme === "dark"
               ? "text-[var(--text)]"
               : "text-[var(--textLight)]"
-          } w-[50px] h-[50px] rounded-full absolute right-[15%] hover:cursor-pointer ${
+          } w-[50px] h-[50px] rounded-full absolute right-[3%] max-[640px]:right-[1%] hover:cursor-pointer ${
             openField
               ? media && media?.[0]?.length > 1
                 ? "block"
