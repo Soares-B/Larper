@@ -45,7 +45,7 @@ export default function DataShow({
         <div
           className={`${
             openField ? "grid" : "hidden"
-          } absolute justify-center w-[70%] h-[80%] top-[13%] left-[25%] grid-rows-[1fr_1fr_1fr_1fr] grid-cols-[1fr_1fr_1fr_1fr]`}
+          } absolute justify-center w-[70%] h-[80%] top-[13%] left-[25%] grid-rows-[1fr_1fr_1fr_1fr] grid-cols-[repeat(4,minmax(0,1fr))] max-[1024px]:left-[24%] max-[1024px]:w-[73%] max-[1024px]:grid-cols-2 max-[1024px]:grid-rows-[auto_repeat(4,minmax(95px,1fr))] max-[1024px]:gap-2`}
         >
           <p
             className={`${
@@ -54,7 +54,7 @@ export default function DataShow({
                 : theme === "light"
                   ? "text-[var(--middleToneLight)]"
                   : "text-[var(--textLight)]"
-            } col-span-full text-xl max-[1281px]:text-base text-justify`}
+            } col-span-full text-xl max-[1281px]:text-base max-[640px]:text-sm text-justify`}
           >
             {results.description}
           </p>
@@ -62,7 +62,7 @@ export default function DataShow({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
+            } w-full h-[80%] min-w-0 rounded-[16px] max-[1024px]:h-auto max-[1024px]:min-h-[95px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
           >
             <p
               className={`${
@@ -116,7 +116,7 @@ export default function DataShow({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
+            } w-full h-[80%] min-w-0 rounded-[16px] max-[1024px]:h-auto max-[1024px]:min-h-[95px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
           >
             <p
               className={`${
@@ -198,7 +198,7 @@ export default function DataShow({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
+            } w-full h-[80%] min-w-0 rounded-[16px] max-[1024px]:h-auto max-[1024px]:min-h-[95px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
           >
             <p
               className={`${
@@ -224,7 +224,7 @@ export default function DataShow({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
+            } w-full h-[80%] min-w-0 rounded-[16px] max-[1024px]:h-auto max-[1024px]:min-h-[95px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs`}
           >
             <p
               className={`${
@@ -250,7 +250,7 @@ export default function DataShow({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
+            } w-full h-[80%] min-w-0 rounded-[16px] max-[1024px]:h-auto max-[1024px]:min-h-[95px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
           >
             <p
               className={`${
@@ -310,7 +310,7 @@ export default function DataShow({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
+            } w-full h-[80%] min-w-0 rounded-[16px] max-[1024px]:h-auto max-[1024px]:min-h-[95px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
           >
             <p
               className={`${
@@ -381,7 +381,7 @@ export default function DataShow({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
+            } w-full h-[80%] min-w-0 rounded-[16px] max-[1024px]:h-auto max-[1024px]:min-h-[95px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
           >
             <p
               className={`${
@@ -431,7 +431,7 @@ export default function DataShow({
           <div
             className={`relative ${
               theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-            } w-[90%] h-[80%] rounded-[20px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
+            } w-full h-[80%] min-w-0 rounded-[16px] max-[1024px]:h-auto max-[1024px]:min-h-[95px] overflow-y-scroll scrollbar-none max-[1441px]:text-lg max-[1281px]:text-sm max-[1025px]:text-xs overflow-y-scroll scrollbar-none`}
           >
             <p
               className={`${
