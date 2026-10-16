@@ -80,7 +80,6 @@ export default function FormMedia({ theme, setTheme, setOpenField, setMedia, set
 
       const data: SearchData = await response.json();
 
-      console.log(data)
 
       setMedia(data);
       setCurrent(1);
