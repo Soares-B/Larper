@@ -7,35 +7,6 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import MediaForm from "@/components/Simple/Form";
 import ShowData from "@/components/Simple/ShowData";
 
-type result = {
-  review: {
-    [key: string]: any;
-  };
-  name: string;
-  subname?: string | null;
-  description?: string | null;
-  background?: string | null;
-  cover?: string | null;
-  id?: string | null;
-  rating?: number | null;
-  genres?: string[] | null;
-  link: string;
-  status?: string | null;
-  type: string;
-  date: string | null;
-
-  totalEpisode?: string;
-  season?: string | null;
-  runtime?: string | null;
-  volumes?: string | null;
-  chapters?: string | null;
-  totalSeason?: string | null;
-  pages?: string | null;
-  tagline?: string | null;
-};
-
-type SearchData = [string[], ...result[]];
-
 type Suggestion = {
   name: string;
   type: string;
@@ -107,42 +78,6 @@ export default function Home() {
 
     return () => clearTimeout(delay);
   }, [query]);
-
-  async function search(queryToSearch: string) {
-    if (!queryToSearch.trim()) {
-      return;
-    }
-
-    setOpenField(true);
-    setSuggestions([]);
-
-    try {
-      const response = await fetch("/api/search", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: queryToSearch,
-          filters,
-          type: 'simple'
-        }),
-      });
-
-      const data: SearchData = await response.json();
-
-      setMedia(data);
-      setCurrent(1);
-    } catch (error) {
-      console.error("Erro ao pesquisar:", error);
-    }
-  }
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    search(query);
-  }
 
   function handleClick(arrow: string) {
     if (!media || media.length <= 1) {
