@@ -9,7 +9,7 @@ export default function ShowData({results, spoiler, setSpoiler, openField, theme
             <div
               className={`${
                 openField ? "grid" : "hidden"
-              } absolute justify-center w-[60%] h-[76%] top-[15%] left-[38%] grid-rows-[1.5fr_1fr_1fr_1fr] grid-cols-[minmax(0,1fr)_minmax(0,1fr)] max-[1024px]:w-[64%] max-[640px]:left-[3%] max-[640px]:top-[43%] max-[640px]:w-[94%] max-[640px]:h-[52%] max-[640px]:grid-rows-[auto_repeat(3,minmax(75px,1fr))] max-[640px]:gap-2`}
+              } absolute justify-center w-[60%] h-[76%] top-[15%] left-[38%] grid-rows-[1.5fr_1fr_1fr_1fr] grid-cols-[minmax(0,1fr)_minmax(0,1fr)] max-[1024px]:w-[64%] max-[769px]:left-[3%] max-[769px]:top-[40%] max-[769px]:w-[94%] max-[769px]:h-[56%] max-[769px]:grid-rows-[auto_repeat(3,minmax(90px,1fr))] max-[769px]:gap-2 max-[640px]:left-[3%] max-[640px]:top-[43%] max-[640px]:w-[94%] max-[640px]:h-[52%] max-[640px]:grid-rows-[auto_repeat(3,minmax(75px,1fr))] max-[640px]:gap-2`}
             >
               <p
                 className={`${
@@ -28,7 +28,7 @@ export default function ShowData({results, spoiler, setSpoiler, openField, theme
                   theme === "dark"
                     ? "bg-[#ffffff11]"
                     : "bg-[#00000022]"
-                } w-[90%] h-[80%] min-w-0 rounded-[20px] max-[640px]:w-full max-[640px]:h-auto max-[640px]:min-h-[75px] max-[640px]:rounded-[14px]`}
+                } w-[90%] h-[80%] min-w-0 rounded-[20px] max-[769px]:w-full max-[769px]:h-auto max-[769px]:min-h-[90px] max-[769px]:rounded-[14px] max-[640px]:w-full max-[640px]:h-auto max-[640px]:min-h-[75px] max-[640px]:rounded-[14px]`}
               >
                 <p
                   className={`${
@@ -88,7 +88,7 @@ export default function ShowData({results, spoiler, setSpoiler, openField, theme
                   theme === "dark"
                     ? "bg-[#ffffff11]"
                     : "bg-[#00000022]"
-                } w-[90%] h-[80%] min-w-0 rounded-[20px] max-[640px]:w-full max-[640px]:h-auto max-[640px]:min-h-[75px] max-[640px]:rounded-[14px]`}
+                } w-[90%] h-[80%] min-w-0 rounded-[20px] max-[769px]:w-full max-[769px]:h-auto max-[769px]:min-h-[90px] max-[769px]:rounded-[14px] max-[640px]:w-full max-[640px]:h-auto max-[640px]:min-h-[75px] max-[640px]:rounded-[14px]`}
               >
                 <p
                   className={`${
@@ -122,7 +122,7 @@ export default function ShowData({results, spoiler, setSpoiler, openField, theme
                   theme === "dark"
                     ? "bg-[#ffffff11]"
                     : "bg-[#00000022]"
-                } w-[90%] h-[80%] min-w-0 rounded-[20px] max-[640px]:w-full max-[640px]:h-auto max-[640px]:min-h-[75px] max-[640px]:rounded-[14px]`}
+                } w-[90%] h-[80%] min-w-0 rounded-[20px] max-[769px]:w-full max-[769px]:h-auto max-[769px]:min-h-[90px] max-[769px]:rounded-[14px] max-[640px]:w-full max-[640px]:h-auto max-[640px]:min-h-[75px] max-[640px]:rounded-[14px]`}
               >
                 <p
                   className={`${
@@ -150,7 +150,7 @@ export default function ShowData({results, spoiler, setSpoiler, openField, theme
                   theme === "dark"
                     ? "bg-[#ffffff11]"
                     : "bg-[#00000022]"
-                } w-[90%] h-[80%] min-w-0 rounded-[20px] max-[640px]:w-full max-[640px]:h-auto max-[640px]:min-h-[75px] max-[640px]:rounded-[14px]`}
+                } w-[90%] h-[80%] min-w-0 rounded-[20px] max-[769px]:w-full max-[769px]:h-auto max-[769px]:min-h-[90px] max-[769px]:rounded-[14px] max-[640px]:w-full max-[640px]:h-auto max-[640px]:min-h-[75px] max-[640px]:rounded-[14px]`}
               >
                 <p
                   className={`${
