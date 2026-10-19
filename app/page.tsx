@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import type { Filters, MediaResult, SearchData, Suggestion } from "@/types/media";
+import type { Filters, MediaResult, SearchData } from "@/types/media";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -13,7 +13,6 @@ export default function Home() {
   const [openField, setOpenField] = useState(false);
 
   const [query, setQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 
   const [media, setMedia] = useState<SearchData | null>(null);
   const [current, setCurrent] = useState(1);
@@ -40,40 +39,6 @@ export default function Home() {
       setSpoiler(false);
     }
   }, [media, current]);
-
-  useEffect(() => {
-    const suggestionSearch = async () => {
-      if (!query.trim()) {
-        setSuggestions([]);
-        return;
-      }
-
-      try {
-        const response = await fetch("/api/suggestions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            query,
-          }),
-        });
-
-        const data = await response.json();
-
-        setSuggestions(data.suggestions ?? []);
-      } catch (error) {
-        console.error("Erro ao buscar sugestões:", error);
-        setSuggestions([]);
-      }
-    };
-
-    const delay = setTimeout(() => {
-      suggestionSearch();
-    }, 500);
-
-    return () => clearTimeout(delay);
-  }, [query]);
 
   function handleClick(arrow: string) {
     if (!media || media.length <= 1) {
@@ -120,7 +85,7 @@ export default function Home() {
         className="block w-[min(80vw,713px)] h-auto mx-auto pt-6 max-[769px]:w-[min(88vw,560px)] max-[769px]:pt-5 max-[640px]:w-[90vw] max-[640px]:pt-4"
       />
 
-      <MediaForm theme={theme} setTheme={setTheme} setOpenField={setOpenField} setMedia={setMedia} setCurrent={setCurrent} query={query} setQuery={setQuery} suggestions={suggestions} setSuggestions={setSuggestions} filters={filters} setFilters={setFilters}/>
+      <MediaForm theme={theme} setTheme={setTheme} setOpenField={setOpenField} setMedia={setMedia} setCurrent={setCurrent} query={query} setQuery={setQuery} filters={filters} setFilters={setFilters}/>
 
       <div className="relative row-start-4 flex min-h-0 items-center justify-center w-full h-full max-[769px]:min-h-[780px] max-[769px]:items-stretch max-[769px]:py-3">
         <button
