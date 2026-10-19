@@ -61,10 +61,6 @@ export type DetailedMediaResult = MediaResult & {
 
 export type SearchData = [string[], ...MediaResult[]];
 
-export type Suggestion = {
-  name: string;
-  type: string;
-};
 
 export type Filters = Record<string, boolean>;
 
