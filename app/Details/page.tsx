@@ -294,7 +294,7 @@ export default function Details() {
 
 
               {(results.type === "anime" || results.type === "manga") && (
-                <div className="col-1 row-2 w-full h-full flex items-center justify-center max-[769px]:row-1 max-[769px]:items-end ">
+                <div className="col-1 row-2 w-full h-full flex items-center justify-center max-[769px]:row-3 max-[769px]:items-center">
                   <div className="flex items-center justify-center max-[1025px]:flex-col max-[769px]:flex-row max-[1281px]:mt-[-10%] max-[769px]:m-[0%] gap-5 max-[769px]:gap-0">
                     <button
                       className={`inline-flex rounded-[5px] w-fit max-[1025px]:text-sm max-[769px]:text-xs max-[769px]:p-3 max-[769px]:scale-[.8] p-3 items-center justify-center ${
