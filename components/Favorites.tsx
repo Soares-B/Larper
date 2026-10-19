@@ -13,14 +13,13 @@ type Props = {
   theme: string;
   favorites: Favorite[];
   setOpenField: any;
-  setSuggestions: any;
   setMedia: any;
   setCurrent: any;
 };
 
 type SearchData = [string[]];
 
-export default function Favorites({ theme, favorites, setOpenField, setSuggestions, setMedia, setCurrent }: Props) {
+export default function Favorites({ theme, favorites, setOpenField, setMedia, setCurrent }: Props) {
 
     async function search(queryToSearch: string, filters: any) {
         if (!queryToSearch.trim()) {
@@ -28,7 +27,6 @@ export default function Favorites({ theme, favorites, setOpenField, setSuggestio
         }
 
         setOpenField(true);
-        setSuggestions([]);
 
         try {
         const response = await fetch("/api/search", {
