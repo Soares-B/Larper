@@ -1,15 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import type { Favorite, Filters, MediaResult, SearchData, Suggestion } from "@/types/media";
-import { useEffect, useState } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { ArrowLeft, ArrowRight, Heart } from "lucide-react";
+import type { Favorite, Filters, MediaResult, SearchData } from "@/types/media";
 import FormMedia from "@/components/Details/Form";
-import DataShow from "@/components/Details/DataShow";
 import DataShowMobile from "@/components/Mobile/Details/DataShow";
-import { Heart } from "lucide-react";
-import NSFWButton from "@/components/NSFW Button";
+import DesktopResultPanel from "@/components/Desktop/Details/ResultPanel";
 
 export default function Details() {
   const [media, setMedia] = useState<SearchData | null>(null);
@@ -18,25 +16,9 @@ export default function Details() {
   const [theme, setTheme] = useState("dark");
   const [openField, setOpenField] = useState(false);
   const [favorites, setFavorites] = useState<Favorite[]>([]);
-  const [NSFW, setNSFW] = useState(false)
-
-  useEffect(() => {
-    const saved = localStorage.getItem("Favorites");
-
-    if (saved) {
-      setFavorites(JSON.parse(saved));
-    }
-  }, []);
-
-  const isFavorite = results
-    ? favorites.some((f) => f.image === results.cover)
-    : false;
-
+  const [NSFW, setNSFW] = useState(false);
   const [query, setQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
-
   const [spoiler, setSpoiler] = useState(false);
-
   const [filters, setFilters] = useState<Filters>({
     anime: true,
     manga: false,
@@ -48,58 +30,33 @@ export default function Details() {
   });
 
   useEffect(() => {
-    const suggestionSearch = async () => {
-      if (!query.trim()) {
-        setSuggestions([]);
-        return;
-      }
+    const saved = localStorage.getItem("Favorites");
+    if (saved) setFavorites(JSON.parse(saved));
+  }, []);
 
-      try {
-        const response = await fetch("/api/suggestions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ query }),
-        });
-
-        const data = await response.json();
-        setSuggestions(data.suggestions ?? []);
-      } catch (error) {
-        console.error("Erro ao buscar sugestões:", error);
-        setSuggestions([]);
-      }
-    };
-
-    const delay = setTimeout(suggestionSearch, 500);
-
-    return () => clearTimeout(delay);
-  }, [query]);
-
-  function handleClick(arrow: string) {
-    if (!media || media.length <= 1) {
-      return;
-    }
-
-    if (arrow === "left") {
-      if (current !== 1) {
-        setCurrent(current - 1);
-      } else {
-        setCurrent(media.length - 1);
-      }
+  useEffect(() => {
+    if (results?.type === "anime" || results?.type === "manga") {
+      setSpoiler(results.review?.spoiler ?? false);
     } else {
-      if (current < media.length - 1) {
-        setCurrent(current + 1);
-      } else {
-        setCurrent(1);
-      }
+      setSpoiler(false);
+    }
+  }, [media, current]);
+
+  const isFavorite = results
+    ? favorites.some((item) => item.image === results.cover)
+    : false;
+
+  function handleClick(direction: "left" | "right") {
+    if (!media || media.length <= 1) return;
+    if (direction === "left") {
+      setCurrent((value) => value > 1 ? value - 1 : media.length - 1);
+    } else {
+      setCurrent((value) => value < media.length - 1 ? value + 1 : 1);
     }
   }
 
-  async function search(type: string, NSFW: boolean) {
+  async function search(type: string, nsfw: boolean) {
     setOpenField(true);
-    setSuggestions([]);
-
     try {
       const response = await fetch("/api/random", {
         method: "POST",
@@ -108,16 +65,10 @@ export default function Details() {
           "Content-Type": "application/json",
           "Cache-Control": "no-cache",
         },
-        body: JSON.stringify({
-          type,
-          NSFW
-        }),
+        body: JSON.stringify({ type, NSFW: nsfw }),
       });
-
       const info = await response.json();
-      const data = info.fullSearch;
-
-      setMedia(data);
+      setMedia(info.fullSearch);
       setCurrent(1);
     } catch (error) {
       console.error("Erro ao pesquisar:", error);
@@ -125,57 +76,50 @@ export default function Details() {
   }
 
   function favorite() {
-    if (!results) return;
-
-    setFavorites((prev) => {
-      const exist = prev.some((f) => f.image === results.cover);
-
-      const updated = exist
-        ? prev.filter((f) => f.image !== results.cover)
-        : [
-            ...prev,
-            {
-              name: results.name,
-              type: results.type,
-              image: results.cover,
-            },
-          ];
-
+    if (!results?.cover) return;
+    setFavorites((previous) => {
+      const exists = previous.some((item) => item.image === results.cover);
+      const updated = exists
+        ? previous.filter((item) => item.image !== results.cover)
+        : [...previous, { name: results.name, type: results.type, image: results.cover! }];
       localStorage.setItem("Favorites", JSON.stringify(updated));
-
       return updated;
     });
   }
 
+  const panelTheme =
+    theme === "dark"
+      ? "bg-[var(--background)] text-[var(--text)]"
+      : theme === "light"
+        ? "bg-[var(--backgroundLight)] text-[var(--textLight)]"
+        : theme === "glass"
+          ? "bg-[var(--backgroundGlass)] text-[var(--textLight)] backdrop-blur-md"
+          : "bg-[var(--backgroundTransparent)] text-[var(--textLight)] backdrop-blur-md";
+
   return (
-    <div className="relative grid min-h-dvh h-dvh w-full grid-rows-[auto_minmax(850px,1fr)] overflow-hidden max-[769px]:h-auto max-[769px]:min-h-dvh max-[769px]:grid-rows-[auto_minmax(850px,auto)] max-[769px]:overflow-y-auto max-[640px]:h-auto max-[640px]:grid-rows-[auto_minmax(850px,auto)]">
+    <main className="relative grid min-h-dvh w-full grid-rows-[auto_minmax(0,1fr)] overflow-hidden max-[1024px]:min-h-dvh max-[1024px]:grid-rows-[auto_minmax(850px,auto)] max-[1024px]:overflow-y-auto">
       {results ? (
         <div
           className="absolute inset-0 -z-10 scale-110 bg-cover bg-center blur-sm"
           style={{
-            backgroundImage: `url(${
-              results.type === "anime" || results.type === "manga"
-                ? results.background_image && results.background_image
-                : results.background && results.background
-            })`,
+            backgroundImage: `url(${results.type === "anime" || results.type === "manga" ? results.background_image : results.background})`,
           }}
         />
       ) : (
-        <div
-          className="absolute inset-0 -z-1"
-          style={{
-            background: "linear-gradient(to bottom, white, rgb(186, 204, 253))",
-          }}
-        />
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,white,rgb(186,204,253))]" />
       )}
-      <div className="flex h-fit w-[min(1200px,94vw)] items-center justify-center gap-6 py-4 max-[1025px]:w-[96vw] max-[769px]:flex-col max-[769px]:gap-3 max-[640px]:w-full max-[640px]:px-3 max-[640px]:py-3">
-        <Image
-          src="/Imagens/Logo2.png"
-          alt="logo"
-          width={713}
-          height={170}
-          className="block h-auto w-[min(36vw,420px)] shrink-0 row-start-1 max-[769px]:w-[min(65vw,360px)] max-[640px]:w-[min(78vw,320px)]"
-        />
+
+      <header className="relative z-20 mx-auto flex w-[min(1200px,94vw)] items-center justify-center gap-6 py-4 max-[1024px]:w-[96vw] max-[1024px]:flex-col max-[1024px]:gap-3 max-[640px]:w-full max-[640px]:px-3 max-[640px]:py-3">
+        <Link href="/" className="shrink-0">
+          <Image
+            src="/Imagens/Logo2.png"
+            alt="logo"
+            width={713}
+            height={170}
+            priority
+            className="block h-auto w-[min(36vw,420px)] max-[1024px]:w-[min(65vw,360px)] max-[640px]:w-[min(78vw,320px)]"
+          />
+        </Link>
         <FormMedia
           theme={theme}
           setTheme={setTheme}
@@ -184,102 +128,60 @@ export default function Details() {
           setCurrent={setCurrent}
           query={query}
           setQuery={setQuery}
-          suggestions={suggestions}
-          setSuggestions={setSuggestions}
           filters={filters}
           setFilters={setFilters}
           favorites={favorites}
           favorite={favorite}
         />
-      </div>
-      <div className="relative row-start-2 flex min-h-0 items-center justify-center w-full h-full max-[769px]:min-h-[850px] max-[769px]:py-3 max-[640px]:py-2">
+      </header>
+
+      <section className="relative flex min-h-0 w-full items-center justify-center px-20 py-3 max-[1024px]:min-h-[850px] max-[1024px]:px-2">
         <button
           type="button"
-          className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${
-            theme === "dark" ? "text-[var(--text)]" : "text-[var(--textLight)]"
-          } size-[50px] max-[1025px]:size-[40px] rounded-full absolute left-[3%] max-[1025px]:left-[2%] hover:cursor-pointer ${
-            openField && media?.[0]?.length > 1 ? "block" : "hidden"
-          }`}
+          aria-label="Previous result"
+          className={`absolute left-5 z-20 flex size-10 items-center justify-center rounded-full border border-white/20 bg-[var(--middleTone)]/50 shadow-lg backdrop-blur-md max-[1024px]:left-1 ${openField && media && media[0].length > 1 ? "block" : "hidden"}`}
           onClick={() => handleClick("left")}
         >
-          <ArrowLeft className="w-[50px] max-[1025px]:w-[40px] h-[30px]" />
+          <ArrowLeft className="size-7" />
         </button>
 
-        <div
-          className={`relative row-2 ${
-            openField ? "w-[85vw] max-[1024px]:w-[92vw] max-[769px]:w-[96vw] max-[640px]:w-[96vw]" : "w-[0vw]"
-          } h-[95%] max-[769px]:h-[800px] max-[769px]:min-h-[800px] ${
-            theme === "dark"
-              ? "bg-[var(--background)]"
-              : theme === "light"
-                ? "bg-[var(--backgroundLight)]"
-                : theme === "glass"
-                  ? "bg-[var(--backgroundGlass)] backdrop-blur-md"
-                  : "bg-[var(--backgroundTransparent)] backdrop-blur-md"
-          } ${
-            theme === "dark" ? "text-[var(--text)]" : "text-[var(--textLight)]"
-          } rounded-[10px] m-[0_auto] transition-[1s] top-[-2%] grid min-w-0 grid-cols-[minmax(0,1fr)_minmax(0,3fr)] grid-rows-[minmax(0,2.5fr)_minmax(0,1fr)] max-[1025px]:grid-rows-[2.5fr_1.5fr] max-[769px]:grid-rows-[minmax(0,0.8fr)_minmax(0,1.5fr)_auto] max-[640px]:grid-rows-[minmax(0,0.8fr)_minmax(0,1.5fr)_auto]`}
-        >
-          {results && (
-            <>
-              <div className={`block w-fit col-1 row-1 w-full p-[10%]`}>
-                <Link href={results.link} target="_blank" className="block w-full h-full max-[1025px]:h-[80%] max-[769px]:h-[80%] select-none">
+        {results && openField ? (
+          <>
+            <div className="hidden h-full min-h-0 w-full min-[1025px]:flex">
+              <DesktopResultPanel
+                results={results}
+                spoiler={spoiler}
+                setSpoiler={setSpoiler}
+                openField={openField}
+                theme={theme}
+                setMedia={setMedia}
+                setCurrent={setCurrent}
+                isFavorite={isFavorite}
+                favorite={favorite}
+                search={search}
+                nsfw={NSFW}
+                setNSFW={setNSFW}
+              />
+            </div>
+
+            <div className={`relative grid h-[800px] min-h-[800px] w-[96vw] grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] grid-rows-[minmax(0,1fr)_minmax(0,1.4fr)_auto] gap-2 overflow-hidden rounded-[10px] ${panelTheme} min-[1025px]:hidden`}>
+              <div className="col-start-1 row-start-1 min-h-0 p-3">
+                <Link href={results.link} target="_blank" className="block h-full w-full">
                   <Image
-                    src={results.cover!}
+                    src={results.cover || "/Imagens/Logo.png"}
                     width={750}
                     height={1100}
                     alt={results.name}
-                    className={`rounded-[25px] w-full h-full object-cover`}
+                    className="h-full w-full rounded-[18px] object-cover"
                   />
                 </Link>
               </div>
-
-              <div
-                className={`${
-                  openField ? "flex" : "hidden"
-                } flex-col  gap-[0px] w-[70%] h-fit absolute left-[25%] top-[4%] max-[769px]:top-[2%] font-5xl`}
-              >
-                <p className="flex-1 min-w-[0] w-fit h-fit overflow-hidden text-ellipsis whitespace-nowrap text-xl">
-                  {results.name}
-                </p>
-
-                <p
-                  className={`flex-1 text-xl ${
-                    theme === "dark"
-                      ? "text-[var(--middleTone)]"
-                      : theme === "light"
-                        ? "text-[var(--middleToneLight)]"
-                        : "text-[var(--textLight)]"
-                  } text-ellipsis w-fit h-fit whitespace-nowrap overflow-hidden`}
-                >
-                  {results.subname}
-                </p>
+              <div className="col-start-2 row-start-1 min-w-0 overflow-hidden px-2 pt-4">
+                <h1 className="truncate text-lg font-semibold">{results.name}</h1>
+                {results.subname && <p className="truncate text-sm text-[var(--middleTone)]">{results.subname}</p>}
+                <p className="mt-3 max-h-[65%] overflow-y-auto text-sm text-justify">{results.description}</p>
               </div>
-
-              <p className={`min-[769px]:hidden ${
-              theme === "dark"
-                ? "text-[var(--middleTone)]"
-                : theme === "light"
-                  ? "text-[var(--middleToneLight)]"
-                  : "text-[var(--textLight)]"
-            } text-sm text-justify w-[70%] h-full absolute left-[25%] top-[10%]`}>{results.description}</p>
-
-
-
-
-              <div className="max-[769px]:hidden">
-                <DataShow
-                  results={results}
-                  spoiler={spoiler}
-                  setSpoiler={setSpoiler}
-                  openField={openField}
-                  theme={theme}
-                  setMedia={setMedia}
-                  setCurrent={setCurrent}
-                />
-              </div>
-
-              <div className="min-[769px]:hidden col-[1/3]">
+              <div className="col-span-2 row-start-2 min-h-0 overflow-hidden">
                 <DataShowMobile
                   results={results}
                   spoiler={spoiler}
@@ -290,59 +192,47 @@ export default function Details() {
                   setCurrent={setCurrent}
                 />
               </div>
-
-
-
-              {(results.type === "anime" || results.type === "manga") && (
-                <div className="col-1 row-2 w-full h-full flex items-center justify-center max-[769px]:row-3 max-[769px]:items-center">
-                  <div className="flex items-center justify-center max-[1025px]:flex-col max-[769px]:flex-row max-[1281px]:mt-[-10%] max-[769px]:m-[0%] gap-5 max-[769px]:gap-0">
+              <div className="col-span-2 row-start-3 flex items-center justify-center gap-3 p-3">
+                {(results.type === "anime" || results.type === "manga") && (
+                  <>
                     <button
-                      className={`inline-flex rounded-[5px] w-fit max-[1025px]:text-sm max-[769px]:text-xs max-[769px]:p-3 max-[769px]:scale-[.8] p-3 items-center justify-center ${
-                        theme === "dark" ? "bg-[#ffffff11]" : "bg-[#00000022]"
-                      } ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} text-violet11 shadow-blackA4 outline-none hover:bg-violet3 hover:cursor-pointer `}
+                      type="button"
+                      className="rounded-md bg-white/10 px-3 py-2 text-sm"
                       onClick={() => search(results.type, NSFW)}
                     >
                       Random {results.type}
                     </button>
-                    <NSFWButton theme={theme} NSFW={NSFW} setNSFW={setNSFW}/>
-                  </div>
-                </div>
-              )}
-            </>
-          )}
-
-          {results && (
-            <div
-              className={`${
-                openField ? "flex" : "hidden"
-              } absolute bottom-[3%] left-[3%] select-none gap-4 items-center`}
-            >
-              <button className="size-[40px] border-0 rounded-full flex items-center justify-center" onClick={() => favorite()}>
-                <Heart strokeWidth={1.5} className="size-[25px]" fill={isFavorite ? '#ff2222' : 'none'} color={isFavorite ? "#ff2222" : "currentColor"}/>
-              </button>
-              <p className="w-fit">
-                {results &&
-                  results.type[0].toUpperCase() + results.type.slice(1)}
-              </p>
+                    <button
+                      type="button"
+                      className={`rounded-md p-2 ${NSFW ? "bg-white/30" : "bg-white/10"}`}
+                      onClick={() => setNSFW((value) => !value)}
+                    >
+                      NSFW {NSFW ? "On" : "Off"}
+                    </button>
+                  </>
+                )}
+                <button type="button" aria-label="Toggle favorite" onClick={favorite} className="flex size-10 items-center justify-center">
+                  <Heart className="size-6" fill={isFavorite ? "#ff2222" : "none"} color={isFavorite ? "#ff2222" : "currentColor"} />
+                </button>
+                <span className="text-sm">{results.type}</span>
+              </div>
             </div>
-          )}
-        </div>
+          </>
+        ) : (
+          <div className={`hidden min-h-0 w-full items-center justify-center rounded-[10px] ${panelTheme} ${openField ? "min-[1025px]:flex" : ""} max-[1024px]:hidden`}>
+            <p className="text-lg">Search for a title to see its details.</p>
+          </div>
+        )}
+
         <button
           type="button"
-          className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${
-            theme === "dark" ? "text-[var(--text)]" : "text-[var(--textLight)]"
-          } size-[50px] max-[1025px]:size-[40px] rounded-full absolute right-[3%] max-[1025px]:right-[2%] hover:cursor-pointer ${
-            openField
-              ? media && media?.[0]?.length > 1
-                ? "block"
-                : "hidden"
-              : "hidden"
-          }`}
+          aria-label="Next result"
+          className={`absolute right-5 z-20 flex size-10 items-center justify-center rounded-full border border-white/20 bg-[var(--middleTone)]/50 shadow-lg backdrop-blur-md max-[1024px]:right-1 ${openField && media && media[0].length > 1 ? "block" : "hidden"}`}
           onClick={() => handleClick("right")}
         >
-          <ArrowRight className="w-[50px] max-[1025px]:w-[40px] h-[30px]" />
+          <ArrowRight className="size-7" />
         </button>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
