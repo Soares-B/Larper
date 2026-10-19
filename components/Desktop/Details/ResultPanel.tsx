@@ -50,14 +50,14 @@ export default function DesktopResultPanel({
     <section
       className={`relative grid h-[95%] min-h-0 w-[85vw] grid-cols-[minmax(220px,1fr)_minmax(0,3fr)] grid-rows-[minmax(0,1fr)_auto] gap-x-5 overflow-hidden rounded-[10px] ${panelTheme}`}
     >
-      <div className="col-start-1 row-start-1 min-h-0 p-6 pb-3">
-        <Link href={results.link} target="_blank" className="block h-full min-h-0 w-full select-none">
+      <div className="col-start-1 row-start-1 flex min-h-0 items-center justify-center p-6 pb-3">
+        <Link href={results.link} target="_blank" className="flex max-h-full max-w-full items-center justify-center select-none">
           <Image
             src={results.cover || "/Imagens/Logo.png"}
             width={750}
             height={1100}
             alt={results.name}
-            className="h-full w-full rounded-[20px] object-cover"
+            className="aspect-[3/4] h-auto max-h-[62vh] w-auto max-w-full rounded-[20px] object-contain"
           />
         </Link>
       </div>
@@ -87,7 +87,7 @@ export default function DesktopResultPanel({
       </div>
 
       <div className="col-start-2 row-span-2 row-start-1 min-h-0 min-w-0">
-        <div className="flex min-w-0 flex-col gap-1 pt-5 pr-5">
+        <div className="absolute left-[25%] top-[3%] w-[70%] min-w-0">
           <h1 className="truncate text-2xl font-semibold">{results.name}</h1>
           {results.subname && <p className="truncate text-lg text-[var(--middleTone)]">{results.subname}</p>}
         </div>
