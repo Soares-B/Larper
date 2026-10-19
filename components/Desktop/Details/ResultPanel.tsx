@@ -86,8 +86,8 @@ export default function DesktopResultPanel({
         <span className="text-sm">{results.type[0].toUpperCase() + results.type.slice(1)}</span>
       </div>
 
-      <div className="relative col-start-2 row-span-2 row-start-1 min-h-0 min-w-0">
-        <div className="absolute left-0 right-0 top-5 z-10 flex min-w-0 flex-col gap-1">
+      <div className="col-start-2 row-span-2 row-start-1 min-h-0 min-w-0">
+        <div className="flex min-w-0 flex-col gap-1 pt-5 pr-5">
           <h1 className="truncate text-2xl font-semibold">{results.name}</h1>
           {results.subname && <p className="truncate text-lg text-[var(--middleTone)]">{results.subname}</p>}
         </div>
