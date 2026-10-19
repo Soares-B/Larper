@@ -45,7 +45,7 @@ export default function DataShowMobile({
         <div
           className={`${
             openField ? "grid" : "hidden"
-          } w-full h-full min-h-0 grid-cols-2 auto-rows-[minmax(110px,auto)] content-start justify-center gap-3 overflow-y-auto p-3 max-[380px]:grid-cols-1`}
+          } w-full h-full min-h-0 grid-cols-2 auto-rows-[minmax(125px,auto)] content-start justify-center gap-3 overflow-y-auto p-3 max-[380px]:grid-cols-1`}
         >
 
           <div
