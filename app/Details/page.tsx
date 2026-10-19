@@ -148,7 +148,7 @@ export default function Details() {
   }
 
   return (
-    <div className="relative grid min-h-dvh h-dvh w-full grid-rows-[auto_minmax(0,1fr)] overflow-hidden max-[640px]:h-dvh max-[640px]:grid-rows-[auto_minmax(0,1fr)]">
+    <div className="relative grid min-h-dvh h-dvh w-full grid-rows-[auto_minmax(850px,1fr)] overflow-hidden max-[769px]:h-auto max-[769px]:min-h-dvh max-[769px]:grid-rows-[auto_minmax(850px,auto)] max-[769px]:overflow-y-auto max-[640px]:h-auto max-[640px]:grid-rows-[auto_minmax(850px,auto)]">
       {results ? (
         <div
           className="absolute inset-0 -z-10 scale-110 bg-cover bg-center blur-sm"
@@ -192,7 +192,7 @@ export default function Details() {
           favorite={favorite}
         />
       </div>
-      <div className="relative row-start-2 flex min-h-0 items-center justify-center w-full h-full max-[640px]:py-2">
+      <div className="relative row-start-2 flex min-h-0 items-center justify-center w-full h-full max-[769px]:min-h-[850px] max-[769px]:py-3 max-[640px]:py-2">
         <button
           type="button"
           className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${
@@ -207,8 +207,8 @@ export default function Details() {
 
         <div
           className={`relative row-2 ${
-            openField ? "w-[85vw] max-[1024px]:w-[92vw] max-[640px]:w-[96vw]" : "w-[0vw]"
-          } h-[95%] ${
+            openField ? "w-[85vw] max-[1024px]:w-[92vw] max-[769px]:w-[96vw] max-[640px]:w-[96vw]" : "w-[0vw]"
+          } h-[95%] max-[769px]:h-[800px] max-[769px]:min-h-[800px] ${
             theme === "dark"
               ? "bg-[var(--background)]"
               : theme === "light"
