@@ -96,7 +96,7 @@ export default function Home() {
   }
 
   return (
-    <div className="relative grid min-h-dvh h-dvh w-full grid-rows-[auto_auto_1px_minmax(0,1fr)] overflow-hidden max-[640px]:h-auto max-[640px]:min-h-dvh max-[640px]:grid-rows-[auto_auto_1px_minmax(0,1fr)] max-[640px]:overflow-y-auto">
+    <div className="relative grid min-h-dvh h-dvh w-full grid-rows-[auto_auto_1px_minmax(0,1fr)] overflow-hidden max-[769px]:h-auto max-[769px]:min-h-dvh max-[769px]:grid-rows-[auto_auto_1px_minmax(780px,auto)] max-[769px]:overflow-y-auto">
       {results ? (
         <div
           className="absolute inset-0 -z-10 scale-110 bg-cover bg-center blur-sm"
@@ -117,12 +117,12 @@ export default function Home() {
         alt="logo"
         width={713}
         height={170}
-        className="block w-[min(80vw,713px)] h-auto mx-auto pt-6 max-[640px]:w-[90vw] max-[640px]:pt-4"
+        className="block w-[min(80vw,713px)] h-auto mx-auto pt-6 max-[769px]:w-[min(88vw,560px)] max-[769px]:pt-5 max-[640px]:w-[90vw] max-[640px]:pt-4"
       />
 
       <MediaForm theme={theme} setTheme={setTheme} setOpenField={setOpenField} setMedia={setMedia} setCurrent={setCurrent} query={query} setQuery={setQuery} suggestions={suggestions} setSuggestions={setSuggestions} filters={filters} setFilters={setFilters}/>
 
-      <div className="relative row-start-4 flex min-h-0 items-center justify-center w-full h-full max-[640px]:items-stretch max-[640px]:py-3">
+      <div className="relative row-start-4 flex min-h-0 items-center justify-center w-full h-full max-[769px]:min-h-[780px] max-[769px]:items-stretch max-[769px]:py-3">
         <button
           type="button"
           className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${
@@ -141,8 +141,8 @@ export default function Home() {
 
         <div
           className={`relative row-start-4 ${
-            openField ? "w-[60vw] max-[1024px]:w-[76vw] max-[640px]:w-[94vw]" : "w-[0vw]"
-          } h-[98%] max-[640px]:h-full max-[640px]:min-h-[560px] ${
+            openField ? "w-[60vw] max-[1024px]:w-[76vw] max-[769px]:w-[94vw] max-[640px]:w-[94vw]" : "w-[0vw]"
+          } h-[98%] max-[769px]:h-[760px] max-[769px]:min-h-[760px] max-[640px]:h-full max-[640px]:min-h-[560px] ${
             theme === "dark"
               ? "bg-[var(--background)]"
               : theme === "light"
@@ -171,7 +171,7 @@ export default function Home() {
                   results.type === "music"
                     ? "top-[-5%]"
                     : "top-[-10%]"
-                } left-[-3%] w-[45%] max-[640px]:w-[42%] max-[640px]:left-[-1%]`}
+                } left-[-3%] w-[45%] max-[769px]:w-[42%] max-[769px]:left-[-1%] max-[640px]:w-[42%] max-[640px]:left-[-1%]`}
               />
             </Link>
           )}
