@@ -45,7 +45,7 @@ export default function DataShow({
         <div
           className={`${
             openField ? "grid" : "hidden"
-          } absolute justify-center w-[70%] h-[80%] top-[13%] left-[25%] grid-rows-[1fr_1fr_1fr_1fr] grid-cols-[repeat(4,minmax(0,1fr))] max-[1024px]:left-[24%] max-[1024px]:w-[73%] max-[1024px]:grid-cols-2 max-[1024px]:grid-rows-[auto] max-[1024px]:auto-rows-[minmax(95px,auto)] max-[1024px]:gap-2 max-[1024px]:overflow-y-auto`}
+          } absolute w-[70%] h-[80%] top-[13%] left-[25%] grid-rows-[1fr_1fr_1fr_1fr] grid-cols-[repeat(4,minmax(0,1fr))] max-[1024px]:left-[24%] max-[1024px]:w-[73%] max-[1024px]:grid-cols-2 max-[1024px]:grid-rows-[auto] max-[1024px]:auto-rows-[minmax(95px,auto)] max-[1024px]:gap-2 max-[1024px]:overflow-y-auto`}
         >
           <p
             className={`${
@@ -77,7 +77,7 @@ export default function DataShow({
             </p>
 
             <p
-              className={`absolute ${
+              className={`absolute min-[1025px]:static min-[1025px]:m-[6px_9px] ${
                 results.type === "manga" || results.type === "serie"
                   ? "text-lg max-[1281px]:text-sm"
                   : "text-3xl max-[1441px]:text-2xl max-[1281px]:text-xl max-[1025px]:text-base max-[769px]:text-sm"
@@ -131,7 +131,7 @@ export default function DataShow({
             </p>
 
             <p
-              className={`absolute text-3xl max-[1441px]:text-2xl max-[1281px]:text-xl max-[1025px]:text-lg left-[4%] bottom-[10%] w-full ${
+              className={`absolute min-[1025px]:static min-[1025px]:m-[6px_9px] text-3xl max-[1441px]:text-2xl max-[1281px]:text-xl max-[1025px]:text-lg left-[4%] bottom-[10%] w-full ${
                 results.rating ? results.rating >= 7.5
                   ? theme === "light"
                     ? "text-[var(--greatLight)]"
@@ -213,7 +213,7 @@ export default function DataShow({
             </p>
 
             <p
-              className={`absolute text-lg max-[1281px]:text-sm max-[1025px]:text-xs left-[4%] top-[30%] max-[1281px]:top-[40%]`}
+              className={`absolute min-[1025px]:static min-[1025px]:m-[6px_9px] text-lg max-[1281px]:text-sm max-[1025px]:text-xs left-[4%] top-[30%] max-[1281px]:top-[40%]`}
             >
               {results.type === "music"
                 ? results.artist?.name
@@ -238,7 +238,7 @@ export default function DataShow({
               {results.type === "music" ? "Album" : "Release date"}
             </p>
 
-            <p className="absolute text-lg max-[1281px]:text-base max-[1025px]:text-sm left-[4%] top-[30%] max-[1281px]:top-[40%]">
+            <p className="absolute min-[1025px]:static min-[1025px]:m-[6px_9px] text-lg max-[1281px]:text-base max-[1025px]:text-sm left-[4%] top-[30%] max-[1281px]:top-[40%]">
               {results.date?.replaceAll("-", "/")}
             </p>
           </div>
@@ -268,7 +268,7 @@ export default function DataShow({
                   : "Budget/Revenue"}
             </p>
 
-            <p className={`absolute ${results.type === 'movie' ? 'max-[1441px]:text-sm max-[1281px]:text-xs max-[1025px]:text-[10px]' : 'text-lg max-[1281px]:text-base max-[1025px]:text-sm'} left-[4%] top-[30%]`}>
+            <p className={`absolute min-[1025px]:static min-[1025px]:m-[6px_9px] ${results.type === 'movie' ? 'max-[1441px]:text-sm max-[1281px]:text-xs max-[1025px]:text-[10px]' : 'text-lg max-[1281px]:text-base max-[1025px]:text-sm'} left-[4%] top-[30%]`}>
               {results.type === "anime" || results.type === "manga" ? (
                 results.typeData
               ) : results.type === 'game' ? results.game_modes?.join(", ") : results.type === "serie" ? (
@@ -330,7 +330,7 @@ export default function DataShow({
                     : "Movie recommendations"}
             </p>
 
-            <p className={`absolute ${results.type === 'serie' || results.type === 'movie' ? 'max-[1441px]:text-sm max-[1025px]:text-xs' : 'text-lg max-[1281px]:text-base max-[1025px]:text-sm'} left-[4%] top-[30%]`}>
+            <p className={`absolute min-[1025px]:static min-[1025px]:m-[6px_9px] ${results.type === 'serie' || results.type === 'movie' ? 'max-[1441px]:text-sm max-[1025px]:text-xs' : 'text-lg max-[1281px]:text-base max-[1025px]:text-sm'} left-[4%] top-[30%]`}>
               {results.type === "anime" ? (
                 results.source
               ) : results.type === "manga" ? (
@@ -389,7 +389,7 @@ export default function DataShow({
                   : results.type === 'game' ? 'Themes' : "Keywords"}
             </p>
 
-            <p className={`absolute ${results.type === 'manga' || results.type === 'serie' || results.type === 'movie' ? 'max-[1281px]:text-sm max-[1025px]:text-xs' : 'max-[1281px]:text-base max-[1025px]:text-sm'} left-[4%] top-[30%]`}>
+            <p className={`absolute min-[1025px]:static min-[1025px]:m-[6px_9px] ${results.type === 'manga' || results.type === 'serie' || results.type === 'movie' ? 'max-[1281px]:text-sm max-[1025px]:text-xs' : 'max-[1281px]:text-base max-[1025px]:text-sm'} left-[4%] top-[30%]`}>
               {results.type === "anime" ? (
                 results.duration
               ) : results.type === "manga" ? (
@@ -439,7 +439,7 @@ export default function DataShow({
                   : "Similar movies"}
             </p>
 
-            <p className={`absolute text-lg max-[1441px]:text-base max-[1281px]:text-sm max-[1025px]:text-xs left-[4%] top-[30%]`}>
+            <p className={`absolute min-[1025px]:static min-[1025px]:m-[6px_9px] text-lg max-[1441px]:text-base max-[1281px]:text-sm max-[1025px]:text-xs left-[4%] top-[30%]`}>
               {results.type === "anime" ? (
                 <>
                   {results.recoms ? results.recoms.length > 0 ? results.recoms.map((r) => {
@@ -522,12 +522,12 @@ export default function DataShow({
               Review
             </p>
 
-            <p className="absolute text-base max-[1441px]:text-sm max-[1281px]:text-xs max-[1025px]:text-[10px] left-[2%] top-[30%] w-[95%] text-justify">
+            <p className="absolute min-[1025px]:static min-[1025px]:m-[6px_9px] text-base max-[1441px]:text-sm max-[1281px]:text-xs max-[1025px]:text-[10px] left-[2%] top-[30%] w-[95%] text-justify">
               {results.review ? results.review.content ? results.review.content : 'No review :‹' : 'No review :‹'}
             </p>
 
             {results.review && results.review.author && (
-              <div className="absolute text-base max-[1441px]:text-sm bottom-[2%] right-[5%] w-[300px] flex items-center justify-end">
+              <div className="absolute min-[1025px]:static min-[1025px]:m-[6px_9px] text-base max-[1441px]:text-sm bottom-[2%] right-[5%] w-[300px] flex items-center justify-end">
                 <p className="mr-[5px]">
                   <span
                     className={`${
