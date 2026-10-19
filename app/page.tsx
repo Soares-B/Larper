@@ -1,18 +1,17 @@
 "use client";
 
-import Image from "next/image";
 import type { Filters, MediaResult, SearchData } from "@/types/media";
-import Link from "next/link";
 import { useState, useEffect } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import MediaForm from "@/components/Simple/Form";
-import ShowData from "@/components/Simple/ShowData";
+
+import DesktopLogoInput from "@/components/Desktop/Logo+Form";
+import DesktopMain from "@/components/Desktop/Main";
 
 export default function Home() {
   const [theme, setTheme] = useState("dark");
   const [openField, setOpenField] = useState(false);
 
   const [query, setQuery] = useState("");
+  const [favorites, setFavorites] = useState([])
 
   const [media, setMedia] = useState<SearchData | null>(null);
   const [current, setCurrent] = useState(1);
@@ -29,6 +28,8 @@ export default function Home() {
   });
 
   const results = (media?.[current] as MediaResult | undefined) ?? null;
+
+  console.log(results)
 
   useEffect(() => {
     const result = media?.[current] as MediaResult | undefined;
@@ -61,156 +62,20 @@ export default function Home() {
   }
 
   return (
-    <div className="relative grid min-h-dvh h-dvh w-full grid-rows-[auto_auto_1px_minmax(0,1fr)] overflow-hidden max-[769px]:h-auto max-[769px]:min-h-dvh max-[769px]:grid-rows-[auto_auto_1px_minmax(780px,auto)] max-[769px]:overflow-y-auto">
-      {results ? (
-        <div
-          className="absolute inset-0 -z-10 scale-110 bg-cover bg-center blur-sm"
-          style={{
-            backgroundImage: `url(${
-              results.type === "anime" || results.type === "manga"
-                ? results.background_image && results.background_image
-                : results.background && results.background
-            })`,
-          }}
-        />
-      ) : (
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,black,rgb(77,0,0))]" />
-      )}
+    <div className="h-screen w-screen">
 
-      <Image
-        src="/Imagens/Logo.png"
-        alt="logo"
-        width={713}
-        height={170}
-        className="block w-[min(80vw,713px)] h-auto mx-auto pt-6 max-[769px]:w-[min(88vw,560px)] max-[769px]:pt-5 max-[640px]:w-[90vw] max-[640px]:pt-4"
-      />
+      <div key="mobile" className="min-[769]:hidden">
 
-      <MediaForm theme={theme} setTheme={setTheme} setOpenField={setOpenField} setMedia={setMedia} setCurrent={setCurrent} query={query} setQuery={setQuery} filters={filters} setFilters={setFilters}/>
-
-      <div className="relative row-start-4 flex min-h-0 items-center justify-center w-full h-full max-[769px]:min-h-[780px] max-[769px]:items-stretch max-[769px]:py-3">
-        <button
-          type="button"
-          className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${
-            theme === "dark"
-              ? "text-[var(--text)]"
-              : "text-[var(--textLight)]"
-          } w-[50px] h-[50px] rounded-full absolute left-[3%] max-[640px]:left-[1%] hover:cursor-pointer ${
-            openField && media?.[0]?.length > 1
-              ? "block"
-              : "hidden"
-          }`}
-          onClick={() => handleClick("left")}
-        >
-          <ArrowLeft className="w-[50px] h-[30px]" />
-        </button>
-
-        <div
-          className={`relative row-start-4 ${
-            openField ? "w-[60vw] max-[1024px]:w-[76vw] max-[769px]:w-[94vw] max-[640px]:w-[94vw]" : "w-[0vw]"
-          } h-[98%] max-[769px]:h-[760px] max-[769px]:min-h-[760px] max-[640px]:h-full max-[640px]:min-h-[560px] ${
-            theme === "dark"
-              ? "bg-[var(--background)]"
-              : theme === "light"
-                ? "bg-[var(--backgroundLight)]"
-                : theme === "glass"
-                  ? "bg-[var(--backgroundGlass)] backdrop-blur-md"
-                  : "bg-[var(--backgroundTransparent)] backdrop-blur-md"
-          } ${
-            theme === "dark"
-              ? "text-[var(--text)]"
-              : "text-[var(--textLight)]"
-          } rounded-[10px] m-[0_auto] transition-[1s] top-[-2%]`}
-        >
-          {results && (
-            <Link
-              href={results.link}
-              target="_blank"
-              className="select-none"
-            >
-              <Image
-                src={results.cover!}
-                width={600}
-                height={700}
-                alt={results.name}
-                className={`absolute block scale-[.75] rounded-[25px] ${
-                  results.type === "music"
-                    ? "top-[-5%]"
-                    : "top-[-10%]"
-                } left-[-3%] w-[45%] max-[769px]:w-[42%] max-[769px]:left-[-1%] max-[640px]:w-[42%] max-[640px]:left-[-1%]`}
-              />
-            </Link>
-          )}
-
-          {results && (
-            <div
-              className={`${
-                openField ? "flex" : "hidden"
-              } flex-col items-start gap-1 w-[52%] h-fit absolute right-[2%] top-[5%] font-5xl max-[640px]:w-[53%]`}
-            >
-              <p className="flex-1 min-w-[0] overflow-hidden text-ellipsis whitespace-nowrap text-xl">
-                {results.name}
-              </p>
-
-              <p
-                className={`flex-1 text-xl ${
-                  theme === "dark"
-                    ? "text-[var(--middleTone)]"
-                    : theme === "light"
-                      ? "text-[var(--middleToneLight)]"
-                      : "text-[var(--textLight)]"
-                } text-ellipsis whitespace-nowrap overflow-hidden`}
-              >
-                {results.subname}
-              </p>
-            </div>
-          )}
-
-          <ShowData results={results} spoiler={spoiler} setSpoiler={setSpoiler} openField={openField} theme={theme}/>
-
-          <p
-            className={`${
-              openField ? "inline" : "hidden"
-            } absolute bottom-[3%] left-[3%] ${
-              theme === "dark"
-                ? "drop-shadow-[var(--dropShadow)]"
-                : theme === "light"
-                  ? "drop-shadow-[var(--dropShadowLigth)]"
-                  : "drop-shadow-[var(--dropShadowLight)]"
-            } drop-shadow-[0px_0px_5px] select-none`}
-          >
-            {results && results.type === "anime"
-              ? `${results.season} - ${results.type}`
-              : (results &&
-                    results.type === "movie" &&
-                    results.tagline) ||
-                  (results &&
-                    results.type === "serie" &&
-                    results.tagline)
-                ? `${results.tagline} - ${results.type}`
-                : results && results.type
-                  ? results.type
-                  : ""}
-          </p>
-        </div>
-
-        <button
-          type="button"
-          className={`bg-[var(--middleTone)]/50 backdrop-blur-md border border-white/20 shadow-lg ${
-            theme === "dark"
-              ? "text-[var(--text)]"
-              : "text-[var(--textLight)]"
-          } w-[50px] h-[50px] rounded-full absolute right-[3%] max-[640px]:right-[1%] hover:cursor-pointer ${
-            openField
-              ? media && media?.[0]?.length > 1
-                ? "block"
-                : "hidden"
-              : "hidden"
-          }`}
-          onClick={() => handleClick("right")}
-        >
-          <ArrowRight className="w-[50px] h-[30px]" />
-        </button>
       </div>
+
+      {/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
+
+      <div key="desktop" className="max-[768]:hidden w-full h-full flex flex-col">
+        <DesktopLogoInput theme={theme} filters={filters} setFilters={setFilters} setTheme={setTheme} favorites={favorites} setOpenField={setOpenField} setMedia={setMedia} setCurrent={setCurrent}/>
+
+        <DesktopMain theme={theme} results={results} openField={openField} />
+      </div>
+
     </div>
   );
 }

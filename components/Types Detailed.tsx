@@ -13,7 +13,7 @@ export default function Menu ({filters, setFilters, theme}: {filters: Filters, s
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild>
 				<button
-					className={`inline-flex size-[35px] w-[55px] items-center justify-center rounded-full ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === 'dark' ? 'text-[var(--text)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--textLight)]'} text-violet11 shadow-blackA4 outline-none hover:bg-violet3 hover:cursor-pointer m-[0px_5px_0px_10px]`}
+					className={`inline-flex size-[35px] w-[55px] items-center justify-center rounded-full ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === 'dark' ? 'text-[var(--text)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--textLight)]'} text-violet11 shadow-blackA4 outline-none hover:bg-violet3 hover:cursor-pointer`}
 					aria-label="Customise options"
 				>
 					<HamburgerMenuIcon className="m-[0_auto]"/>
