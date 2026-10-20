@@ -128,14 +128,14 @@ export default function DesktopMain({
                       <p
                         className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1`}
                       >
-                        Genres
+                        {results.type === 'anime' || results.type === 'manga' ? (results.genres && results.genres.length < 1 ? (results.demographics && results.demographics.length > 0 ?  'Demographics' : 'Genres') : 'Genres') : 'Genres'}
                       </p>
                       <p className="text-lg absolute mb-2 ml-2">
                         {results.type === "anime" || results.type === "manga"
-                          ? results.genres && results.genres.length >= 1
+                          ? (results.genres && results.genres.length >= 1
                             ? `${results.genres?.join(", ")}`
-                            : "No data 𐔌՞.‸.՞𐦯"
-                          : `${results.runtime}`}
+                            : (results.demographics && results.demographics.length > 0 ? `${results.demographics?.join(", ")}` : "No data 𐔌՞.‸.՞𐦯"))
+                          : `${results.genres?.join(", ")}`}
                       </p>
                     </div>
 

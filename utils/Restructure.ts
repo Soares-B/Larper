@@ -17,6 +17,9 @@ type TenraiShape = {
         }]
         url: string,
         status: string | null
+        demographics: {
+            name: string
+        }[] | null
 
     }
     infoReview?: {
@@ -214,6 +217,7 @@ class Tenrai{
     link: string;
     status: string | null;
     favorite: boolean
+    demographics: string[] | null
     
     review: {
         spoiler: boolean;
@@ -239,6 +243,7 @@ class Tenrai{
         this.link = obj.info.url;
         this.status = obj.info.status ?? null;
         this.favorite = false;   
+        this.demographics = obj.info.demographics?.map(d => d.name) ?? null
         
         if (obj.infoReview){
             this.review = {
@@ -410,7 +415,7 @@ class TMDB{
 
 
     constructor(obj: TMDBShape, style: string){
-        this.description = obj.info.overview ? obj.info.overview : null;
+        this.description = obj.info.overview ? textShortener(obj.info.overview, style) : null;
         this.cover = `https://image.tmdb.org/t/p/w500${obj.info.poster_path}`;
         this.background = `https://image.tmdb.org/t/p/w500${obj.info.backdrop_path}`;
         this.id = obj.info.id;
@@ -526,7 +531,7 @@ class Music{
 }
 
 function textShortener(desc: string | null, style: string) {
-    const maxLength = style === 'simple' ? 250 : 500
+  const maxLength = style === 'simple' ? 250 : 500
 
   if (!desc) return null;
 

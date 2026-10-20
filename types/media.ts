@@ -19,6 +19,7 @@ export type MediaResult = {
   id?: string | null;
   rating?: number | null;
   genres?: string[] | null;
+  demographics: string[] | null;
   link: string;
   status?: string | null;
   type: string;
