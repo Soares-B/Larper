@@ -4,12 +4,13 @@ import {
     TenraiRandomManga,
 } from "@/lib/Tenrai";
 import RestructureDetails from "@/utils/RestructureDetails";
+import Restructure from "@/utils/Restructure";
 
 type FullSearch = [string[], ...any[]];
 
 export async function POST(req: Request) {
     try {
-        const { type, NSFW } = await req.json();
+        const { type, NSFW, style } = await req.json();
 
         const fullSearch: FullSearch = [[]];
 
@@ -19,16 +20,30 @@ export async function POST(req: Request) {
 
                 const data = await response?.json();
 
-                const restructure = RestructureDetails(
-                    data,
-                    "anime"
-                );
+                if (style === 'simple'){
+                    const restructure = Restructure(
+                        data,
+                        "anime",
+                        'simple'
+                    );
 
-                if (restructure) {
-                    fullSearch.push(restructure);
-                    fullSearch[0].push("anime");
+                    if (restructure) {
+                        fullSearch.push(restructure);
+                        fullSearch[0].push("anime");
+                    }
+                }else{
+                    const restructure = RestructureDetails(
+                        data,
+                        "anime"
+                    );
+
+                    if (restructure) {
+                        fullSearch.push(restructure);
+                        fullSearch[0].push("anime");
+                    }
+    
                 }
-
+        
                 return NextResponse.json(
                     {
                         fullSearch,
@@ -49,15 +64,30 @@ export async function POST(req: Request) {
 
                 const data = await response?.json();
 
-                const restructure = RestructureDetails(
-                    data,
-                    "manga"
-                );
+                if (style === 'simple'){
+                    const restructure = Restructure(
+                        data,
+                        "manga",
+                        'simple'
+                    );
 
-                if (restructure) {
-                    fullSearch.push(restructure);
-                    fullSearch[0].push("manga");
+                    if (restructure) {
+                        fullSearch.push(restructure);
+                        fullSearch[0].push("manga");
+                    }
+                }else{
+                    const restructure = RestructureDetails(
+                        data,
+                        "manga"
+                    );
+
+                    if (restructure) {
+                        fullSearch.push(restructure);
+                        fullSearch[0].push("manga");
+                    }
                 }
+
+                
 
                 return NextResponse.json(
                     {

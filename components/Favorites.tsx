@@ -6,7 +6,7 @@ import { Fragment } from "react";
 type Favorite = {
   name: string;
   type: string;
-  image: string;
+  cover: string;
 };
 
 type Props = {
@@ -19,38 +19,43 @@ type Props = {
 
 type SearchData = [string[]];
 
-export default function Favorites({ theme, favorites, setOpenField, setMedia, setCurrent }: Props) {
-
-    async function search(queryToSearch: string, filters: any) {
-        if (!queryToSearch.trim()) {
-        return;
-        }
-
-        setOpenField(true);
-
-        try {
-        const response = await fetch("/api/search", {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-            query: queryToSearch,
-            filters,
-            type: "detailed",
-            }),
-        });
-
-        const data: SearchData = await response.json();
-
-        setMedia(data);
-        setCurrent(1);
-        } catch (error) {
-        console.error("Erro ao pesquisar:", error);
-        }
+export default function Favorites({
+  theme,
+  favorites,
+  setOpenField,
+  setMedia,
+  setCurrent,
+}: Props) {
+  async function search(queryToSearch: string, filters: any) {
+    if (!queryToSearch.trim()) {
+      return;
     }
 
-    function handleSubmit(query: string, type: string) {
+    setOpenField(true);
+
+    try {
+      const response = await fetch("/api/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: queryToSearch,
+          filters,
+          type: "detailed",
+        }),
+      });
+
+      const data: SearchData = await response.json();
+
+      setMedia(data);
+      setCurrent(1);
+    } catch (error) {
+      console.error("Erro ao pesquisar:", error);
+    }
+  }
+
+  function handleSubmit(query: string, type: string) {
     const filters: any = {};
 
     switch (type) {
@@ -69,37 +74,53 @@ export default function Favorites({ theme, favorites, setOpenField, setMedia, se
       case "movie":
         filters.movie = true;
         break;
+
+      case "book":
+        filters.book = true;
+        break;
+
+      case "music":
+        filters.music = true;
+        break;
+
+      case "game":
+        filters.game = true;
+        break;
     }
 
     search(query, filters);
   }
 
-
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
         <button
-          className={`inline-flex size-[35px] w-[55px] items-center justify-center rounded-full ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} shadow-blackA4 outline-none hover:bg-violet3 hover:cursor-pointer`}
+          className={`inline-flex size-[35px] w-[55px] items-center justify-center rounded-full ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} shadow-blackA4 outline-none hover:bg-violet3 hover:cursor-pointer focus:outline-none ${theme === "dark" ? "hover:bg-[var(--backgroundHover)]" : theme === "light" ? "hover:bg-[var(--backgroundLightHover)]" : "hover:bg-[var(--backgroundGlassHover)]"} hover:outline-1`}
           aria-label="Customise options "
         >
-          <Heart/>
+          <Heart />
         </button>
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Portal>
         <DropdownMenu.Content
-          className={`min-w-[275px] max-h-[300px] rounded-md ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade ${favorites && favorites.length > 3 ? 'overflow-y-scroll scrollbar-thin' : 'overflow-auto scrollbar-none'} ${
-                          theme === "dark"
-                            ? "scrollbar-track-[var(--middleDownTone)]"
-                            : theme === "light"
-                              ? "scrollbar-track-[var(--middleUpperTone)]"
-                              : theme === 'glass' ? "scrollbar-track-[var(--middleTone)]" : "scrollbar-track-[var(--middleTone)]/25"
-                        } ${
-                          theme === "dark"
-                            ? "scrollbar-thumb-[var(--middleTone)]"
-                            : theme === "light"
-                              ? "scrollbar-thumb-[var(--middleToneLight)]" : theme === 'glass' ? "scrollbar-thumb-[var(--middleToneLight)]" : "scrollbar-thumb-[var(--middleToneLight)]/75"
-                        } snap-y snap-start scroll-p-[5px]`}
+          className={`min-w-[275px] max-h-[300px] rounded-md ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade ${favorites && favorites.length > 3 ? "overflow-y-scroll scrollbar-thin" : "overflow-auto scrollbar-none"} ${
+            theme === "dark"
+              ? "scrollbar-track-[var(--middleDownTone)]"
+              : theme === "light"
+                ? "scrollbar-track-[var(--middleUpperTone)]"
+                : theme === "glass"
+                  ? "scrollbar-track-[var(--middleTone)]"
+                  : "scrollbar-track-[var(--middleTone)]/25"
+          } ${
+            theme === "dark"
+              ? "scrollbar-thumb-[var(--middleTone)]"
+              : theme === "light"
+                ? "scrollbar-thumb-[var(--middleToneLight)]"
+                : theme === "glass"
+                  ? "scrollbar-thumb-[var(--middleToneLight)]"
+                  : "scrollbar-thumb-[var(--middleToneLight)]/75"
+          } snap-y snap-start scroll-p-[5px]`}
           sideOffset={5}
         >
           <DropdownMenu.Label
@@ -107,7 +128,7 @@ export default function Favorites({ theme, favorites, setOpenField, setMedia, se
           >
             Favorites
           </DropdownMenu.Label>
-          {favorites && favorites.length > 0 ?
+          {favorites && favorites.length > 0 ? (
             favorites.map((f) => {
               return (
                 <Fragment key={f.name}>
@@ -120,7 +141,7 @@ export default function Favorites({ theme, favorites, setOpenField, setMedia, se
                     }}
                   >
                     <Image
-                      src={f.image}
+                      src={f.cover}
                       width={40}
                       height={30}
                       alt={f.name}
@@ -145,11 +166,14 @@ export default function Favorites({ theme, favorites, setOpenField, setMedia, se
                   <br />
                 </Fragment>
               );
-            }) : <DropdownMenu.Item
-                    className={`relative flex h-[25px] select-none items-center rounded-[3px] pl-[10px] pr-[5px] text-[13px] leading-none ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1 mb-[20px] ml-[10px] hover:cursor-pointer`}
-                  >
-                    "Nobody but us chickens"
-                  </DropdownMenu.Item>}
+            })
+          ) : (
+            <DropdownMenu.Item
+              className={`relative flex h-[25px] select-none items-center rounded-[3px] pl-[10px] pr-[5px] text-[13px] leading-none ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1 mb-[20px] ml-[10px] hover:cursor-pointer`}
+            >
+              "Nobody here, but us chickens!"
+            </DropdownMenu.Item>
+          )}
 
           <DropdownMenu.Arrow className="fill-white" />
         </DropdownMenu.Content>

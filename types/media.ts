@@ -5,6 +5,7 @@ export type MediaReview = {
   author?: string | null;
   avatar?: string | null;
   rating?: number | null;
+  opinion?: string | null;
 };
 
 export type MediaResult = {
@@ -27,6 +28,7 @@ export type MediaResult = {
   runtime?: string | null;
   volumes?: string | null;
   chapters?: string | null;
+  publishing?: boolean | null;
   totalSeason?: string | null;
   pages?: string | null;
   tagline?: string | null;

@@ -213,7 +213,6 @@ class Tenrai{
     genres: string[] | null;
     link: string;
     status: string | null;
-    background_image: string | null
     favorite: boolean
     
     review: {
@@ -234,7 +233,6 @@ class Tenrai{
         this.description = textShortener(obj.info.synopsis ?? null, style);
         this.background = textShortener(obj.info.background ?? null, style);
         this.cover = obj.info.images?.jpg?.large_image_url ?? null;
-        this.background_image = this.cover
         this.id = obj.info.mal_id;
         this.rating = obj.info.score ?? null;
         this.genres = obj.info.genres?.map(g => g.name) ?? null;
@@ -528,7 +526,7 @@ class Music{
 }
 
 function textShortener(desc: string | null, style: string) {
-    const maxLength = style === 'simple' ? 200 : 500
+    const maxLength = style === 'simple' ? 250 : 500
 
   if (!desc) return null;
 

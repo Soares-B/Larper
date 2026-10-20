@@ -1,107 +1,110 @@
 import type { Dispatch, SetStateAction } from "react";
 import type { Filters } from "@/types/media";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import {
-	HamburgerMenuIcon,
-	CheckIcon,
-} from "@radix-ui/react-icons";
+import { HamburgerMenuIcon, CheckIcon } from "@radix-ui/react-icons";
 
-
-export default function Menu ({filters, setFilters, theme}: {filters: Filters, setFilters: Dispatch<SetStateAction<Filters>>, theme: string}) {
-
+export default function Menu({
+  filters,
+  setFilters,
+  theme,
+}: {
+  filters: Filters;
+  setFilters: Dispatch<SetStateAction<Filters>>;
+  theme: string;
+}) {
   return (
-		<DropdownMenu.Root>
-			<DropdownMenu.Trigger asChild>
-				<button
-					className={`inline-flex size-[35px] w-[55px] items-center justify-center rounded-full ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === 'dark' ? 'text-[var(--text)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--textLight)]'} text-violet11 shadow-blackA4 outline-none hover:bg-violet3 hover:cursor-pointer`}
-					aria-label="Customise options"
-				>
-					<HamburgerMenuIcon className="m-[0_auto]"/>
-				</button>
-			</DropdownMenu.Trigger>
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger asChild>
+        <button
+          className={`inline-flex size-[35px] w-[55px] items-center justify-center rounded-full ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} text-violet11 shadow-blackA4 outline-none hover:bg-violet3 hover:cursor-pointer focus:outline-none ${theme === "dark" ? "hover:bg-[var(--backgroundHover)]" : theme === "light" ? "hover:bg-[var(--backgroundLightHover)]" : "hover:bg-[var(--backgroundGlassHover)]"} hover:outline-1`}
+          aria-label="Customise options"
+        >
+          <HamburgerMenuIcon className="m-[0_auto]" />
+        </button>
+      </DropdownMenu.Trigger>
 
-			<DropdownMenu.Portal>
-				<DropdownMenu.Content
-					className={`min-w-[220px] rounded-md ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === 'glass' ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === 'dark' ? 'text-[var(--text)]' : theme === 'light' ? 'text-[var(--textLight)]' : 'text-[var(--textLight)]'} p-[5px] shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade hover:cursor-pointer`}
-					sideOffset={5}
-				>
-					<DropdownMenu.CheckboxItem
-						className="group relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[5px] text-[13px] leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1"
-						checked={filters.anime}
-						onCheckedChange={(value) =>
-							setFilters((prev) => ({
-							...prev,
-							anime: value === true,
-							}))
-						}
-					>
-						<DropdownMenu.ItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
-							<CheckIcon />
-						</DropdownMenu.ItemIndicator>
-						Anime{" "}
-					</DropdownMenu.CheckboxItem>
-					<DropdownMenu.CheckboxItem
-						className="group relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[5px] text-[13px] leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1"
-						checked={filters.manga}
-						onCheckedChange={(value) =>
-							setFilters((prev) => ({
-							...prev,
-							manga: value === true,
-							}))
-						}
-					>
-						<DropdownMenu.ItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
-							<CheckIcon />
-						</DropdownMenu.ItemIndicator>
-						Manga{" "}
-					</DropdownMenu.CheckboxItem>
-					<DropdownMenu.CheckboxItem
-						className="group relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[5px] text-[13px] leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1"
-						checked={filters.game}
-						onCheckedChange={(value) =>
-							setFilters((prev) => ({
-							...prev,
-							game: value === true,
-							}))
-						}
-					>
-						<DropdownMenu.ItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
-							<CheckIcon />
-						</DropdownMenu.ItemIndicator>
-						Game{" "}
-					</DropdownMenu.CheckboxItem>
-					<DropdownMenu.CheckboxItem
-						className="group relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[5px] text-[13px] leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1"
-						checked={filters.serie}
-						onCheckedChange={(value) =>
-							setFilters((prev) => ({
-							...prev,
-							serie: value === true,
-							}))
-						}
-					>
-						<DropdownMenu.ItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
-							<CheckIcon />
-						</DropdownMenu.ItemIndicator>
-						Serie{" "}
-					</DropdownMenu.CheckboxItem>
-					<DropdownMenu.CheckboxItem
-						className="group relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[5px] text-[13px] leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1"
-						checked={filters.movie}
-						onCheckedChange={(value) =>
-							setFilters((prev) => ({
-							...prev,
-							movie: value === true,
-							}))
-						}
-					>
-						<DropdownMenu.ItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
-							<CheckIcon />
-						</DropdownMenu.ItemIndicator>
-						Movie{" "}
-					</DropdownMenu.CheckboxItem>
-				</DropdownMenu.Content>
-			</DropdownMenu.Portal>
-		</DropdownMenu.Root>
-	);
+      <DropdownMenu.Portal>
+        <DropdownMenu.Content
+          className={`min-w-[220px] rounded-md ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} p-[5px] shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade hover:cursor-pointer`}
+          sideOffset={5}
+        >
+          <DropdownMenu.CheckboxItem
+            className="group relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[5px] text-[13px] leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1"
+            checked={filters.anime}
+            onCheckedChange={(value) =>
+              setFilters((prev) => ({
+                ...prev,
+                anime: value === true,
+              }))
+            }
+          >
+            <DropdownMenu.ItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
+              <CheckIcon />
+            </DropdownMenu.ItemIndicator>
+            Anime{" "}
+          </DropdownMenu.CheckboxItem>
+          <DropdownMenu.CheckboxItem
+            className={`group relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[5px] text-[13px] leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1 focus:outline-none ${theme === 'dark' ? 'hover:bg-[var(--backgroundHover)]' : theme === 'light' ?  'hover:bg-[var(--backgroundLightHover)]' : 'hover:bg-[var(--backgroundGlassHover)]' } hover:outline-1`}
+            checked={filters.manga}
+            onCheckedChange={(value) =>
+              setFilters((prev) => ({
+                ...prev,
+                manga: value === true,
+              }))
+            }
+          >
+            <DropdownMenu.ItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
+              <CheckIcon />
+            </DropdownMenu.ItemIndicator>
+            Manga{" "}
+          </DropdownMenu.CheckboxItem>
+          <DropdownMenu.CheckboxItem
+            className={`group relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[5px] text-[13px] leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1 focus:outline-none ${theme === 'dark' ? 'hover:bg-[var(--backgroundHover)]' : theme === 'light' ?  'hover:bg-[var(--backgroundLightHover)]' : 'hover:bg-[var(--backgroundGlassHover)]' } hover:outline-1`}
+            checked={filters.game}
+            onCheckedChange={(value) =>
+              setFilters((prev) => ({
+                ...prev,
+                game: value === true,
+              }))
+            }
+          >
+            <DropdownMenu.ItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
+              <CheckIcon />
+            </DropdownMenu.ItemIndicator>
+            Game{" "}
+          </DropdownMenu.CheckboxItem>
+          <DropdownMenu.CheckboxItem
+            className={`group relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[5px] text-[13px] leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1 focus:outline-none ${theme === 'dark' ? 'hover:bg-[var(--backgroundHover)]' : theme === 'light' ?  'hover:bg-[var(--backgroundLightHover)]' : 'hover:bg-[var(--backgroundGlassHover)]' } hover:outline-1`}
+            checked={filters.serie}
+            onCheckedChange={(value) =>
+              setFilters((prev) => ({
+                ...prev,
+                serie: value === true,
+              }))
+            }
+          >
+            <DropdownMenu.ItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
+              <CheckIcon />
+            </DropdownMenu.ItemIndicator>
+            Serie{" "}
+          </DropdownMenu.CheckboxItem>
+          <DropdownMenu.CheckboxItem
+            className={`group relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[5px] text-[13px] leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1 focus:outline-none ${theme === 'dark' ? 'hover:bg-[var(--backgroundHover)]' : theme === 'light' ?  'hover:bg-[var(--backgroundLightHover)]' : 'hover:bg-[var(--backgroundGlassHover)]' } hover:outline-1`}
+            checked={filters.movie}
+            onCheckedChange={(value) =>
+              setFilters((prev) => ({
+                ...prev,
+                movie: value === true,
+              }))
+            }
+          >
+            <DropdownMenu.ItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
+              <CheckIcon />
+            </DropdownMenu.ItemIndicator>
+            Movie{" "}
+          </DropdownMenu.CheckboxItem>
+        </DropdownMenu.Content>
+      </DropdownMenu.Portal>
+    </DropdownMenu.Root>
+  );
 }

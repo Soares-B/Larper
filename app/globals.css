@@ -15,6 +15,10 @@
   --backgroundGlass: #88888844;
   --backgroundTransparent: #88888800;
 
+  --backgroundHover: #222222;
+  --backgroundLightHover: #bbb;
+  --backgroundGlassHover: #88888822;
+
   --text: #ffffff;
   --textLight: #000000;
 
@@ -24,8 +28,8 @@
   --middleTone: rgba(255, 255, 255, .5);
   --middleToneLight: rgba(000, 000, 000, .5);
 
-  --middleUpperTone: rgba(255, 255, 255, .75);
-  --middleDownTone: rgba(255, 255, 255, .25);
+  --middleUpperTone: rgba(000, 000, 000, .15);
+  --middleDownTone: rgba(255, 255, 255, .15);
 
   --great: #19ff11;
   --medium: #fffb11;
