@@ -123,7 +123,7 @@ class Game{
 }
 
 class Serie{
-    vote_count: string | null;
+    votes: string | null;
     original_language: string | null;
     episode_runtime: string | null
     recommendations: string[] | null;
@@ -131,7 +131,7 @@ class Serie{
     similar: string[] | null;
 
     constructor(obj: SerieShape){
-        this.vote_count = obj.info.vote_count?.toLocaleString('en-US') ?? null;
+        this.votes = obj.info.vote_count?.toLocaleString('en-US') ?? null;
         this.original_language = obj.info.original_language ?? null;
 
         if (obj.dataDetails.episode_run_time?.length > 0){
@@ -148,7 +148,7 @@ class Serie{
 }
 
 class Movie{
-    vote_count: string | null;
+    votes: string | null;
     original_language: string | null;
     budget: string | null;
     budgetNumber: number | null;
@@ -159,7 +159,7 @@ class Movie{
     similar: string[] | null;
 
     constructor(obj: MovieShape){
-        this.vote_count = obj.info.vote_count?.toLocaleString('en-US') ?? null;
+        this.votes = obj.info.vote_count?.toLocaleString('en-US') ?? null;
         this.original_language = obj.info.original_language ?? null;
         this.budget = obj.dataDetails.budget?.toLocaleString('en-US', {
             style: 'currency',

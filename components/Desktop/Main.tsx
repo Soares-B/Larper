@@ -66,18 +66,22 @@ export default function DesktopMain({
                     {results.description}
                   </p>
 
-                  <div className="flex-1 grid grid-cols-2 grid-rows-2 items-center justify-items-center gap-1">
+                  <div className={`flex-1 grid ${results.type !== 'music' ? 'grid-cols-2 grid-rows-2' : 'grid-cols-2 grid-rows-1'} items-center justify-items-center gap-1`}>
                     {/*----------------------------------------------------------------------------------------------------------------------------------*/}
+                    {results.type !== 'music' ? 
+                    
+                    
+                    <>
                     <div
                       className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} rounded-[10px] row-1 col-1 h-[80%] w-[80%] relative min-h-[100px]`}
                     >
                       <p
                         className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1`}
                       >
-                        Runtime
+                        {results.type === "game" ? "Game type" : results.type === 'book' ? 'Pages' : "Runtime"}
                       </p>
                       <p
-                        className={`${results.type === "anime" ? "text-3xl" : "text-xl"} absolute bottom-0 mb-2 ml-2`}
+                        className={`${results.type === "anime" || results.type === "movie" ? "text-3xl" : "text-xl"} absolute bottom-0 mb-2 ml-2`}
                       >
                         {results.type === "anime" ? (
                           results.totalEpisode ? (
@@ -99,6 +103,15 @@ export default function DesktopMain({
                               {results.chapters}
                             </>
                           )
+                        ) : results.type === 'game' ? (
+                          results.game_type
+                        ) : results.type === 'book' ? (
+                          `Pages: ${results.pages}`
+                        ) : results.type === "serie" ? (
+                          <>
+                            Seasons: {results.totalSeason} <br /> Episodes:{" "}
+                            {results.totalEpisode}
+                          </>
                         ) : (
                           `${results.runtime}`
                         )}
@@ -112,29 +125,39 @@ export default function DesktopMain({
                       <p
                         className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1`}
                       >
-                        Rating
+                        {results.type === 'book' ? 'Authors' : 'Rating'}
                       </p>
                       <p
-                        className={`text-3xl absolute bottom-0 mb-2 ml-2 ${results.rating && (results.rating > 7.5 ? (theme === "light" ? "text-[var(--greatLight)]" : "text-[var(--great)]") : results.rating >= 5 ? (theme === "light" ? "text-[var(--mediumLight)]" : "text-[var(--medium)]") : theme === "light" ? "text-[var(--badLight)]" : "text-[var(--bad)]")}`}
+                        className={`${results.type === 'book' ? 'text-xl' : 'text-3xl absolute bottom-0'}  mb-2 ml-2 ${results.rating && (results.rating > 7.5 ? (theme === "light" ? "text-[var(--greatLight)]" : "text-[var(--great)]") : results.rating >= 5 ? (theme === "light" ? "text-[var(--mediumLight)]" : "text-[var(--medium)]") : theme === "light" ? "text-[var(--badLight)]" : "text-[var(--bad)]")}`}
                       >
-                        {results.rating ? results.rating : "No data (  •̀⤙•́  )"}
+                        {results.type === 'book' ?  results.authors && results.authors.length >= 1 ? results.authors.join(', ') : "No data (  •̀⤙•́  )" : results.rating ? results.rating : "No data (  •̀⤙•́  )"}
                       </p>
                     </div>
 
                     {/*----------------------------------------------------------------------------------------------------------------------------------*/}
                     <div
-                      className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} rounded-[10px] row-2 col-1 h-[80%] w-[80%] relative min-h-[100px]`}
+                      className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} rounded-[10px] row-2 col-1 h-[80%] w-[80%] relative min-h-[100px] overflow-y-auto scrollbar-thin ${theme === "dark" ? "scrollbar-track-[var(--middleDownTone)]" : "scrollbar-track-[var(--middleUpperTone)]"} ${theme === "dark" ? "scrollbar-thumb-[var(--middleTone)]" : "scrollbar-thumb-[var(--middleToneLight)]"}`}
                     >
                       <p
-                        className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1`}
+                        className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1 `}
                       >
-                        {results.type === 'anime' || results.type === 'manga' ? (results.genres && results.genres.length < 1 ? (results.demographics && results.demographics.length > 0 ?  'Demographics' : 'Genres') : 'Genres') : 'Genres'}
+                        {results.type === "anime" || results.type === "manga"
+                          ? results.genres && results.genres.length < 1
+                            ? results.demographics &&
+                              results.demographics.length > 0
+                              ? "Demographics"
+                              : "Genres"
+                            : "Genres"
+                          : "Genres"}
                       </p>
                       <p className="text-lg absolute mb-2 ml-2">
                         {results.type === "anime" || results.type === "manga"
-                          ? (results.genres && results.genres.length >= 1
+                          ? results.genres && results.genres.length >= 1
                             ? `${results.genres?.join(", ")}`
-                            : (results.demographics && results.demographics.length > 0 ? `${results.demographics?.join(", ")}` : "No data 𐔌՞.‸.՞𐦯"))
+                            : results.demographics &&
+                                results.demographics.length > 0
+                              ? `${results.demographics?.join(", ")}`
+                              : "No data 𐔌՞.‸.՞𐦯"
                           : `${results.genres?.join(", ")}`}
                       </p>
                     </div>
@@ -154,6 +177,44 @@ export default function DesktopMain({
                           : "No data ( . ‸ .)"}
                       </p>
                     </div>
+                    
+                    
+                    
+                    </> : <>
+                    <div
+                      className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} rounded-[10px] row-1 col-1 h-[80%] w-[80%] relative min-h-[50px]`}
+                    >
+                      <p
+                        className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1`}
+                      >
+                        Runtime
+                      </p>
+                      <p
+                        className={`mb-2 ml-2 text-3xl`}
+                      >
+                        {results.time}
+                      </p>
+                    </div>
+                    
+                    <div
+                      className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} rounded-[10px] row-1 col-2 h-[80%] w-[80%] relative min-h-[50px]`}
+                    >
+                      <p
+                        className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1`}
+                      >
+                        Music Info
+                      </p>
+                      <p
+                        className={`mb-2 ml-2 text-xl`}
+                      >
+                        <>
+                        Album: {results.album ? results.album.name : 'No data (≖_≖ )'}
+                        <br />
+                        Artist: {results.artist ? results.artist.name : "No data (¬⤙¬ )"}
+                        </>
+                      </p>
+                    </div>
+                    </>}
                   </div>
                 </div>
               </div>
@@ -249,12 +310,17 @@ export default function DesktopMain({
                       {/*----------------------------------------------------------------------------------------------------------------------------------*/}
                       <div className="absolute bottom-0 right-0 mr-7 flex gap-2 w-fit mb-1">
                         <p>
-                          <span
-                            className={`${results.review.rating && (results.review.rating > 7.5 ? (theme === "light" ? "text-[var(--greatLight)]" : "text-[var(--great)]") : results.review.rating >= 5 ? (theme === "light" ? "text-[var(--mediumLight)]" : "text-[var(--medium)]") : theme === "light" ? "text-[var(--badLight)]" : "text-[var(--bad)]")}`}
-                          >
-                            {results.review.rating}
-                          </span>{" "}
-                          ({results.review.opinion}) - {results.review.author}
+                          {results.review.rating && (
+                            <span
+                              className={`${results.review.rating && (results.review.rating > 7.5 ? (theme === "light" ? "text-[var(--greatLight)]" : "text-[var(--great)]") : results.review.rating >= 5 ? (theme === "light" ? "text-[var(--mediumLight)]" : "text-[var(--medium)]") : theme === "light" ? "text-[var(--badLight)]" : "text-[var(--bad)]")}`}
+                            >
+                              {results.review.rating}
+                            </span>
+                          )}{" "}
+                          {results.review.opinion && (
+                            <>({results.review.opinion}) - </>
+                          )}{" "}
+                          {results.review.author}
                         </p>
                         <AvatarReview
                           path={results.review.avatar ?? ""}

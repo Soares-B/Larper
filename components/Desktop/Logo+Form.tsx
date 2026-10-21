@@ -48,6 +48,7 @@ export default function DesktopLogoInput({
     const data = await response.json();
 
     setMedia(data);
+    setCurrent(1)
 
     setOpenField(true);
   }
@@ -59,7 +60,7 @@ export default function DesktopLogoInput({
         height={170}
         width={737}
         alt="Logo"
-        className="scale-50 m-[0_auto]"
+        className="scale-75 m-[0_auto]"
       ></Image>
 
       <form

@@ -234,8 +234,8 @@ class Tenrai{
         this.review = {};
         this.name = obj.info.title_japanese;
         this.subname = obj.info.title_english ?? obj.info.title ?? null;
-        this.description = textShortener(obj.info.synopsis ?? null, style);
-        this.background = textShortener(obj.info.background ?? null, style);
+        this.description = textShortener(obj.info.synopsis ?? null, style, 'description');
+        this.background = textShortener(obj.info.background ?? null, style, 'description');
         this.cover = obj.info.images?.jpg?.large_image_url ?? null;
         this.id = obj.info.mal_id;
         this.rating = obj.info.score ?? null;
@@ -251,7 +251,7 @@ class Tenrai{
                 author: obj.infoReview.user.username,
                 rating: obj.infoReview.score,
                 opinion: obj.infoReview.tags[0] ?? "",
-                content: textShortener(obj.infoReview.review, style),
+                content: textShortener(obj.infoReview.review, style, style === 'detailed' ? 'review' : 'description'),
                 avatar: obj.infoReview.user.images?.jpg?.image_url ?? null,
                 link: obj.infoReview.url ?? null,
             };
@@ -329,7 +329,7 @@ class Game{
         
         this.id = obj.info.id;
         this.name = obj.info.name;
-        this.description = textShortener(obj.info.summary, style);
+        this.description = textShortener(obj.info.summary, style, 'description');
         this.storyline = obj.info.storyline ?? null;
         this.age_rating = obj.info.age_ratings ? obj.info.age_ratings.find(age => age.synopsis)?.synopsis ?? null : null;
         this.cover = obj.info.cover?.url ? `https:${obj.info.cover.url}` : null;
@@ -361,7 +361,7 @@ class Book{
 
     name: string;
     subname?: string | null;
-    author: string[] | null;
+    authors: string[] | null;
     description: string | null;
     rating?: number | null;
     genres: {
@@ -379,8 +379,8 @@ class Book{
     constructor(obj: BookShape, style: string){
         this.name = obj.info.title;
         this.subname = obj.info.subtitle;
-        this.author = obj.info.authors;
-        this.description = textShortener(obj.info.description, style);
+        this.authors = obj.info.authors;
+        this.description = textShortener(obj.info.description, style, 'description');
         this.rating = obj.info.averageRating ? obj.info.averageRating * 2 : null;
         this.genres = obj.info.categories?.map(genre => genre) ?? null;
         this.cover = obj.info.imageLinks?.["thumbnail"];
@@ -415,7 +415,7 @@ class TMDB{
 
 
     constructor(obj: TMDBShape, style: string){
-        this.description = obj.info.overview ? textShortener(obj.info.overview, style) : null;
+        this.description = obj.info.overview ? textShortener(obj.info.overview, style, 'description') : null;
         this.cover = `https://image.tmdb.org/t/p/w500${obj.info.poster_path}`;
         this.background = `https://image.tmdb.org/t/p/w500${obj.info.backdrop_path}`;
         this.id = obj.info.id;
@@ -428,7 +428,7 @@ class TMDB{
             this.review = {
                 author: obj.infoReview.author ?? null,
                 rating: Number(obj.infoReview.author_details?.rating?.toFixed(1)) ?? null,
-                content: textShortener(obj.infoReview.content ?? null, style),
+                content: textShortener(obj.infoReview.content ?? null, style, style === 'detailed' ? 'review' : 'description'),
                 avatar: obj.infoReview.author_details?.avatar_path ? `https://image.tmdb.org/t/p/w500${obj.infoReview.author_details.avatar_path}` : null,
                 link: obj.infoReview.url ?? '',
             };
@@ -530,8 +530,8 @@ class Music{
     }
 }
 
-function textShortener(desc: string | null, style: string) {
-  const maxLength = style === 'simple' ? 250 : 500
+function textShortener(desc: string | null, style: string, review: string) {
+  const maxLength = style === 'simple' ? 250 : review === 'review' ? 1475 :  500
 
   if (!desc) return null;
 

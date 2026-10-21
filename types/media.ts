@@ -49,7 +49,8 @@ export type MediaResult = {
   recommendations?: string[];
   keywords?: string[];
   similar?: string[];
-  typeData?: string;
+  age_rating?: string;
+  typeData: string;
   source?: string;
   duration?: string;
   recoms?: string[];

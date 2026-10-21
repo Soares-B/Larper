@@ -32,15 +32,19 @@ export async function POST(req: Request) {
          * ANIME
          */
         if (filters.anime) {
-            const response = await TenraiAnime(query);
+            searchVar = await TenraiAnime(query);
 
-            if (response) {
-                const data = await response.json();
+            if (searchVar) {
+                const data = await searchVar.json();
 
-                if (type === "simple") {
-                    restructure = Restructure(data, "anime", 'simple');
-                } else {
-                    restructure = RestructureDetails(data, "anime");
+                if (searchVar.status === 200){
+                    if (type === "simple") {
+                        restructure = Restructure(data, "anime", 'simple');
+                    } else {
+                        restructure = RestructureDetails(data, "anime");
+                    }
+                }else{
+                    restructure = null
                 }
 
                 anime = restructure ?? null;
@@ -56,15 +60,19 @@ export async function POST(req: Request) {
          * MANGA
          */
         if (filters.manga) {
-            const response = await TenraiManga(query);
+            searchVar = await TenraiManga(query);
 
-            if (response) {
-                const data = await response.json();
+            if (searchVar) {
+                const data = await searchVar.json();
 
-                if (type === "simple") {
-                    restructure = Restructure(data, "manga", 'simple');
-                } else {
-                    restructure = RestructureDetails(data, "manga");
+                if (searchVar.status === 200){
+                    if (type === "simple") {
+                        restructure = Restructure(data, "manga", 'simple');
+                    } else {
+                        restructure = RestructureDetails(data, "manga");
+                    }
+                }else{
+                    restructure = null
                 }
 
                 manga = restructure ?? null;
@@ -85,10 +93,14 @@ export async function POST(req: Request) {
             if (searchVar) {
                 game = await searchVar.json();
 
-                if (type === "simple") {
-                    restructure = Restructure(game, "game", 'simple');
-                } else {
-                    restructure = RestructureDetails(game, "game");
+                if (searchVar.status === 200){
+                    if (type === "simple") {
+                        restructure = Restructure(game, "game", 'simple');
+                    } else {
+                        restructure = RestructureDetails(game, "game");
+                    }
+                }else{
+                    restructure = null
                 }
 
                 game = restructure ?? null;
@@ -109,11 +121,16 @@ export async function POST(req: Request) {
             if (searchVar) {
                 book = await searchVar.json();
 
-                if (type === "simple") {
-                    restructure = Restructure(book, "book", 'simple');
-                } else {
-                    restructure = RestructureDetails(book, "book");
+                if (searchVar.status === 200){
+                    if (type === "simple") {
+                        restructure = Restructure(book, "book", 'simple');
+                    } else {
+                        restructure = RestructureDetails(book, "book");
+                    }
+                }else{
+                    restructure = null
                 }
+
 
                 book = restructure ?? null;
             }
@@ -133,10 +150,14 @@ export async function POST(req: Request) {
             if (searchVar) {
                 serie = await searchVar.json();
 
-                if (type === "simple") {
+                if (searchVar.status === 200){
+                    if (type === "simple") {
                     restructure = Restructure(serie, "serie", 'simple');
                 } else {
                     restructure = RestructureDetails(serie, "serie");
+                }
+                }else{
+                    restructure = null
                 }
 
                 serie = restructure ?? null;
@@ -157,10 +178,14 @@ export async function POST(req: Request) {
             if (searchVar) {
                 movie = await searchVar.json();
 
-                if (type === "simple") {
-                    restructure = Restructure(movie, "movie", 'simple');
-                } else {
-                    restructure = RestructureDetails(movie, "movie");
+                if (searchVar.status === 200){
+                    if (type === "simple") {
+                        restructure = Restructure(movie, "movie", 'simple');
+                    } else {
+                        restructure = RestructureDetails(movie, "movie");
+                    }
+                }else{
+                    restructure = null
                 }
 
                 movie = restructure ?? null;
@@ -181,10 +206,14 @@ export async function POST(req: Request) {
             if (searchVar) {
                 music = await searchVar.json();
 
-                if (type === "simple") {
-                    restructure = Restructure(music, "music", 'simple');
-                } else {
-                    restructure = RestructureDetails(music, "music");
+                if (searchVar.status === 200){
+                    if (type === "simple") {
+                        restructure = Restructure(music, "music", 'simple');
+                    } else {
+                        restructure = RestructureDetails(music, "music");
+                    }
+                }else{
+                    restructure = null
                 }
 
                 music = restructure ?? null;

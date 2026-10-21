@@ -1,24 +1,25 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { ArrowLeft, ArrowRight, Heart } from "lucide-react";
-import type { Favorite, Filters, MediaResult, SearchData } from "@/types/media";
-import FormMedia from "@/components/Details/Form";
-import DataShowMobile from "@/components/Mobile/Details/DataShow";
-import DesktopResultPanel from "@/components/Desktop/Details/ResultPanel";
+import type { Filters, MediaResult, SearchData } from "@/types/media";
+import { useState, useEffect } from "react";
 
-export default function Details() {
-  const [media, setMedia] = useState<SearchData | null>(null);
-  const [current, setCurrent] = useState(1);
-  const results = (media?.[current] as MediaResult | undefined) ?? null;
+import DesktopLogoInputDetails from "@/components/Desktop/Logo+FormDetails";
+import DesktopMainDetails from "@/components/Desktop/MainDetails";
+
+import { ArrowLeft, ArrowRight } from "lucide-react";
+
+export default function Home() {
   const [theme, setTheme] = useState("dark");
   const [openField, setOpenField] = useState(false);
-  const [favorites, setFavorites] = useState<Favorite[]>([]);
-  const [NSFW, setNSFW] = useState(false);
+
   const [query, setQuery] = useState("");
+  const [favorites, setFavorites] = useState<MediaResult[]>([]);
+  const [NSFW, setNSFW] = useState(false)
+
+  const [media, setMedia] = useState<SearchData | null>(null);
+  const [current, setCurrent] = useState(1);
   const [spoiler, setSpoiler] = useState(false);
+
   const [filters, setFilters] = useState<Filters>({
     anime: true,
     manga: false,
@@ -29,74 +30,135 @@ export default function Details() {
     music: false,
   });
 
-  useEffect(() => {
-    const saved = localStorage.getItem("Favorites");
-    if (saved) setFavorites(JSON.parse(saved));
-  }, []);
+  const results = (media?.[current] as MediaResult | undefined) ?? null;
+
+  console.log(media)
 
   useEffect(() => {
-    if (results?.type === "anime" || results?.type === "manga") {
-      setSpoiler(results.review?.spoiler ?? false);
+    const result = media?.[current] as MediaResult | undefined;
+
+    if (result?.type === "anime" || result?.type === "manga") {
+      setSpoiler(result.review?.spoiler ?? false);
     } else {
       setSpoiler(false);
     }
   }, [media, current]);
 
-  const isFavorite = results
-    ? favorites.some((item) => item.image === results.cover)
-    : false;
+  useEffect(() => {
+  try {
+    const savedFavorites = localStorage.getItem("favorites");
 
-  function handleClick(direction: "left" | "right") {
-    if (!media || media.length <= 1) return;
-    if (direction === "left") {
-      setCurrent((value) => value > 1 ? value - 1 : media.length - 1);
+    if (savedFavorites) {
+      setFavorites(JSON.parse(savedFavorites));
+    }
+  } catch (error) {
+    console.error("Erro ao carregar favoritos:", error);
+  }
+}, []);
+
+  function handleClick(arrow: string) {
+    if (!media || media.length <= 1) {
+      return;
+    }
+
+    if (arrow === "left") {
+      if (current !== 1) {
+        setCurrent(current - 1);
+      } else {
+        setCurrent(media.length - 1);
+      }
     } else {
-      setCurrent((value) => value < media.length - 1 ? value + 1 : 1);
+      if (current < media.length - 1) {
+        setCurrent(current + 1);
+      } else {
+        setCurrent(1);
+      }
     }
   }
 
-  async function search(type: string, nsfw: boolean) {
+  async function random(){
+    if (!results) return;
+
+    const response = await fetch("/api/random", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: results.type,
+        NSFW: NSFW,
+        style: 'detailed'
+      }),
+    });
+
+    const { fullSearch } = await response.json();
+
+    setMedia(fullSearch);
+    setCurrent(1);
+
     setOpenField(true);
-    try {
-      const response = await fetch("/api/random", {
-        method: "POST",
-        cache: "no-store",
-        headers: {
-          "Content-Type": "application/json",
-          "Cache-Control": "no-cache",
-        },
-        body: JSON.stringify({ type, NSFW: nsfw }),
-      });
-      const info = await response.json();
-      setMedia(info.fullSearch);
-      setCurrent(1);
-    } catch (error) {
-      console.error("Erro ao pesquisar:", error);
-    }
   }
 
-  function favorite() {
-    if (!results?.cover) return;
-    setFavorites((previous) => {
-      const exists = previous.some((item) => item.image === results.cover);
-      const updated = exists
-        ? previous.filter((item) => item.image !== results.cover)
-        : [...previous, { name: results.name, type: results.type, image: results.cover! }];
-      localStorage.setItem("Favorites", JSON.stringify(updated));
-      return updated;
+  function toggleFavorite(media: MediaResult) {
+    setFavorites((prevFavorites) => {
+      const isFavorite = prevFavorites.some(
+        (favorite) =>
+          favorite.type === media.type &&
+          favorite.name === media.name &&
+          favorite.link === media.link
+      );
+
+      const updatedFavorites = isFavorite
+        ? prevFavorites.filter(
+            (favorite) =>
+              !(
+                favorite.type === media.type &&
+                favorite.name === media.name &&
+                favorite.link === media.link
+              )
+          )
+        : [...prevFavorites, media];
+
+      localStorage.setItem(
+        "favorites",
+        JSON.stringify(updatedFavorites)
+      );
+
+      return updatedFavorites;
     });
   }
 
-  const panelTheme =
-    theme === "dark"
-      ? "bg-[var(--background)] text-[var(--text)]"
-      : theme === "light"
-        ? "bg-[var(--backgroundLight)] text-[var(--textLight)]"
-        : theme === "glass"
-          ? "bg-[var(--backgroundGlass)] text-[var(--textLight)] backdrop-blur-md"
-          : "bg-[var(--backgroundTransparent)] text-[var(--textLight)] backdrop-blur-md";
-
   return (
-    <></>
+    <div className={`h-screen w-screen ${results && results.cover ? 'bg-cover bg-center bg-no-repeat' : 'bg-linear-to-t from-sky-200 to-white'}`} style={results ? (results.cover ? { backgroundImage: `url("${results.cover}")` } : undefined) : undefined}>
+
+      <div key='blur' className={`${results && results.cover && 'backdrop-blur-sm'} h-full w-full`}>
+
+        <div key="mobile" className="min-[769]:hidden">
+
+        </div>
+
+        {/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
+        <div key="desktop" className="max-[768]:hidden w-full h-full flex flex-col">
+          <DesktopLogoInputDetails theme={theme} filters={filters} setFilters={setFilters} setTheme={setTheme} favorites={favorites} setOpenField={setOpenField} setMedia={setMedia} setCurrent={setCurrent}/>
+
+          {media && media.length > 2 ? <div className="w-full h-full flex items-center justify-center gap-5">
+
+            <button className="size-15 bg-white/33 backdrop-blur-xl border-1 border-white/33 ml-15 rounded-full flex justify-center items-center" onClick={() => handleClick('left')}>
+              <ArrowLeft className={`size-10 ${theme === 'dark' ? 'text-black' : 'text-white'}`}/>
+            </button>
+
+            <DesktopMainDetails theme={theme} results={results} openField={openField} NSFW={NSFW} setNSFW={setNSFW} random={random} favorites={favorites} toggleFavorite={toggleFavorite} setMedia={setMedia} setCurrent={setCurrent} setOpenField={setOpenField}/>
+
+            <button className="size-15 bg-white/33 backdrop-blur-xl border-1 border-white/33 mr-15 rounded-full flex justify-center items-center" onClick={() => handleClick('right')}>
+              <ArrowRight className={`size-10 ${theme === 'dark' ? 'text-black' : 'text-white'}`}/>
+            </button>
+
+          </div> : <DesktopMainDetails theme={theme} results={results} openField={openField} NSFW={NSFW} setNSFW={setNSFW} random={random} favorites={favorites} toggleFavorite={toggleFavorite} setMedia={setMedia} setCurrent={setCurrent} setOpenField={setOpenField}/>}
+
+        </div>
+
+      </div>
+
+    </div>
   );
 }

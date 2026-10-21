@@ -1,3 +1,4 @@
+import { error } from "console";
 import { NextResponse } from "next/server";
 
 const Key = process.env.GoogleBooks_Token;
@@ -17,7 +18,11 @@ export default async function GoogleBooks(query: string){
         const response = await fetch (url + query + '&key=' + Key);
         const data: books = await response.json();
 
-        let info: any = data.items.find(book => 'authors' in book.volumeInfo)
+        if (response.status !== 200){
+            throw new Error
+        }
+
+        let info: any = (data.items).find(book => 'authors' in book.volumeInfo)
         info = info.volumeInfo
         
         if (!info){
