@@ -301,7 +301,7 @@ export default function DesktopMain({
                       </div>
 
                       {/*----------------------------------------------------------------------------------------------------------------------------------*/}
-                      <p className="text-base absolute mb-2 ml-2">
+                      <p className="text-base absolute mb-2 ml-2 pr-3 text-justify">
                         {results.review.content
                           ? results.review.content
                           : "No data :‹"}

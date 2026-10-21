@@ -32,8 +32,6 @@ export default function Home() {
 
   const results = (media?.[current] as MediaResult | undefined) ?? null;
 
-  console.log(media)
-
   useEffect(() => {
     const result = media?.[current] as MediaResult | undefined;
 
