@@ -129,26 +129,44 @@ export default function Home() {
   return (
     <div className={`h-screen w-screen ${results && results.cover ? 'bg-cover bg-center bg-no-repeat' : 'bg-linear-to-t from-red-900 to-black'}`} style={results ? (results.cover ? { backgroundImage: `url("${results.cover}")` } : undefined) : undefined}>
 
-      <div key='blur' className={`${results && results.cover && 'backdrop-blur-sm'} h-full w-full`}>
+      <div key='blur' className={`${results && results.cover && 'backdrop-blur-sm'} h-full w-full overflow-hidden`}>
 
         <div key="mobile" className="min-[769]:hidden">
 
         </div>
 
         {/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-        <div key="desktop" className="max-[768]:hidden w-full h-full flex flex-col">
+        <div key="desktop" className="max-[768]:hidden w-full h-full flex flex-col object-contain
+        max-[1281px]:-mt-5
+        max-[1025px]:mt-0">
           <DesktopLogoInput theme={theme} filters={filters} setFilters={setFilters} setTheme={setTheme} favorites={favorites} setOpenField={setOpenField} setMedia={setMedia} setCurrent={setCurrent}/>
 
-          {media && media.length > 2 ? <div className="w-full h-full flex items-center justify-center gap-5">
+          {media && media.length > 2 ? <div className="w-full h-full flex items-center justify-center gap-20
+          max-[1441px]:gap-10
+          max-[1367px]:gap-0 max-[1367px]:-mt-2
+          max-[1281px]:scale-90 max-[1281px]:-mt-8
+          max-[1025px]:scale-90 max-[1025px]:gap-5 max-[1025px]:-mt-5">
 
-            <button className="size-15 bg-white/33 backdrop-blur-xl border-1 border-white/33 ml-70 rounded-full flex justify-center items-center" onClick={() => handleClick('left')}>
-              <ArrowLeft className={`size-10 ${theme === 'dark' ? 'text-black' : 'text-white'}`}/>
+            <button className="w-24 aspect-square bg-white/33 backdrop-blur-xl border-1 border-white/33 focus:outline-none ml-50
+            max-[1601px]:ml-30
+            max-[1441px]:w-22
+            max-[1367px]:w-18
+            max-[1281px]:-mt-5 max-[1281px]:ml-25 max-[1281px]:w-16
+            max-[1025px]:ml-0 max-[1025px]:w-16
+            rounded-full flex justify-center items-center" onClick={() => handleClick('left')}>
+              <ArrowLeft className={`size-10 max-[1367px]:size-8 ${theme === 'dark' ? 'text-black' : 'text-white'}`}/>
             </button>
 
             <DesktopMain theme={theme} results={results} openField={openField} NSFW={NSFW} setNSFW={setNSFW} random={random} favorites={favorites} toggleFavorite={toggleFavorite}/>
 
-            <button className="size-15 bg-white/33 backdrop-blur-xl border-1 border-white/33 mr-70 rounded-full flex justify-center items-center" onClick={() => handleClick('right')}>
-              <ArrowRight className={`size-10 ${theme === 'dark' ? 'text-black' : 'text-white'}`}/>
+            <button className="w-24 aspect-square bg-white/33 backdrop-blur-xl border-1 border-white/33 focus:outline-none mr-50
+            max-[1601px]:mr-30
+            max-[1441px]:w-22
+            max-[1367px]:w-18
+            max-[1281px]:-mt-5 max-[1281px]:mr-25 max-[1281px]:w-16
+            max-[1025px]:mr-0 max-[1025px]:w-16
+            rounded-full flex justify-center items-center" onClick={() => handleClick('right')}>
+              <ArrowRight className={`size-10 max-[1367px]:size-8 ${theme === 'dark' ? 'text-black' : 'text-white'}`}/>
             </button>
 
           </div> : <DesktopMain theme={theme} results={results} openField={openField} NSFW={NSFW} setNSFW={setNSFW} random={random} favorites={favorites} toggleFavorite={toggleFavorite}/>}

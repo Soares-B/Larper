@@ -28,7 +28,11 @@ export default function DesktopMain({
 }) {
   return (
     <div
-      className={`${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} m-[0_auto] h-[95%] mb-8 rounded-[5px] transition-[2s] ${openField ? "w-[60%]" : "w-[0%]"}`}
+      className={`${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} m-[0_auto] h-[95%]
+      mb-8 rounded-[5px] transition-[2s] ${openField ? "w-full" : "w-[0%]"}
+      max-[1367px]:scale-90
+      max-[1281px]:scale-95 max-[1281px]:h-full
+      max-[1025px]:scale-100 max-[1025px]:mt-0`}
     >
       {results && (
         <>
@@ -38,14 +42,16 @@ export default function DesktopMain({
               <Link
                 href={results.link}
                 target="_blank"
-                className="ml-5 mt-5 w-fit block max-h-[420px] min-h-[400px] min-w-[300px] focus:outline-none"
+                className="ml-5 mt-5 w-fit block max-h-[420px] min-h-[400px] min-w-[300px] focus:outline-none
+                max-[1367px]:max-h-[350px] max-[1367px]:min-w-[250px]"
               >
                 <Image
                   src={results.cover!}
                   width={300}
                   height={550}
                   alt={results.name}
-                  className="rounded-[5px] h-auto w-auto min-w-[300px] max-h-[420px]"
+                  className="rounded-[5px] h-auto w-auto min-w-[300px] max-h-[420px]
+                  max-[1367px]:max-h-[350px] max-[1367px]:min-w-[250px]"
                 ></Image>
               </Link>
 
@@ -61,12 +67,15 @@ export default function DesktopMain({
 
                 <div className="mt-2 flex flex-col flex-1">
                   <p
-                    className={`text-lg text-justify h-[35%] ${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"}`}
+                    className={`text-lg text-justify h-[35%] ${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"}
+                    max-[1025px]:mb-1`}
                   >
                     {results.description}
                   </p>
 
-                  <div className={`flex-1 grid ${results.type !== 'music' ? 'grid-cols-2 grid-rows-2' : 'grid-cols-2 grid-rows-1'} items-center justify-items-center gap-1`}>
+                  <div className={`flex-1 grid ${results.type !== 'music' ? 'grid-cols-2 grid-rows-2' : 'grid-cols-2 grid-rows-1'} items-center justify-items-center gap-1 mt-3
+                  max-[1367px]:mt-1
+                  max-[1025px]:mt-3`}>
                     {/*----------------------------------------------------------------------------------------------------------------------------------*/}
                     {results.type !== 'music' ? 
                     
@@ -81,7 +90,7 @@ export default function DesktopMain({
                         {results.type === "game" ? "Game type" : results.type === 'book' ? 'Pages' : "Runtime"}
                       </p>
                       <p
-                        className={`${results.type === "anime" || results.type === "movie" ? "text-3xl" : "text-xl"} absolute bottom-0 mb-2 ml-2`}
+                        className={`${results.type === "anime" || results.type === "movie" ? "text-3xl max-[1601px]:text-2xl" : "text-xl"} absolute bottom-0 mb-2 ml-2`}
                       >
                         {results.type === "anime" ? (
                           results.totalEpisode ? (
@@ -221,11 +230,14 @@ export default function DesktopMain({
             </div>
 
             {/*----------------------------------------------------------------------------------------------------------------------------------*/}
-            <div className="grid grid-cols-[320px_1fr] w-full flex-1 items-center">
+            <div className="grid grid-cols-[320px_1fr]
+            max-[1367px]:grid-cols-[250px_1fr] 
+            w-full flex-1 items-center">
               <div className="col-1 grid grid-rows-2 h-full w-full">
                 {results &&
                   (results.type === "anime" || results.type === "manga") && (
-                    <div className="flex items-center justify-center gap-5">
+                    <div className="flex items-center justify-center gap-5
+                    max-[1367px]:scale-90">
                       <button
                         className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} focus:outline-none ${theme === "dark" ? "hover:bg-[var(--backgroundHover)]" : theme === "light" ? "hover:bg-[var(--backgroundLightHover)]" : "hover:bg-[var(--backgroundGlassHover)]"} hover:outline-1 p-3 rounded-[5px]`}
                         onClick={() => random()}
@@ -301,14 +313,18 @@ export default function DesktopMain({
                       </div>
 
                       {/*----------------------------------------------------------------------------------------------------------------------------------*/}
-                      <p className="text-base absolute mb-2 ml-2 pr-3 text-justify">
+                      <p className="text-base absolute mb-2 ml-2 pr-3 text-justify
+                      max-[1367px]:text-sm">
                         {results.review.content
                           ? results.review.content
                           : "No data :‹"}
                       </p>
 
                       {/*----------------------------------------------------------------------------------------------------------------------------------*/}
-                      <div className="absolute bottom-0 right-0 mr-7 flex gap-2 w-fit mb-1">
+                      <div className="absolute bottom-0 right-0 mr-7 flex gap-2 w-fit mb-1
+                      max-[1537px]:scale-90 max-[1537px]:mr-2
+                      max-[1441px]:scale-100 max-[1441px]:mr-7
+                      max-[1367px]:scale-90 max-[1367px]:mr-2">
                         <p>
                           {results.review.rating && (
                             <span
@@ -318,8 +334,8 @@ export default function DesktopMain({
                             </span>
                           )}{" "}
                           {results.review.opinion && (
-                            <>({results.review.opinion}) - </>
-                          )}{" "}
+                            <>({results.review.opinion})</>
+                          )} - {" "}
                           {results.review.author}
                         </p>
                         <AvatarReview

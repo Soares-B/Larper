@@ -54,18 +54,25 @@ export default function DesktopLogoInput({
   }
 
   return (
-    <div className="flex flex-col h-fit">
+    <div className="flex flex-col h-fit
+    max-[1367px]:scale-80">
       <Image
         src="/Imagens/Logo.png"
         height={170}
         width={737}
         alt="Logo"
-        className="scale-75 m-[0_auto]"
+        className="scale-75 m-[0_auto]
+        max-[1601px]:scale-70
+        max-[1441px]:scale-65
+        max-[1281px]:scale-60
+        max-[1025px]:scale-70
+        "
       ></Image>
 
       <form
         action=""
-        className="m-[0_auto] flex gap-5 mb-8 items-center"
+        className="m-[0_auto] flex gap-5 mb-8 items-center
+        max-[1367px]:mb-0"
         onSubmit={handleSubmit}
       >
         <input
