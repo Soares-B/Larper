@@ -16,6 +16,7 @@ export default function DesktopMain({
   random,
   favorites,
   toggleFavorite,
+  mediaAmount,
 }: {
   theme: string;
   results: MediaResult | null;
@@ -25,11 +26,12 @@ export default function DesktopMain({
   random: any;
   favorites: MediaResult[];
   toggleFavorite: (media: MediaResult) => void;
+  mediaAmount: boolean;
 }) {
   return (
     <div
       className={`${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} m-[0_auto] h-[95%]
-      mb-8 rounded-[5px] transition-[2s] ${openField ? "w-full" : "w-[0%]"}
+      mb-8 rounded-[5px] transition-[2s] ${openField ? (mediaAmount ? "w-full" : "w-[60%]") : "w-[0%]"}
       max-[1367px]:scale-90
       max-[1281px]:scale-95 max-[1281px]:h-full
       max-[1025px]:scale-100 max-[1025px]:mt-0`}

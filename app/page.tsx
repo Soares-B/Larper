@@ -157,7 +157,7 @@ export default function Home() {
               <ArrowLeft className={`size-10 max-[1367px]:size-8 ${theme === 'dark' ? 'text-black' : 'text-white'}`}/>
             </button>
 
-            <DesktopMain theme={theme} results={results} openField={openField} NSFW={NSFW} setNSFW={setNSFW} random={random} favorites={favorites} toggleFavorite={toggleFavorite}/>
+            <DesktopMain theme={theme} results={results} openField={openField} NSFW={NSFW} setNSFW={setNSFW} random={random} favorites={favorites} toggleFavorite={toggleFavorite} mediaAmount={media.length > 2}/>
 
             <button className="w-24 aspect-square bg-white/33 backdrop-blur-xl border-1 border-white/33 focus:outline-none mr-50
             max-[1601px]:mr-30
@@ -169,7 +169,7 @@ export default function Home() {
               <ArrowRight className={`size-10 max-[1367px]:size-8 ${theme === 'dark' ? 'text-black' : 'text-white'}`}/>
             </button>
 
-          </div> : <DesktopMain theme={theme} results={results} openField={openField} NSFW={NSFW} setNSFW={setNSFW} random={random} favorites={favorites} toggleFavorite={toggleFavorite}/>}
+          </div> : <DesktopMain theme={theme} results={results} openField={openField} NSFW={NSFW} setNSFW={setNSFW} random={random} favorites={favorites} toggleFavorite={toggleFavorite} mediaAmount={false}/>}
 
         </div>
 
