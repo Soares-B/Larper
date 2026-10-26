@@ -31,9 +31,10 @@ export default function DesktopMain({
   return (
     <div
       className={`${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} m-[0_auto] h-[95%]
-      mb-8 rounded-[5px] transition-[2s] ${openField ? (mediaAmount ? "w-full" : "w-[60%]") : "w-[0%]"}
+      mb-8 rounded-[5px] transition-[2s]
+      ${openField ? (mediaAmount ? "w-full" : "w-[60%]") : "w-[0%]"}
       max-[1367px]:scale-90
-      max-[1281px]:scale-95 max-[1281px]:h-full
+      max-[1281px]:scale-95 max-[1281px]:h-full max-[1281px]:mb-0
       max-[1025px]:scale-100 max-[1025px]:mt-0 
       ${mediaAmount ? '' : 'max-[1537]:w-[70%] max-[1367px]:w-[80%] max-[1025px]:mb-3'}`}
     >
@@ -46,7 +47,7 @@ export default function DesktopMain({
                 href={results.link}
                 target="_blank"
                 className="ml-5 mt-5 w-fit block max-h-[420px] min-h-[420px] min-w-[300px] focus:outline-none
-                max-[1367px]:max-h-[350px] max-[1367px]:min-w-[250px]"
+                max-[1367px]:max-h-[350px] max-[1367px]:min-h-[350px] max-[1367px]:min-w-[250px]"
               >
                 <Image
                   src={results.cover!}
