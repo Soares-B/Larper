@@ -55,7 +55,8 @@ export default function DesktopLogoInput({
 
   return (
     <div className="flex flex-col h-fit
-    max-[1367px]:scale-80">
+    max-[1367px]:scale-80
+    max-[901px]:scale-85">
       <Image
         src="/Imagens/Logo.png"
         height={170}
@@ -66,6 +67,7 @@ export default function DesktopLogoInput({
         max-[1441px]:scale-65
         max-[1281px]:scale-60
         max-[1025px]:scale-70
+        max-[901px]:scale-65
         "
       ></Image>
 

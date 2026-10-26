@@ -34,7 +34,8 @@ export default function DesktopMain({
       mb-8 rounded-[5px] transition-[2s] ${openField ? (mediaAmount ? "w-full" : "w-[60%]") : "w-[0%]"}
       max-[1367px]:scale-90
       max-[1281px]:scale-95 max-[1281px]:h-full
-      max-[1025px]:scale-100 max-[1025px]:mt-0`}
+      max-[1025px]:scale-100 max-[1025px]:mt-0 
+      ${mediaAmount ? '' : 'max-[1537]:w-[70%] max-[1367px]:w-[80%] max-[1025px]:mb-3'}`}
     >
       {results && (
         <>
@@ -44,7 +45,7 @@ export default function DesktopMain({
               <Link
                 href={results.link}
                 target="_blank"
-                className="ml-5 mt-5 w-fit block max-h-[420px] min-h-[400px] min-w-[300px] focus:outline-none
+                className="ml-5 mt-5 w-fit block max-h-[420px] min-h-[420px] min-w-[300px] focus:outline-none
                 max-[1367px]:max-h-[350px] max-[1367px]:min-w-[250px]"
               >
                 <Image
@@ -70,14 +71,12 @@ export default function DesktopMain({
                 <div className="mt-2 flex flex-col flex-1">
                   <p
                     className={`text-lg text-justify h-[35%] ${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"}
-                    max-[1025px]:mb-1`}
+                    overflow-auto`}
                   >
                     {results.description}
                   </p>
 
-                  <div className={`flex-1 grid ${results.type !== 'music' ? 'grid-cols-2 grid-rows-2' : 'grid-cols-2 grid-rows-1'} items-center justify-items-center gap-1 mt-3
-                  max-[1367px]:mt-1
-                  max-[1025px]:mt-3`}>
+                  <div className={`flex-1 grid ${results.type !== 'music' ? 'grid-cols-2 grid-rows-2' : 'grid-cols-2 grid-rows-1'} items-center justify-items-center gap-1 mt-1`}>
                     {/*----------------------------------------------------------------------------------------------------------------------------------*/}
                     {results.type !== 'music' ? 
                     
@@ -92,7 +91,8 @@ export default function DesktopMain({
                         {results.type === "game" ? "Game type" : results.type === 'book' ? 'Pages' : "Runtime"}
                       </p>
                       <p
-                        className={`${results.type === "anime" || results.type === "movie" ? "text-3xl max-[1601px]:text-2xl" : "text-xl"} absolute bottom-0 mb-2 ml-2`}
+                        className={`${results.type === "anime" || results.type === "movie" ? "text-3xl max-[1601px]:text-2xl" : "text-xl"} absolute bottom-0 mb-2 ml-2
+                        ${mediaAmount ? '' : 'max-[901px]:text-xl'}`}
                       >
                         {results.type === "anime" ? (
                           results.totalEpisode ? (
@@ -139,7 +139,8 @@ export default function DesktopMain({
                         {results.type === 'book' ? 'Authors' : 'Rating'}
                       </p>
                       <p
-                        className={`${results.type === 'book' ? 'text-xl' : 'text-3xl absolute bottom-0'}  mb-2 ml-2 ${results.rating && (results.rating > 7.5 ? (theme === "light" ? "text-[var(--greatLight)]" : "text-[var(--great)]") : results.rating >= 5 ? (theme === "light" ? "text-[var(--mediumLight)]" : "text-[var(--medium)]") : theme === "light" ? "text-[var(--badLight)]" : "text-[var(--bad)]")}`}
+                        className={`${results.type === 'book' ? 'text-xl' : 'text-3xl absolute bottom-0'}  mb-2 ml-2 ${results.rating && (results.rating > 7.5 ? (theme === "light" ? "text-[var(--greatLight)]" : "text-[var(--great)]") : results.rating >= 5 ? (theme === "light" ? "text-[var(--mediumLight)]" : "text-[var(--medium)]") : theme === "light" ? "text-[var(--badLight)]" : "text-[var(--bad)]")}
+                        ${mediaAmount ? 'max-[901px]:text-2xl' : (results.type === 'game' ? 'max-[1025px]:text-2xl max-[901px]:text-xl' : '')}`}
                       >
                         {results.type === 'book' ?  results.authors && results.authors.length >= 1 ? results.authors.join(', ') : "No data (  •̀⤙•́  )" : results.rating ? results.rating : "No data (  •̀⤙•́  )"}
                       </p>

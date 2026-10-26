@@ -6,6 +6,9 @@ import { useState, useEffect } from "react";
 import DesktopLogoInput from "@/components/Desktop/Logo+Form";
 import DesktopMain from "@/components/Desktop/Main";
 
+import MobileLogoInput from "@/components/Mobile/Logo+FormMobile";
+import MobileMain from "@/components/Mobile/MainMobile";
+
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export default function Home() {
@@ -127,18 +130,29 @@ export default function Home() {
   }
 
   return (
-    <div className={`h-screen w-screen ${results && results.cover ? 'bg-cover bg-center bg-no-repeat' : 'bg-linear-to-t from-red-900 to-black'}`} style={results ? (results.cover ? { backgroundImage: `url("${results.cover}")` } : undefined) : undefined}>
+    <div className={`h-screen w-screen overflow-hidden ${results && results.cover ? 'bg-cover bg-center bg-no-repeat' : 'bg-linear-to-t from-red-900 to-black'}`} style={results ? (results.cover ? { backgroundImage: `url("${results.cover}")` } : undefined) : undefined}>
 
-      <div key='blur' className={`${results && results.cover && 'backdrop-blur-sm'} h-full w-full overflow-hidden`}>
+      <div key='blur' className={`${results && results.cover && 'backdrop-blur-sm'} h-full w-full`}>
 
-        <div key="mobile" className="min-[769]:hidden">
+        <div key="mobile" className="min-[769px]:hidden h-full">
+          
+          <MobileLogoInput theme={theme} filters={filters} setFilters={setFilters} setTheme={setTheme} favorites={favorites} setOpenField={setOpenField} setMedia={setMedia} setCurrent={setCurrent}/>
 
+          {media && media.length > 2 ? <div className="w-full h-full flex items-center justify-center gap-20
+          max-[1441px]:gap-10
+          max-[1367px]:gap-0 max-[1367px]:-mt-2
+          max-[1281px]:scale-90 max-[1281px]:-mt-8
+          max-[1025px]:scale-90 max-[1025px]:gap-5 max-[1025px]:-mt-5">
+
+            <MobileMain theme={theme} results={results} openField={openField} NSFW={NSFW} setNSFW={setNSFW} random={random} favorites={favorites} toggleFavorite={toggleFavorite} mediaAmount={media.length > 2}/>
+
+          </div> : <MobileMain theme={theme} results={results} openField={openField} NSFW={NSFW} setNSFW={setNSFW} random={random} favorites={favorites} toggleFavorite={toggleFavorite} mediaAmount={false}/>}
         </div>
 
         {/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-        <div key="desktop" className="max-[768]:hidden w-full h-full flex flex-col object-contain
-        max-[1281px]:-mt-5
-        max-[1025px]:mt-0">
+        <div className="hidden min-[770px]:flex w-full h-full min-h-0
+        flex-col overflow-hidden">
+
           <DesktopLogoInput theme={theme} filters={filters} setFilters={setFilters} setTheme={setTheme} favorites={favorites} setOpenField={setOpenField} setMedia={setMedia} setCurrent={setCurrent}/>
 
           {media && media.length > 2 ? <div className="w-full h-full flex items-center justify-center gap-20
@@ -169,7 +183,11 @@ export default function Home() {
               <ArrowRight className={`size-10 max-[1367px]:size-8 ${theme === 'dark' ? 'text-black' : 'text-white'}`}/>
             </button>
 
-          </div> : <DesktopMain theme={theme} results={results} openField={openField} NSFW={NSFW} setNSFW={setNSFW} random={random} favorites={favorites} toggleFavorite={toggleFavorite} mediaAmount={false}/>}
+          </div> : <div className="h-full
+          max-[1281px]:scale-90 max-[1281px]:-mt-8
+          max-[1025px]:scale-90 max-[1025px]:gap-5 max-[1025px]:-mt-5">
+            <DesktopMain theme={theme} results={results} openField={openField} NSFW={NSFW} setNSFW={setNSFW} random={random} favorites={favorites} toggleFavorite={toggleFavorite} mediaAmount={false}/>
+          </div>}
 
         </div>
 
