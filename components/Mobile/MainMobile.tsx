@@ -31,7 +31,7 @@ export default function MobileMain({
   return (
     <div
       className={`${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} m-[0_auto] h-full min-h-0 rounded-[5px] transition-[2s] mb-3
-      ${openField ? (mediaAmount ? "w-full" : "w-[80%]") : "w-[0%]"}
+      ${openField ? (mediaAmount ? "w-full" : "w-[80%] max-[431px]:w-[90%]") : "w-[0%]"}
       `}
     >
       {results && (
@@ -71,14 +71,16 @@ export default function MobileMain({
                   {results.subname}
                 </p>
                 {/* --- */}
-                <div className="flex flex-col flex-1 min-h-0 justify-between">
+                <div className="flex flex-col flex-1 min-h-0 justify-between items-center">
                   <p
                       className={`text-lg text-justify ${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"}
                       overflow-auto max-h-[50%]
-                      max-[641px]:text-base`}
+                      max-[641px]:text-base
+                      max-[541px]:text-sm`}
                   >
                       {results.description}
                   </p>
+
                   {/* --- */}
                   <div className="flex h-20 w-full items-center m-1
                   max-[641px]:scale-80 max-[641px]:max-h-[200px]">
@@ -86,7 +88,9 @@ export default function MobileMain({
                       (results.type === "anime" || results.type === "manga") && (
                         <div className="flex items-center justify-center gap-3">
                           <button
-                            className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} focus:outline-none ${theme === "dark" ? "hover:bg-[var(--backgroundHover)]" : theme === "light" ? "hover:bg-[var(--backgroundLightHover)]" : "hover:bg-[var(--backgroundGlassHover)]"} hover:outline-1 p-3 rounded-[5px]`}
+                            className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} focus:outline-none ${theme === "dark" ? "hover:bg-[var(--backgroundHover)]" : theme === "light" ? "hover:bg-[var(--backgroundLightHover)]" : "hover:bg-[var(--backgroundGlassHover)]"} hover:outline-1 p-3 rounded-[5px]
+                            max-[541px]:p-2
+                            max-[431px]:scale-95`}
                             onClick={() => random()}
                           >
                             Random {results.type}
@@ -94,6 +98,7 @@ export default function MobileMain({
                           <NSFWButton theme={theme} NSFW={NSFW} setNSFW={setNSFW} />
                         </div>
                       )}
+
                     {/*----------------------------------------------------------------------------------------------------------------------------------*/}
                     <div className="flex items-end gap-2 justify-center ml-5">
                       <button
@@ -131,6 +136,7 @@ export default function MobileMain({
                             results.type.slice(1)}
                       </p>
                     </div>
+
                   </div>
                 </div>
               </div>
@@ -209,7 +215,7 @@ export default function MobileMain({
               </p>
               <p
                 className={`${results.type === 'book' ? (results.rating ? 'text-3xl absolute bottom-0 max-[641px]:text-2xl' : 'text-xl max-[641px]:text-lg')
-                  : ('text-3xl absolute bottom-0 max-[641px]:text-2xl')}
+                  : (results.rating  ? 'text-3xl absolute bottom-0 max-[641px]:text-2xl' : 'absolute bottom-0 max-[541px]:text-xl')}
                   mb-1 ml-2
                   ${results.rating ? (results.rating > 7.5 ? (theme === "light" ? "text-[var(--greatLight)]" : "text-[var(--great)]") : results.rating >= 5 ? (theme === "light" ? "text-[var(--mediumLight)]" : "text-[var(--medium)]") : theme === "light" ? "text-[var(--badLight)]" : "text-[var(--bad)]") : ''}
                   `}
@@ -337,7 +343,8 @@ export default function MobileMain({
 
                     {/*----------------------------------------------------------------------------------------------------------------------------------*/}
                     <p className="text-lg absolute mb-2 ml-2 pr-3 text-justify
-                    max-[641px]:text-base">
+                    max-[641px]:text-base
+                    max-[541px]:text-sm">
                       {results.review.content
                         ? results.review.content
                         : "No data :‹"}
