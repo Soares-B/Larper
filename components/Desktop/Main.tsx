@@ -61,7 +61,8 @@ export default function DesktopMain({
 
               {/*----------------------------------------------------------------------------------------------------------------------------------*/}
 
-              <div className="w-full pr-5 ml-3 flex flex-col h-full">
+              <div className="w-full pr-5 ml-3 flex flex-col h-full max-h-[420px] min-h-[420px]
+              max-[1367px]:max-h-[350px] max-[1367px]:min-h-[350px]">
                 <p className="mt-5 text-xl">{results.name}</p>
                 <p
                   className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg`}
@@ -69,10 +70,11 @@ export default function DesktopMain({
                   {results.subname}
                 </p>
 
-                <div className="mt-2 flex flex-col flex-1">
+                <div className="mt-1 flex flex-col flex-1">
                   <p
                     className={`text-lg text-justify h-[35%] ${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"}
-                    overflow-auto`}
+                    overflow-auto
+                    max-[1367px]:max-h-[75px]`}
                   >
                     {results.description}
                   </p>
