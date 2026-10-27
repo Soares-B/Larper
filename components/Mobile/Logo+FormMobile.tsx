@@ -58,7 +58,8 @@ export default function MobileLogoInput({
   return (
     <div className="flex flex-col h-fit p-5 pt-0
     max-[641px]:scale-90
-    max-[541px]:p-2 max-[541px]:scale-100 max-[541px]:">
+    max-[541px]:p-2 max-[541px]:scale-100
+    max-[391px]:scale-90 max-[391px]:p-0">
       <Image
         src="/Imagens/Logo.png"
         height={170}

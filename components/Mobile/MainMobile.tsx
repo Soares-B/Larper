@@ -62,11 +62,14 @@ export default function MobileMain({
               max-[641px]:max-h-[200px]">
                 {/* --- */}
                 <p className="text-xl
-                max-[641px]:text-lg">{results.name}</p>
+                max-[641px]:text-lg
+                max-[391px]:text-base">
+                  {results.name}</p>
                 {/* --- */}
                 <p
                   className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg
-                  max-[641px]:text-base`}
+                  max-[641px]:text-base
+                  max-[391px]:text-sm`}
                 >
                   {results.subname}
                 </p>
@@ -76,14 +79,16 @@ export default function MobileMain({
                       className={`text-lg text-justify ${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"}
                       overflow-auto max-h-[50%]
                       max-[641px]:text-base
-                      max-[541px]:text-sm`}
+                      max-[541px]:text-sm
+                      max-[391px]:text-xs`}
                   >
                       {results.description}
                   </p>
 
                   {/* --- */}
-                  <div className="flex h-20 w-full items-center m-1
-                  max-[641px]:scale-80 max-[641px]:max-h-[200px]">
+                  <div className="flex h-20 w-full items-center justify-center m-1
+                  max-[641px]:scale-80 max-[641px]:max-h-[200px]
+                  max-[391px]:scale-75">
                     {results &&
                       (results.type === "anime" || results.type === "manga") && (
                         <div className="flex items-center justify-center gap-3">
@@ -154,17 +159,18 @@ export default function MobileMain({
             >
               <p
                 className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1
-                max-[641px]:text-base`}
+                max-[641px]:text-base
+                max-[391px]:text-sm`}
               >
                 {results.type === "game" ? "Game type" : results.type === 'book' ? 'Pages' : "Runtime"}
               </p>
               <p
                 className={`${results.type === "anime" || results.type === "movie" ? 
-                  "text-2xl max-[641px]:text-xl"
+                  "text-2xl max-[641px]:text-xl max-[391px]:text-base"
                   : results.type === 'manga' || results.type === 'serie' ?
                   'max-[641px]:max-[641px]:text-sm' 
                   :
-                  "text-xl "}
+                  "text-xl max-[391px]:text-lg"}
                   absolute bottom-0 mb-1 ml-2`}
               >
                 {results.type === "anime" ? (
@@ -209,13 +215,14 @@ export default function MobileMain({
             >
               <p
                 className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1
-                max-[641px]:text-base`}
+                max-[641px]:text-base
+                max-[391px]:text-sm`}
               >
                 {results.type === 'book' ? results.rating ? 'Rating' : 'Authors' : 'Rating'}
               </p>
               <p
-                className={`${results.type === 'book' ? (results.rating ? 'text-3xl absolute bottom-0 max-[641px]:text-2xl' : 'text-xl max-[641px]:text-lg')
-                  : (results.rating  ? 'text-3xl absolute bottom-0 max-[641px]:text-2xl' : 'absolute bottom-0 max-[541px]:text-xl')}
+                className={`${results.type === 'book' ? (results.rating ? 'text-3xl absolute bottom-0 max-[641px]:text-2xl max-[391px]:text-xl' : 'text-xl max-[641px]:text-lg')
+                  : (results.rating  ? 'text-3xl absolute bottom-0 max-[641px]:text-2xl max-[391px]:text-xl' : 'absolute bottom-0 max-[541px]:text-xl max-[391px]:text-lg')}
                   mb-1 ml-2
                   ${results.rating ? (results.rating > 7.5 ? (theme === "light" ? "text-[var(--greatLight)]" : "text-[var(--great)]") : results.rating >= 5 ? (theme === "light" ? "text-[var(--mediumLight)]" : "text-[var(--medium)]") : theme === "light" ? "text-[var(--badLight)]" : "text-[var(--bad)]") : ''}
                   `}
@@ -243,7 +250,8 @@ export default function MobileMain({
                   : "Genres"}
               </p>
               <p className="text-lg absolute mb-1 ml-2
-              max-[641px]:text-sm">
+              max-[641px]:text-sm
+              max-[391px]:text-xs">
                 {results.type === "anime" || results.type === "manga"
                   ? results.genres && results.genres.length >= 1
                     ? `${results.genres?.join(", ")}`
@@ -262,12 +270,14 @@ export default function MobileMain({
             >
               <p
                 className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1
-                max-[641px]:text-base`}
+                max-[641px]:text-base
+                max-[391px]:text-sm`}
               >
                 Release Date
               </p>
               <p className="text-lg absolute mb-1 ml-2
-              max-[641px]:text-base">
+              max-[641px]:text-base
+              max-[391px]:text-sm">
                 {results.date
                   ? results.date.replaceAll("-", "/")
                   : "No data ( . ‸ .)"}
@@ -282,13 +292,15 @@ export default function MobileMain({
             >
               <p
                 className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1
-                max-[641px]:text-base`}
+                max-[641px]:text-base
+                max-[391px]:text-sm`}
               >
                 Runtime
               </p>
               <p
                 className={`mb-2 ml-2 text-3xl
-                  max-[641px]:text-2xl`}
+                  max-[641px]:text-2xl
+                  max-[391px]:text-xl`}
               >
                 {results.time}
               </p>
@@ -299,13 +311,15 @@ export default function MobileMain({
             >
               <p
                 className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1
-                max-[641px]:text-base`}
+                max-[641px]:text-base
+                max-[391px]:text-sm`}
               >
                 Music Info
               </p>
               <p
                 className={`mb-2 ml-2 text-xl
-                max-[641px]:text-lg`}
+                max-[641px]:text-lg
+                max-[391px]:text-base`}
               >
                 <>
                 Album: {results.album ? results.album.name : 'No data (≖_≖ )'}
@@ -327,7 +341,8 @@ export default function MobileMain({
               >
                 <p
                   className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1
-                  max-[641px]:text-base`}
+                  max-[641px]:text-base
+                  max-[391px]:text-sm`}
                 >
                   Review
                 </p>
@@ -344,7 +359,8 @@ export default function MobileMain({
                     {/*----------------------------------------------------------------------------------------------------------------------------------*/}
                     <p className="text-lg absolute mb-2 ml-2 pr-3 text-justify
                     max-[641px]:text-base
-                    max-[541px]:text-sm">
+                    max-[541px]:text-sm
+                    max-[391px]:text-xs">
                       {results.review.content
                         ? results.review.content
                         : "No data :‹"}
@@ -352,7 +368,8 @@ export default function MobileMain({
 
                     {/*----------------------------------------------------------------------------------------------------------------------------------*/}
                     <div className="absolute bottom-0 right-0 mr-7 flex gap-2 w-fit mb-1 scale-110
-                    max-[641px]:scale-90 max-[641px]:mr-0">
+                    max-[641px]:scale-90 max-[641px]:mr-0
+                    max-[391px]:scale-80 max-[391px]:-mr-5">
                       <p>
                         {results.review.rating && (
                           <span
