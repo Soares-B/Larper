@@ -142,7 +142,8 @@ export default function Home() {
 
           <div className="flex flex-row flex-1 min-h-0 items-center mt-3 gap-5
           max-[641px]:gap-3
-          max-[431px]:flex-col max-[431px]:gap-2 max-[431px]:mt-1">
+          max-[431px]:flex-col max-[431px]:gap-2 max-[431px]:mt-1
+          max-[321px]:-mt-4">
             <button className="w-16 aspect-square bg-white/33 backdrop-blur-xl border-1 border-white/33 focus:outline-none ml-3 rounded-full flex justify-center items-center
             max-[641px]:w-12 max-[641px]:ml-1
             max-[541px]:w-10
@@ -153,7 +154,7 @@ export default function Home() {
 
           {/*---------------------------- */}
 
-            <div className="flex flex-1 gap-5">
+            <div className="min-[431px]:hidden flex flex-1 gap-5">
               <button className="w-8 aspect-square bg-white/33 backdrop-blur-xl border-1 border-white/33 focus:outline-none  rounded-full flex justify-center items-center" onClick={() => handleClick('left')}>
                     <ArrowLeft className={`size-4 ${theme === 'dark' ? 'text-black' : 'text-white'}`}/>
               </button>

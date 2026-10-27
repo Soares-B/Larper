@@ -40,7 +40,7 @@ export default function DesktopMain({
     >
       {results && (
         <>
-          <div className="flex flex-col w-full h-full items-start">
+          <div className="flex flex-col w-full h-full items-start min-h-0">
             {/*----------------------------------------------------------------------------------------------------------------------------------*/}
             <div className="flex flex-row w-full">
               <Link
@@ -234,10 +234,9 @@ export default function DesktopMain({
             </div>
 
             {/*----------------------------------------------------------------------------------------------------------------------------------*/}
-            <div className="grid grid-cols-[320px_1fr]
-            max-[1367px]:grid-cols-[250px_1fr] 
-            w-full flex-1 items-center">
-              <div className="col-1 grid grid-rows-2 h-full w-full">
+            <div className="grid grid-cols-[320px_1fr] w-full flex-1 items-center
+              max-[1367px]:grid-cols-[250px_1fr]">
+              <div className="col-1 grid grid-rows-2 flex-1 w-full">
                 {results &&
                   (results.type === "anime" || results.type === "manga") && (
                     <div className="flex items-center justify-center gap-5

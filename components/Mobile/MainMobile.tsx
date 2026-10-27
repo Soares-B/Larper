@@ -44,7 +44,8 @@ export default function MobileMain({
                 href={results.link}
                 target="_blank"
                 className="ml-5 mt-5 w-fit block max-h-[300px] min-h-[100px] min-w-[200px] focus:outline-none
-                max-[641px]:min-w-[100px] max-[641px]:max-h-[200px]"
+                max-[641px]:min-w-[100px] max-[641px]:max-h-[200px]
+                max-[376px]:min-w-[80px] max-[376px]:max-h-[200px]"
                 >
                   <Image
                     src={results.cover!}
@@ -52,7 +53,8 @@ export default function MobileMain({
                     height={250}
                     alt={results.name}
                     className="rounded-[5px] h-auto w-auto min-w-[200px] max-h-[300px]
-                    max-[641px]:min-w-[100px]"
+                    max-[641px]:min-w-[100px]
+                    max-[376px]:min-w-[80px] max-[376px]:max-h-[200px]"
                   ></Image>
                 </Link>
 
@@ -63,24 +65,31 @@ export default function MobileMain({
                 {/* --- */}
                 <p className="text-xl
                 max-[641px]:text-lg
-                max-[391px]:text-base">
+                max-[391px]:text-base
+                max-[376px]:text-sm
+                max-[321px]:text-xs">
                   {results.name}</p>
                 {/* --- */}
                 <p
                   className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg
                   max-[641px]:text-base
-                  max-[391px]:text-sm`}
+                  max-[391px]:text-sm
+                  max-[376px]:text-xs
+                  max-[321px]:text-[10px]`}
                 >
                   {results.subname}
                 </p>
                 {/* --- */}
-                <div className="flex flex-col flex-1 min-h-0 justify-between items-center">
+                <div className="flex flex-col flex-1 min-h-0 justify-between items-center
+                max-[376px]:justify-start
+                max-[321px]:max-h-[125px]">
                   <p
                       className={`text-lg text-justify ${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"}
                       overflow-auto max-h-[50%]
                       max-[641px]:text-base
                       max-[541px]:text-sm
-                      max-[391px]:text-xs`}
+                      max-[391px]:text-xs
+                      max-[321px]:text-[10px]`}
                   >
                       {results.description}
                   </p>
@@ -88,7 +97,8 @@ export default function MobileMain({
                   {/* --- */}
                   <div className="flex h-20 w-full items-center justify-center m-1
                   max-[641px]:scale-80 max-[641px]:max-h-[200px]
-                  max-[391px]:scale-75">
+                  max-[391px]:scale-75
+                  max-[321px]:scale-65">
                     {results &&
                       (results.type === "anime" || results.type === "manga") && (
                         <div className="flex items-center justify-center gap-3">
@@ -149,29 +159,33 @@ export default function MobileMain({
 
           {/*----------------------------------------------------------------------------------------------------------------------------------*/}
 
-          <div className={`w-full flex-1 grid ${results.type !== 'music' ? 'grid-cols-2 grid-rows-2' : 'grid-cols-2 grid-rows-1'} items-center justify-items-center gap-1 mt-1`}>
+          <div className={`w-full flex-1 grid ${results.type !== 'music' ? 'grid-cols-2 grid-rows-2' : 'grid-cols-2 grid-rows-1'} items-center justify-items-center gap-1 mt-1
+          `}>
             {/*----------------------------------------------------------------------------------------------------------------------------------*/}
             {results.type !== 'music' ?                 
             <>
             <div
               className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} rounded-[10px] row-1 col-1 h-[80%] w-[80%] relative min-h-[100px]
-              max-[641px]:min-h-[50px]`}
+              max-[641px]:min-h-[50px]
+              max-[321px]:min-h-[25px]`}
             >
               <p
                 className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1
                 max-[641px]:text-base
-                max-[391px]:text-sm`}
+                max-[391px]:text-sm
+                max-[321px]:text-xs`}
               >
                 {results.type === "game" ? "Game type" : results.type === 'book' ? 'Pages' : "Runtime"}
               </p>
               <p
                 className={`${results.type === "anime" || results.type === "movie" ? 
-                  "text-2xl max-[641px]:text-xl max-[391px]:text-base"
+                  "text-2xl max-[641px]:text-xl max-[391px]:text-base max-[376px]:text-sm max-[321px]:text-xs"
                   : results.type === 'manga' || results.type === 'serie' ?
-                  'max-[641px]:max-[641px]:text-sm' 
-                  :
-                  "text-xl max-[391px]:text-lg"}
-                  absolute bottom-0 mb-1 ml-2`}
+                  'max-[641px]:max-[641px]:text-sm max-[376px]:text-xs max-[321px]:text-[10px]' 
+                  : 
+                  "text-xl max-[391px]:text-lg max-[376px]:text-base max-[321px]:text-xs"}
+                  absolute bottom-0 mb-1 ml-2
+                  `}
               >
                 {results.type === "anime" ? (
                   results.totalEpisode ? (
@@ -211,18 +225,20 @@ export default function MobileMain({
             {/*----------------------------------------------------------------------------------------------------------------------------------*/}
             <div
               className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} rounded-[10px] row-1 col-2 h-[80%] w-[80%] relative min-h-[100px]
-              max-[641px]:min-h-[50px]`}
+              max-[641px]:min-h-[50px]
+              max-[321px]:min-h-[25px]`}
             >
               <p
                 className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1
                 max-[641px]:text-base
-                max-[391px]:text-sm`}
+                max-[391px]:text-sm
+                max-[321px]:text-xs`}
               >
                 {results.type === 'book' ? results.rating ? 'Rating' : 'Authors' : 'Rating'}
               </p>
               <p
-                className={`${results.type === 'book' ? (results.rating ? 'text-3xl absolute bottom-0 max-[641px]:text-2xl max-[391px]:text-xl' : 'text-xl max-[641px]:text-lg')
-                  : (results.rating  ? 'text-3xl absolute bottom-0 max-[641px]:text-2xl max-[391px]:text-xl' : 'absolute bottom-0 max-[541px]:text-xl max-[391px]:text-lg')}
+                className={`${results.type === 'book' ? (results.rating ? 'text-3xl absolute bottom-0 max-[641px]:text-2xl max-[391px]:text-xl max-[376px]:text-lg max-[321px]:text-base' : 'text-xl max-[641px]:text-lg')
+                  : (results.rating  ? 'text-3xl absolute bottom-0 max-[641px]:text-2xl max-[391px]:text-xl max-[376px]:text-lg max-[321px]:text-base' : 'absolute bottom-0 max-[541px]:text-xl max-[391px]:text-lg max-[376px]:text-base max-[321px]:text-sm')}
                   mb-1 ml-2
                   ${results.rating ? (results.rating > 7.5 ? (theme === "light" ? "text-[var(--greatLight)]" : "text-[var(--great)]") : results.rating >= 5 ? (theme === "light" ? "text-[var(--mediumLight)]" : "text-[var(--medium)]") : theme === "light" ? "text-[var(--badLight)]" : "text-[var(--bad)]") : ''}
                   `}
@@ -234,11 +250,14 @@ export default function MobileMain({
             {/*----------------------------------------------------------------------------------------------------------------------------------*/}
             <div
               className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} rounded-[10px] row-2 col-1 h-[80%] w-[80%] relative min-h-[100px] overflow-y-auto scrollbar-thin ${theme === "dark" ? "scrollbar-track-[var(--middleDownTone)]" : "scrollbar-track-[var(--middleUpperTone)]"} ${theme === "dark" ? "scrollbar-thumb-[var(--middleTone)]" : "scrollbar-thumb-[var(--middleToneLight)]"}
-              max-[641px]:min-h-[50px]`}
+              max-[641px]:min-h-[50px]
+              max-[321px]:min-h-[25px]`}
             >
               <p
                 className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1
-                max-[641px]:text-base`}
+                max-[641px]:text-base
+                max-[391px]:text-sm
+                max-[321px]:text-xs`}
               >
                 {results.type === "anime" || results.type === "manga"
                   ? results.genres && results.genres.length < 1
@@ -251,7 +270,8 @@ export default function MobileMain({
               </p>
               <p className="text-lg absolute mb-1 ml-2
               max-[641px]:text-sm
-              max-[391px]:text-xs">
+              max-[391px]:text-xs
+              max-[321px]:text-[10px]">
                 {results.type === "anime" || results.type === "manga"
                   ? results.genres && results.genres.length >= 1
                     ? `${results.genres?.join(", ")}`
@@ -266,18 +286,22 @@ export default function MobileMain({
             {/*----------------------------------------------------------------------------------------------------------------------------------*/}
             <div
               className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} rounded-[10px] row-2 col-2 h-[80%] w-[80%] relative min-h-[100px]
-              max-[641px]:min-h-[50px]`}
+              max-[641px]:min-h-[50px]
+              max-[321px]:min-h-[25px]
+              `}
             >
               <p
                 className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1
                 max-[641px]:text-base
-                max-[391px]:text-sm`}
+                max-[391px]:text-sm
+                max-[321px]:text-xs`}
               >
                 Release Date
               </p>
               <p className="text-lg absolute mb-1 ml-2
               max-[641px]:text-base
-              max-[391px]:text-sm">
+              max-[391px]:text-sm
+              max-[321px]:text-[10px]">
                 {results.date
                   ? results.date.replaceAll("-", "/")
                   : "No data ( . ‸ .)"}
@@ -288,38 +312,44 @@ export default function MobileMain({
             
             </> : <>
             <div
-              className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} rounded-[10px] row-1 col-1 h-[80%] w-[80%] relative min-h-[100px]`}
+              className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} rounded-[10px] row-1 col-1 h-[60%] w-[80%] relative min-h-[100px]
+              max-[391px]:h-[20%]`}
             >
               <p
                 className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1
                 max-[641px]:text-base
-                max-[391px]:text-sm`}
+                max-[391px]:text-sm
+                max-[321px]:text-xs`}
               >
                 Runtime
               </p>
               <p
                 className={`mb-2 ml-2 text-3xl
                   max-[641px]:text-2xl
-                  max-[391px]:text-xl`}
+                  max-[391px]:text-xl
+                  max-[321px]:text-base`}
               >
                 {results.time}
               </p>
             </div>
             
             <div
-              className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} rounded-[10px] row-1 col-2 h-[80%] w-[80%] relative min-h-[100px]`}
+              className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} rounded-[10px] row-1 col-2 h-[60%] w-[80%] relative min-h-[100px]
+              max-[391px]:h-[20%]`}
             >
               <p
                 className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1
                 max-[641px]:text-base
-                max-[391px]:text-sm`}
+                max-[391px]:text-sm
+                max-[321px]:text-xs`}
               >
                 Music Info
               </p>
               <p
                 className={`mb-2 ml-2 text-xl
                 max-[641px]:text-lg
-                max-[391px]:text-base`}
+                max-[391px]:text-base
+                max-[321px]:text-xs`}
               >
                 <>
                 Album: {results.album ? results.album.name : 'No data (≖_≖ )'}
@@ -334,7 +364,8 @@ export default function MobileMain({
             {/*----------------------------------------------------------------------------------------------------------------------------------*/}
           <div
               key="review"
-              className="w-full flex items-center flex-1 min-h-0 justify-center"
+              className="w-full flex items-center flex-1 min-h-0 justify-cente
+              max-[376px]:hidden"
             >
               <div
                 className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} w-full h-[90%] m-5 rounded-[5px] relative min-h-[100px]`}
