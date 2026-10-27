@@ -50,11 +50,14 @@ export default function MobileLogoInput({
     setMedia(data);
     setCurrent(1)
 
+    console.log(data)
+
     setOpenField(true);
   }
 
   return (
-    <div className="flex flex-col h-fit p-5 pt-0">
+    <div className="flex flex-col h-fit p-5 pt-0
+    max-[641px]:scale-90">
       <Image
         src="/Imagens/Logo.png"
         height={170}

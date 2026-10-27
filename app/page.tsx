@@ -134,11 +134,32 @@ export default function Home() {
 
       <div key='blur' className={`${results && results.cover && 'backdrop-blur-sm'} h-full w-full`}>
 
-        <div key="mobile" className="min-[769px]:hidden flex flex-col h-full">
+        <div key="mobile" className="min-[769px]:hidden flex flex-col h-full min-h-0 overflow-hidden">
           
           <MobileLogoInput theme={theme} filters={filters} setFilters={setFilters} setTheme={setTheme} favorites={favorites} setOpenField={setOpenField} setMedia={setMedia} setCurrent={setCurrent}/>
 
-          <MobileMain theme={theme} results={results} openField={openField} NSFW={NSFW} setNSFW={setNSFW} random={random} favorites={favorites} toggleFavorite={toggleFavorite} mediaAmount={false}/>
+          {media && media.length > 2 ?
+
+          <div className="flex flex-row flex-1 min-h-0 items-center mt-3 gap-5
+          max-[641px]:gap-3">
+            <button className="w-16 aspect-square bg-white/33 backdrop-blur-xl border-1 border-white/33 focus:outline-none ml-3 rounded-full flex justify-center items-center
+            max-[641px]:w-12 max-[641px]:ml-1" onClick={() => handleClick('left')}>
+
+                <ArrowLeft className={`size-8 max-[641px]:size-6 ${theme === 'dark' ? 'text-black' : 'text-white'}`}/>
+            </button>
+
+
+            <MobileMain theme={theme} results={results} openField={openField} NSFW={NSFW} setNSFW={setNSFW} random={random} favorites={favorites} toggleFavorite={toggleFavorite} mediaAmount={false}/>
+
+
+            <button className="w-16 aspect-square bg-white/33 backdrop-blur-xl border-1 border-white/33 focus:outline-none mr-3 rounded-full flex justify-center items-center
+            max-[641px]:w-12 max-[641px]:mr-1" onClick={() => handleClick('right')}>
+
+                <ArrowRight className={`size-8 max-[641px]:size-6 ${theme === 'dark' ? 'text-black' : 'text-white'}`}/>
+            </button>
+          </div>
+
+          : <MobileMain theme={theme} results={results} openField={openField} NSFW={NSFW} setNSFW={setNSFW} random={random} favorites={favorites} toggleFavorite={toggleFavorite} mediaAmount={false}/>}
         </div>
 
         {/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}

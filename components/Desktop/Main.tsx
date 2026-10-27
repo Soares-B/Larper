@@ -92,7 +92,7 @@ export default function DesktopMain({
                         {results.type === "game" ? "Game type" : results.type === 'book' ? 'Pages' : "Runtime"}
                       </p>
                       <p
-                        className={`${results.type === "anime" || results.type === "movie" ? "text-3xl max-[1601px]:text-2xl" : "text-xl"} absolute bottom-0 mb-2 ml-2
+                        className={`${(results.type === "anime" || results.type === "movie" || results.type === 'book') ? "text-3xl max-[1601px]:text-2xl" : "text-xl"} absolute bottom-0 mb-2 ml-2
                         ${mediaAmount ? '' : 'max-[901px]:text-xl'}`}
                       >
                         {results.type === "anime" ? (
@@ -137,13 +137,13 @@ export default function DesktopMain({
                       <p
                         className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1`}
                       >
-                        {results.type === 'book' ? 'Authors' : 'Rating'}
+                        {results.type === 'book' ? results.rating ? 'Rating' : 'Authors' : 'Rating'}
                       </p>
                       <p
-                        className={`${results.type === 'book' ? 'text-xl' : 'text-3xl absolute bottom-0'}  mb-2 ml-2 ${results.rating && (results.rating > 7.5 ? (theme === "light" ? "text-[var(--greatLight)]" : "text-[var(--great)]") : results.rating >= 5 ? (theme === "light" ? "text-[var(--mediumLight)]" : "text-[var(--medium)]") : theme === "light" ? "text-[var(--badLight)]" : "text-[var(--bad)]")}
+                        className={`${results.type === 'book' ? (results.rating ? 'text-3xl absolute bottom-0' : 'text-xl') : 'text-3xl absolute bottom-0'}  mb-2 ml-2 ${results.rating ? (results.rating > 7.5 ? (theme === "light" ? "text-[var(--greatLight)]" : "text-[var(--great)]") : results.rating >= 5 ? (theme === "light" ? "text-[var(--mediumLight)]" : "text-[var(--medium)]") : theme === "light" ? "text-[var(--badLight)]" : "text-[var(--bad)]") : ''}
                         ${mediaAmount ? 'max-[901px]:text-2xl' : (results.type === 'game' ? 'max-[1025px]:text-2xl max-[901px]:text-xl' : '')}`}
                       >
-                        {results.type === 'book' ?  results.authors && results.authors.length >= 1 ? results.authors.join(', ') : "No data (  •̀⤙•́  )" : results.rating ? results.rating : "No data (  •̀⤙•́  )"}
+                        {results.type === 'book' ? results.rating ??  (results.authors && results.authors.length >= 1 ? results.authors.join(', ') : "No data (  •̀⤙•́  )") : results.rating ? results.rating : "No data (  •̀⤙•́  )"}
                       </p>
                     </div>
 
