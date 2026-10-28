@@ -71,7 +71,7 @@ export default function Menu({
             <DropdownMenu.ItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
               <CheckIcon />
             </DropdownMenu.ItemIndicator>
-            Game{" "}
+            Game (Unstable){" "}
           </DropdownMenu.CheckboxItem>
           <DropdownMenu.CheckboxItem
             className={`group relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[5px] text-[13px] leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1 focus:outline-none ${theme === 'dark' ? 'hover:bg-[var(--backgroundHover)]' : theme === 'light' ?  'hover:bg-[var(--backgroundLightHover)]' : 'hover:bg-[var(--backgroundGlassHover)]' } hover:outline-1`}

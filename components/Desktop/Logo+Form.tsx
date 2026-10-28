@@ -48,21 +48,23 @@ export default function DesktopLogoInput({
     const data = await response.json();
 
     setMedia(data);
-    setCurrent(1)
+    setCurrent(1);
 
     setOpenField(true);
   }
 
   return (
-    <div className="flex flex-col h-fit
+    <div
+      className="flex flex-col h-fit
     max-[1367px]:scale-80
-    max-[901px]:scale-85">
+    max-[901px]:scale-85"
+    >
       <Image
         src="/Imagens/Logo.png"
         height={170}
         width={737}
         alt="Logo"
-        className="scale-75 m-[0_auto]
+        className="scale-75 m-[0_auto] select-none
         max-[1601px]:scale-70
         max-[1441px]:scale-65
         max-[1281px]:scale-60
@@ -84,7 +86,7 @@ export default function DesktopLogoInput({
         />
         <button
           type="submit"
-          className={` w-fit h-fit p-2 rounded-[5px] ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} pl-3 pr-3 focus:outline-none ${theme === "dark" ? "hover:bg-[var(--backgroundHover)]" : theme === "light" ? "hover:bg-[var(--backgroundLightHover)]" : "hover:bg-[var(--backgroundGlassHover)]"} hover:outline-1`}
+          className={` w-fit h-fit p-2 rounded-[5px] ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} pl-3 pr-3 focus:outline-none ${theme === "dark" ? "hover:bg-[var(--backgroundHover)]" : theme === "light" ? "hover:bg-[var(--backgroundLightHover)]" : "hover:bg-[var(--backgroundGlassHover)]"} hover:outline-1 select-none`}
         >
           Submit
         </button>

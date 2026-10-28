@@ -48,24 +48,28 @@ export default function DesktopLogoInputDetails({
     const data = await response.json();
 
     setMedia(data);
-    setCurrent(1)
+    setCurrent(1);
+
+    console.log(data);
 
     setOpenField(true);
   }
 
   return (
-    <div className="flex flex-row items-center gap-5 pl-5 w-full">
+    <div className="flex flex-row items-center gap-5 pl-5 w-full mt-5
+    max-[1025px]:scale-90 max-[1025px]:-ml-5">
       <Image
         src="/Imagens/Logo2.png"
-        height={170}
-        width={737}
+        height={40}
+        width={180}
         alt="Logo"
-        className="w-[50%] h-[50%] -mt-10 w-fit"
+        className="-mt-8 w-fit h-fit select-none"
       ></Image>
 
       <form
         action=""
-        className=" flex gap-5 mb-8 items-center"
+        className="flex gap-5 mb-8 items-center justify-center
+        "
         onSubmit={handleSubmit}
       >
         <input
@@ -75,7 +79,7 @@ export default function DesktopLogoInputDetails({
         />
         <button
           type="submit"
-          className={` w-fit h-fit p-2 rounded-[5px] ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} pl-3 pr-3 focus:outline-none ${theme === "dark" ? "hover:bg-[var(--backgroundHover)]" : theme === "light" ? "hover:bg-[var(--backgroundLightHover)]" : "hover:bg-[var(--backgroundGlassHover)]"} hover:outline-1`}
+          className={` w-fit h-fit p-2 rounded-[5px] ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} pl-3 pr-3 focus:outline-none ${theme === "dark" ? "hover:bg-[var(--backgroundHover)]" : theme === "light" ? "hover:bg-[var(--backgroundLightHover)]" : "hover:bg-[var(--backgroundGlassHover)]"} hover:outline-1 hover:cursor-pointer select-none`}
         >
           Submit
         </button>

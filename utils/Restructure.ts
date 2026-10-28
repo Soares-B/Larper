@@ -273,7 +273,7 @@ class Anime extends Tenrai{
         super(obj, style)
         this.date = obj.info.aired ? obj.info.aired["from"] ? obj.info.aired["from"].slice(0, 10) : obj.info.status ? obj.info.status : 'No data (๑•́ -•̀)' : obj.info.status ? obj.info.status : 'No data (๑•́ -•̀)' ;
         this.type = 'anime';
-        this.totalEpisode = obj.info.episodes ?? 'Unknow';
+        this.totalEpisode = obj.info.episodes ?? 'Unknown';
         this.season = obj.info.season ?? null;
         this.airing = obj.info.airing ?? null;
         this.age_rating = obj.info.rating ?? null;
@@ -531,7 +531,7 @@ class Music{
 }
 
 function textShortener(desc: string | null, style: string, review: string) {
-  const maxLength = style === 'simple' ? 250 : review === 'review' ? 1475 :  500
+  const maxLength = style === 'simple' ? 250 : review === 'review' ? 1475 :  550
 
   if (!desc) return null;
 

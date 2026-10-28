@@ -14,7 +14,7 @@ export default function Home() {
 
   const [query, setQuery] = useState("");
   const [favorites, setFavorites] = useState<MediaResult[]>([]);
-  const [NSFW, setNSFW] = useState(false)
+  const [NSFW, setNSFW] = useState(false);
 
   const [media, setMedia] = useState<SearchData | null>(null);
   const [current, setCurrent] = useState(1);
@@ -43,16 +43,16 @@ export default function Home() {
   }, [media, current]);
 
   useEffect(() => {
-  try {
-    const savedFavorites = localStorage.getItem("favorites");
+    try {
+      const savedFavorites = localStorage.getItem("favorites");
 
-    if (savedFavorites) {
-      setFavorites(JSON.parse(savedFavorites));
+      if (savedFavorites) {
+        setFavorites(JSON.parse(savedFavorites));
+      }
+    } catch (error) {
+      console.error("Erro ao carregar favoritos:", error);
     }
-  } catch (error) {
-    console.error("Erro ao carregar favoritos:", error);
-  }
-}, []);
+  }, []);
 
   function handleClick(arrow: string) {
     if (!media || media.length <= 1) {
@@ -74,7 +74,7 @@ export default function Home() {
     }
   }
 
-  async function random(){
+  async function random() {
     if (!results) return;
 
     const response = await fetch("/api/random", {
@@ -85,7 +85,7 @@ export default function Home() {
       body: JSON.stringify({
         type: results.type,
         NSFW: NSFW,
-        style: 'detailed'
+        style: "detailed",
       }),
     });
 
@@ -103,7 +103,7 @@ export default function Home() {
         (favorite) =>
           favorite.type === media.type &&
           favorite.name === media.name &&
-          favorite.link === media.link
+          favorite.link === media.link,
       );
 
       const updatedFavorites = isFavorite
@@ -113,50 +113,104 @@ export default function Home() {
                 favorite.type === media.type &&
                 favorite.name === media.name &&
                 favorite.link === media.link
-              )
+              ),
           )
         : [...prevFavorites, media];
 
-      localStorage.setItem(
-        "favorites",
-        JSON.stringify(updatedFavorites)
-      );
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
 
       return updatedFavorites;
     });
   }
 
   return (
-    <div className={`h-screen w-screen ${results && results.cover ? 'bg-cover bg-center bg-no-repeat' : 'bg-linear-to-t from-sky-200 to-white'}`} style={results ? (results.cover ? { backgroundImage: `url("${results.cover}")` } : undefined) : undefined}>
-
-      <div key='blur' className={`${results && results.cover && 'backdrop-blur-sm'} h-full w-full`}>
-
-        <div key="mobile" className="min-[769]:hidden">
-
-        </div>
+    <div
+      className={`h-screen w-screen ${results && results.cover ? "bg-cover bg-center bg-no-repeat" : "bg-linear-to-t from-sky-200 to-white"}`}
+      style={
+        results
+          ? results.cover
+            ? { backgroundImage: `url("${results.cover}")` }
+            : undefined
+          : undefined
+      }
+    >
+      <div
+        key="blur"
+        className={`${results && results.cover && "backdrop-blur-sm"} h-full w-full`}
+      >
+        <div key="mobile" className="min-[769]:hidden"></div>
 
         {/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-        <div key="desktop" className="max-[768]:hidden w-full h-full flex flex-col">
-          <DesktopLogoInputDetails theme={theme} filters={filters} setFilters={setFilters} setTheme={setTheme} favorites={favorites} setOpenField={setOpenField} setMedia={setMedia} setCurrent={setCurrent}/>
+        <div
+          key="desktop"
+          className="max-[768]:hidden w-full h-full flex flex-col"
+        >
+          <DesktopLogoInputDetails
+            theme={theme}
+            filters={filters}
+            setFilters={setFilters}
+            setTheme={setTheme}
+            favorites={favorites}
+            setOpenField={setOpenField}
+            setMedia={setMedia}
+            setCurrent={setCurrent}
+          />
 
-          {media && media.length > 2 ? <div className="w-full h-full flex items-center justify-center gap-5">
+          {media && media.length > 2 ? (
+            <div className="w-full h-full flex items-center justify-center gap-5">
+              <button
+                className="size-15 bg-white/33 backdrop-blur-xl border-1 border-white/33 ml-15 rounded-full flex justify-center items-center hover:cursor-pointer
+            max-[1367px]:size-12 max-[1367px]:ml-10
+            max-[1281px]:ml-5"
+                onClick={() => handleClick("left")}
+              >
+                <ArrowLeft
+                  className={`size-10 max-[1367px]:size-8 ${theme === "dark" ? "text-black" : "text-white"}`}
+                />
+              </button>
 
-            <button className="size-15 bg-white/33 backdrop-blur-xl border-1 border-white/33 ml-15 rounded-full flex justify-center items-center" onClick={() => handleClick('left')}>
-              <ArrowLeft className={`size-10 ${theme === 'dark' ? 'text-black' : 'text-white'}`}/>
-            </button>
+              <DesktopMainDetails
+                theme={theme}
+                results={results}
+                openField={openField}
+                NSFW={NSFW}
+                setNSFW={setNSFW}
+                random={random}
+                favorites={favorites}
+                toggleFavorite={toggleFavorite}
+                setMedia={setMedia}
+                setCurrent={setCurrent}
+                setOpenField={setOpenField}
+              />
 
-            <DesktopMainDetails theme={theme} results={results} openField={openField} NSFW={NSFW} setNSFW={setNSFW} random={random} favorites={favorites} toggleFavorite={toggleFavorite} setMedia={setMedia} setCurrent={setCurrent} setOpenField={setOpenField}/>
-
-            <button className="size-15 bg-white/33 backdrop-blur-xl border-1 border-white/33 mr-15 rounded-full flex justify-center items-center" onClick={() => handleClick('right')}>
-              <ArrowRight className={`size-10 ${theme === 'dark' ? 'text-black' : 'text-white'}`}/>
-            </button>
-
-          </div> : <DesktopMainDetails theme={theme} results={results} openField={openField} NSFW={NSFW} setNSFW={setNSFW} random={random} favorites={favorites} toggleFavorite={toggleFavorite} setMedia={setMedia} setCurrent={setCurrent} setOpenField={setOpenField}/>}
-
+              <button
+                className="size-15 bg-white/33 backdrop-blur-xl border-1 border-white/33 mr-15 rounded-full flex justify-center items-center hover:cursor-pointer
+            max-[1367px]:size-12 max-[1367px]:mr-10
+            max-[1281px]:mr-5"
+                onClick={() => handleClick("right")}
+              >
+                <ArrowRight
+                  className={`size-10 max-[1367px]:size-8 ${theme === "dark" ? "text-black" : "text-white"}`}
+                />
+              </button>
+            </div>
+          ) : (
+            <DesktopMainDetails
+              theme={theme}
+              results={results}
+              openField={openField}
+              NSFW={NSFW}
+              setNSFW={setNSFW}
+              random={random}
+              favorites={favorites}
+              toggleFavorite={toggleFavorite}
+              setMedia={setMedia}
+              setCurrent={setCurrent}
+              setOpenField={setOpenField}
+            />
+          )}
         </div>
-
       </div>
-
     </div>
   );
 }
