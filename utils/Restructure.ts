@@ -531,7 +531,7 @@ class Music{
 }
 
 function textShortener(desc: string | null, style: string, review: string) {
-  const maxLength = style === 'simple' ? 250 : review === 'review' ? 1475 :  550
+  const maxLength = style === 'simple' ? 250 : review === 'review' ? 1400 :  550
 
   if (!desc) return null;
 

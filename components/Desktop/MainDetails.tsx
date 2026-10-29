@@ -635,6 +635,7 @@ export default function DesktopMainDetails({
                       className="text-[17px] absolute mb-2 ml-2 pr-3 text-justify
                       max-[1601px]:text-base
                       max-[1537px]:text-[14px]
+                      max-[1281px]:text-[13px]
                       max-[1025px]:text-[12px]
                       max-[901px]:text-[11px]"
                       >
