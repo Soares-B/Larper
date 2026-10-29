@@ -6,6 +6,9 @@ import { useState, useEffect } from "react";
 import DesktopLogoInputDetails from "@/components/Desktop/Logo+FormDetails";
 import DesktopMainDetails from "@/components/Desktop/MainDetails";
 
+import MobileLogoInputDetails from "@/components/Mobile/Logo+FormMobileDetails";
+import MobileMainDetails from "@/components/Mobile/MainMobileDetails";
+
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export default function Home() {
@@ -138,12 +141,65 @@ export default function Home() {
         key="blur"
         className={`${results && results.cover && "backdrop-blur-sm"} h-full w-full`}
       >
-        <div key="mobile" className="min-[769]:hidden"></div>
+        <div key="mobile"
+             className="min-[769]:hidden w-full h-full flex flex-col">
+
+          <MobileLogoInputDetails
+            theme={theme}
+            filters={filters}
+            setFilters={setFilters}
+            setTheme={setTheme}
+            favorites={favorites}
+            setOpenField={setOpenField}
+            setMedia={setMedia}
+            setCurrent={setCurrent}
+          />
+
+          <div className="flex flex-row flex-1 min-h-10 gap-5 items-center justify-center w-full mb-2">
+            <button
+                className="w-10 aspect-square bg-white/33 backdrop-blur-xl border-1 border-white/33 ml-15 rounded-full flex justify-center items-center hover:cursor-pointer"
+                onClick={() => handleClick("left")}
+              >
+                <ArrowLeft
+                  className={`size-8 ${theme === "dark" ? "text-black" : "text-white"}`}
+                />
+              </button>
+
+            <button
+                className="w-10 aspect-square bg-white/33 backdrop-blur-xl border-1 border-white/33 mr-15 rounded-full flex justify-center items-center hover:cursor-pointer"
+                onClick={() => handleClick("right")}
+              >
+                <ArrowRight
+                  className={`size-8 ${theme === "dark" ? "text-black" : "text-white"}`}
+                />
+              </button>
+
+          </div>
+
+          <MobileMainDetails 
+            theme={theme}
+            results={results}
+            openField={openField}
+            NSFW={NSFW}
+            setNSFW={setNSFW}
+            random={random}
+            favorites={favorites}
+            toggleFavorite={toggleFavorite}
+            setMedia={setMedia}
+            setCurrent={setCurrent}
+            setOpenField={setOpenField}
+          />
+
+        </div>
+
+
+
+
 
         {/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
         <div
           key="desktop"
-          className="max-[768]:hidden w-full h-full flex flex-col"
+          className="max-[769px]:hidden w-full h-full flex flex-col"
         >
           <DesktopLogoInputDetails
             theme={theme}
