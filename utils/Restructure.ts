@@ -65,10 +65,30 @@ type MangaShape = TenraiShape & {
     }
 }
 
-type IGDBShape = {
+type GameShape = {
     info: {
-        id: number,
         name: string | null,
+        infoSource: 'Steam' | 'IGDB',
+    }
+}
+
+type SteamShape = GameShape & {
+    info: {
+        infoSource: 'Steam',
+        steam_appid: number,
+        detailed_description: string | null,
+        required_age: string | null,
+        header_image: string | null,
+        cover: string | null,
+        url: string | null,
+
+    }
+}
+
+type IGDBShape = GameShape & {
+    info: {
+        infoSource: 'IGDB'
+        id: number,
         summary: string | null,
         storyline: string | null,
         age_ratings: {
@@ -102,14 +122,12 @@ type IGDBShape = {
         }
 
     },
-    languagesData: [
-        {
-            id: number | null;
-            name: string | null;
-            native_name: string | null;
-            locale: string | null;
-        }
-    ]
+    languagesData?: {
+        id: number | null;
+        name: string | null;
+        native_name: string | null;
+        locale: string | null;
+    }[] | null;
 }
 
 type BookShape = {
@@ -304,56 +322,68 @@ class Game{
     id: number;
     name: string | null;
     description: string | null;
-    storyline: string | null;
+    storyline?: string | null;
     age_rating: string | null;
     cover: string | null;
-    game_modes: (string | null)[];
+    game_modes?: (string | null)[];
     genres: (string | null)[];
     platforms: (string | null)[];
-    themes: (string | null)[];
+    themes?: (string | null)[];
     rating: number | null;
     date: string | null;
     link: string | null;
-    game_type: string | null;
+    game_type?: string | null;
     type: string;
     background: string | null;
     favorite: false;
 
-    language: {
+    language?: {
         languages: (string | null)[]
         nativeLanguages: (string | null)[]
         locale: (string | null)[]
     } | null;
 
-    constructor(obj: IGDBShape, style: string) {
-        
-        this.id = obj.info.id;
+    constructor(obj: IGDBShape | SteamShape, style: string) {
+
         this.name = obj.info.name;
-        this.description = textShortener(obj.info.summary, style, 'description');
-        this.storyline = obj.info.storyline ?? null;
-        this.age_rating = obj.info.age_ratings ? obj.info.age_ratings.find(age => age.synopsis)?.synopsis ?? null : null;
-        this.cover = obj.info.cover?.url ? `https:${obj.info.cover.url}` : null;
-        this.background = this.cover
-        this.game_modes = obj.info.game_modes?.map(gm => gm.name) ?? null;
+        this.cover = obj.info.infoSource === 'Steam' ? obj.info.cover : obj.info.cover?.url ? `https:${obj.info.cover.url}` : null;
+        this.link = obj.info.url;
+
+        if (obj.info.infoSource === 'Steam'){
+            this.id = obj.info.steam_appid;
+            this.description = textShortener(obj.info.detailed_description, style, 'description');
+            this.age_rating = obj.info.required_age ?? null;
+            this.background = obj.info.header_image ?? null
+        }else{
+            this.id = obj.info.id;
+            this.description = textShortener(obj.info.summary, style, 'description');
+            this.storyline = obj.info.storyline ?? null;
+            this.age_rating = obj.info.age_ratings ? obj.info.age_ratings.find(age => age.synopsis)?.synopsis ?? null : null;
+            this.background = this.cover
+            this.game_modes = obj.info.game_modes?.map(gm => gm.name) ?? null;
+            this.themes = obj.info.themes?.map(t => t.name) ?? null;
+            this.game_type = obj.info.game_type?.type ?? null;
+
+            
+            if (obj.languagesData){
+                this.language = {
+                    languages: obj.languagesData.map(l => l.name),
+                    nativeLanguages: obj.languagesData.map(l => l.native_name),
+                    locale: obj.languagesData.map(l => l.locale)
+                } 
+            } else {
+                this.language = null;
+            } 
+        }
+        
+        
         this.genres = obj.info.genres?.map(g => g.name) ?? null;
         this.platforms = obj.info.platforms?.map(p => p.name) ?? null;
-        this.themes = obj.info.themes?.map(t => t.name) ?? null;
+        
         this.rating = obj.info.rating ? Number((obj.info.rating / 10).toFixed(1)) : null;
         this.date = obj.info.release_dates ? obj.info.release_dates[0].human : null;
-        this.link = obj.info.url;
-        this.game_type = obj.info.game_type?.type ?? null;
         this.type = 'game'
-        this.favorite = false;
-
-        if (obj.languagesData){
-            this.language = {
-                languages: obj.languagesData.map(l => l.name),
-                nativeLanguages: obj.languagesData.map(l => l.native_name),
-                locale: obj.languagesData.map(l => l.locale)
-            } 
-        } else {
-            this.language = null;
-        }      
+        this.favorite = false;     
     }
 }
 

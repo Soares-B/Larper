@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { TenraiAnime, TenraiManga } from "@/lib/Tenrai";
 import IGDB from "@/lib/IGDB";
+import Steam from "@/lib/Steam";
 import GoogleBooks from "@/lib/GoogleBooks";
 import { TMDBMovie, TMDBSerie } from "@/lib/TMDB";
 import Deezer from "@/lib/Deezer";
@@ -90,8 +91,14 @@ export async function POST(req: Request) {
         if (filters.game) {
             searchVar = await IGDB(encodeQuery);
 
+            if (!searchVar?.ok){
+                searchVar = await Steam(encodeQuery)
+            }
+
             if (searchVar) {
                 game = await searchVar.json();
+
+                console.log(game)
 
                 if (searchVar.status === 200){
                     if (type === "simple") {

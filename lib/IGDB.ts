@@ -56,7 +56,9 @@ export default async function IGDB(query: string){
             languagesData = await languagesResponse.json(); 
         }
 
-        return NextResponse.json({info, languagesData})
+        info.infoSource = 'IGDB'
+
+        return NextResponse.json({info, languagesData,})
 
     }catch(err){
         console.log(err)
