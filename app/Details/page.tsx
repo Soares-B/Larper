@@ -155,7 +155,7 @@ export default function Home() {
             setCurrent={setCurrent}
           />
 
-          <div className="flex flex-row flex-1 min-h-10 gap-5 items-center justify-center w-full mb-2">
+          {media && media.length > 2 ? <><div className="flex flex-row flex-1 min-h-10 gap-5 items-center justify-center w-full mb-2">
             <button
                 className="w-10 aspect-square bg-white/33 backdrop-blur-xl border-1 border-white/33 ml-15 rounded-full flex justify-center items-center hover:cursor-pointer"
                 onClick={() => handleClick("left")}
@@ -174,8 +174,8 @@ export default function Home() {
                 />
               </button>
 
-          </div>
-
+          </div> 
+          
           <MobileMainDetails 
             theme={theme}
             results={results}
@@ -188,7 +188,23 @@ export default function Home() {
             setMedia={setMedia}
             setCurrent={setCurrent}
             setOpenField={setOpenField}
-          />
+          /> </>
+
+          : <MobileMainDetails 
+            theme={theme}
+            results={results}
+            openField={openField}
+            NSFW={NSFW}
+            setNSFW={setNSFW}
+            random={random}
+            favorites={favorites}
+            toggleFavorite={toggleFavorite}
+            setMedia={setMedia}
+            setCurrent={setCurrent}
+            setOpenField={setOpenField}
+          />}
+
+          
 
         </div>
 
