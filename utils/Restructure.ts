@@ -65,28 +65,52 @@ type MangaShape = TenraiShape & {
     }
 }
 
-type GameShape = {
+
+type SteamShape = {
     info: {
         name: string | null,
-        infoSource: 'Steam' | 'IGDB',
-    }
-}
-
-type SteamShape = GameShape & {
-    info: {
         infoSource: 'Steam',
         steam_appid: number,
-        detailed_description: string | null,
+        about_the_game: string | null,
         required_age: string | null,
         header_image: string | null,
         cover: string | null,
         url: string | null,
-
+        platforms: {
+            windows: boolean,
+            linux: boolean,
+            mac: boolean,
+        },
+        genres: {
+            description: string | null,
+        }[],
+        recommendations: {
+            total: number | null,
+        },
+        release_date: {
+            coming_soon: boolean,
+            date: string | null,
+        },
+        is_free: boolean,
+        price_overview?: {
+            final_formatted: string | null,
+        },
+        categories: {
+            description: string | null,
+        }[],
+        developers: string | null
     }
+    infoReview: {
+        user: string | null,
+        avatar: string | null,
+        review: string | null,
+    },
+    languagesData: null,
 }
 
-type IGDBShape = GameShape & {
+type IGDBShape = {
     info: {
+        name: string | null,
         infoSource: 'IGDB'
         id: number,
         summary: string | null,
@@ -127,7 +151,8 @@ type IGDBShape = GameShape & {
         name: string | null;
         native_name: string | null;
         locale: string | null;
-    }[] | null;
+    }[] | null,
+    infoReview: null;
 }
 
 type BookShape = {
@@ -335,6 +360,14 @@ class Game{
     game_type?: string | null;
     type: string;
     background: string | null;
+    price?: string;
+    categories?: (string | null)[];
+    developers?: string | null;
+    review?: {
+        author: string | null;
+        avatar: string | null;
+        content: string | null
+    }
     favorite: false;
 
     language?: {
@@ -342,6 +375,8 @@ class Game{
         nativeLanguages: (string | null)[]
         locale: (string | null)[]
     } | null;
+
+    infoSource: 'Steam' | 'IGDB'
 
     constructor(obj: IGDBShape | SteamShape, style: string) {
 
@@ -351,9 +386,34 @@ class Game{
 
         if (obj.info.infoSource === 'Steam'){
             this.id = obj.info.steam_appid;
-            this.description = textShortener(obj.info.detailed_description, style, 'description');
+            this.description = textShortener(obj.info.about_the_game, style, 'description');
             this.age_rating = obj.info.required_age ?? null;
             this.background = obj.info.header_image ?? null
+            this.genres = obj.info.genres?.map(g => g.description) ?? null;
+            this.platforms = Object.entries(obj.info.platforms).filter(([_, available]) => available).map(([platform]) => platform);
+            this.rating = obj.info.recommendations ? (obj.info.recommendations.total) : null;
+            this.date = obj.info.release_date.coming_soon
+                        ? 'Coming soon'
+                        : obj.info.release_date.date ?? null;
+            if (obj.info.is_free){
+                this.price = 'Free'
+            }else{
+                this.price = obj.info.price_overview ? (obj.info.price_overview.final_formatted ?? undefined) : undefined;
+            }
+
+            this.categories = (obj.info.categories.map(c => c.description)).slice(0,5) ?? null;
+            this.developers = obj.info.developers ?? null;
+
+            if (obj.infoReview){
+                this.review = {
+                    author: obj.infoReview.user,
+                    avatar: obj.infoReview.avatar,
+                    content: textShortener(obj.infoReview.review ?? null, style, style === 'detailed' ? 'review' : 'description')
+                }
+            }
+
+            this.infoSource = 'Steam'
+            
         }else{
             this.id = obj.info.id;
             this.description = textShortener(obj.info.summary, style, 'description');
@@ -363,6 +423,10 @@ class Game{
             this.game_modes = obj.info.game_modes?.map(gm => gm.name) ?? null;
             this.themes = obj.info.themes?.map(t => t.name) ?? null;
             this.game_type = obj.info.game_type?.type ?? null;
+            this.genres = obj.info.genres?.map(g => g.name) ?? null;
+            this.platforms = obj.info.platforms?.map(p => p.name) ?? null;           
+            this.rating = obj.info.rating ? Number((obj.info.rating / 10).toFixed(1)) : null;
+            this.date = obj.info.release_dates ? obj.info.release_dates[0].human : null;
 
             
             if (obj.languagesData){
@@ -374,14 +438,10 @@ class Game{
             } else {
                 this.language = null;
             } 
+
+            this.infoSource = 'IGDB'
+
         }
-        
-        
-        this.genres = obj.info.genres?.map(g => g.name) ?? null;
-        this.platforms = obj.info.platforms?.map(p => p.name) ?? null;
-        
-        this.rating = obj.info.rating ? Number((obj.info.rating / 10).toFixed(1)) : null;
-        this.date = obj.info.release_dates ? obj.info.release_dates[0].human : null;
         this.type = 'game'
         this.favorite = false;     
     }

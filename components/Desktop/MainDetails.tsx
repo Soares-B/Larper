@@ -131,7 +131,7 @@ export default function DesktopMainDetails({
                       max-[1367px]:text-base
                       max-[1025px]:text-sm`}
                     >
-                      {results.type === "game" ? "Game type" : "Runtime"}
+                      {results.type === "game" ? (results.infoSource === 'Steam' ? 'Price' : "Game type") : "Runtime"}
                     </p>
                     <p
                       className={`${results.type === "anime" || results.type === "movie" ? "text-3xl max-[1601px]:text-2xl max-[1441px]:text-xl max-[1367px]:text-lg max-[1025px]:text-base max-[901px]:text-xs" : "text-xl max-[1441px]:text-lg max-[1367px]:text-base max-[1025px]:text-sm"} absolute bottom-0 mb-2 ml-2
@@ -162,8 +162,8 @@ export default function DesktopMainDetails({
                             {results.chapters}
                           </>
                         )
-                      ) : results.type === "game" ? (
-                        results.game_type
+                      ) : results.type === "game" ? ( results.infoSource === 'Steam' ? (results.is_free ? 'Free' : results.price ?? "No Data ٩(ˋᗣˊ*)و")
+                        : results.game_type
                       ) : results.type === "serie" ? (
                         <>
                           Seasons: {results.totalSeason} <br /> Episodes:{" "}
@@ -187,7 +187,7 @@ export default function DesktopMainDetails({
                       max-[1367px]:text-base
                       max-[1025px]:text-sm`}
                     >
-                      Rating
+                      {results.infoSource && results.infoSource !== 'Steam' ? "Rating" : 'Recommendations'}
                     </p>
                     <p
                       className={`text-3xl absolute bottom-0 mb-2 ml-2 ${results.rating && (results.rating > 7.5 ? (theme === "light" ? "text-[var(--greatLight)]" : "text-[var(--great)]") : results.rating >= 5 ? (theme === "light" ? "text-[var(--mediumLight)]" : "text-[var(--medium)]") : theme === "light" ? "text-[var(--badLight)]" : "text-[var(--bad)]")}
@@ -198,8 +198,12 @@ export default function DesktopMainDetails({
                     max-[1367px]:mb-0
                     max-[901px]:text-base`}
                     >
-                      {(results.rating && results.rating.toFixed(2)) ||
-                        "No data (  •̀⤙•́  )"}
+                      {results.rating != null
+                          ? results.infoSource === 'Steam'
+                              ? results.rating.toFixed(0)
+                              : results.rating.toFixed(2)
+                          : "No data (  •̀⤙•́  )"
+                      }
                       {results.rating && results.votes && (
                         <span
                           className={`text-base ${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"}
@@ -293,7 +297,7 @@ export default function DesktopMainDetails({
                         : results.type === "manga"
                           ? "Type"
                           : results.type === "game"
-                            ? "Game modes"
+                            ? (results.infoSource === 'Steam' ? 'Age rating' : "Game modes")
                             : results.type === "serie"
                               ? "Episode runtime"
                               : results.type === "movie"
@@ -311,9 +315,9 @@ export default function DesktopMainDetails({
                         : results.type === "manga"
                           ? results.typeData || "No data (˶˃𐃷˂˶)"
                           : results.type === "game"
-                            ? (results.game_modes &&
+                            ? (results.infoSource === 'Steam' ? results.age_rating : (results.game_modes &&
                                 results.game_modes.length >= 1 &&
-                                results.game_modes.join(", ")) ||
+                                results.game_modes.join(", "))) ||
                               "No data (˶˃𐃷˂˶)"
                             : results.type === "serie"
                               ? results.episode_runtime || "No data (˶˃𐃷˂˶)"
@@ -396,7 +400,7 @@ export default function DesktopMainDetails({
                         : results.type === "manga"
                           ? "Authors"
                           : results.type === "game"
-                            ? "Themes"
+                            ? (results.infoSource !== 'Steam' ? "Themes" : 'Categories')
                             : results.type === "serie"
                               ? "Similar series"
                               : results.type === "movie"
@@ -418,9 +422,11 @@ export default function DesktopMainDetails({
                               results.authors.map((a) => `${a.name}, `)) ||
                             'No data ( ._. )""'
                           : results.type === "game"
-                            ? (results.themes &&
+                            ? (results.infoSource !== 'Steam' ? (results.themes &&
                                 results.themes.length >= 1 &&
-                                results.themes.join(", ")) ||
+                                results.themes.join(", ")) : (results.categories &&
+                                results.categories.length >= 1 &&
+                                results.categories.join(", "))) ||
                               'No data ( ._. )""'
                             : results.type === "serie" ||
                                 results.type === "movie"
@@ -467,7 +473,7 @@ export default function DesktopMainDetails({
                         : results.type === "manga"
                           ? "Manga recommendations"
                           : results.type === "game"
-                            ? "Languages"
+                            ? (results.infoSource === 'Steam' ? 'Developers' : "Languages")
                             : results.type === "serie"
                               ? "Serie recommendations"
                               : results.type === "movie"
@@ -503,10 +509,10 @@ export default function DesktopMainDetails({
                             })) ||
                           "No data <( ⸝⸝•̀ - •́⸝⸝)>"
                         : results.type === "game"
-                          ? (results.language &&
+                          ? (results.infoSource === 'Steam' ? results.developers : (results.language &&
                               results.language.languages &&
                               results.language.languages.length >= 1 &&
-                              results.language.languages.join(", ")) ||
+                              results.language.languages.join(", "))) ||
                             "No data <( ⸝⸝•̀ - •́⸝⸝)>"
                           : results.type === "serie" || results.type === "movie"
                             ? (results.recommendations &&
@@ -660,8 +666,9 @@ export default function DesktopMainDetails({
                         {results.review.opinion && (
                           <>({results.review.opinion})</>
                         )}{" "}
-                        - {results.review.author}
+                        {results.type !== 'game' && '-'}{results.review.author}
                       </p>
+                      {results.type === 'game' && '-'}
                       <AvatarReview
                         path={results.review.avatar ?? ""}
                         name={results.review.author ?? ""}

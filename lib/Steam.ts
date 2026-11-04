@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+const steamKey = process.env.SteamKey;
+
 function description(d: string){
     const descricao = d
   .split(/<h1[^>]*>\s*About the Game\s*<\/h1>/i)[1]
@@ -15,7 +17,7 @@ function description(d: string){
   .replace(/\s+/g, " ")
   .trim();
 
-console.log(descricao);
+  return descricao
 
 }
 
@@ -34,17 +36,34 @@ export default async function Steam(query: string){
         const dataDetails = await responseDetails.json();
         const info = dataDetails[id].data
 
+        const urlReview = `https://api.steampowered.com/IUserReviewsService/GetAppReviews/v1/?appid=${id}&filter=1&num_per_page=10`;
+
+        const responseReview = await fetch(urlReview);
+        const dataReview = await responseReview.json();
+        const infoReview = dataReview.response.reviews[0]
+
+        const urlUser = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${steamKey}&steamids=${infoReview.author.steamid}`
+
+        const responseUser = await fetch(urlUser);
+        const dataUser = await responseUser.json();
+        const infoUser = dataUser.response.players[0]
+
+        infoReview.user = infoUser.personaname
+        infoReview.avatar = infoUser.avatarfull        
+
         if (!info){
             return null
         }
 
         info.infoSource = 'Steam'
 
-        info.detailed_description = description(info.detailed_description)
+        info.about_the_game = description(info.detailed_description)
         info.cover = `https://cdn.akamai.steamstatic.com/steam/apps/${id}/library_600x900.jpg`
         info.url = `https://store.steampowered.com/app/${id}/`
 
-        return NextResponse.json({info})
+        console.log(infoReview)
+
+        return NextResponse.json({info, infoReview})
 
     }catch(err){
         console.log(err)

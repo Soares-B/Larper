@@ -93,8 +93,7 @@ export default function DesktopMain({
                           <p
                             className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg ml-2 mt-1`}
                           >
-                            {results.type === "game"
-                              ? "Game type"
+                            {results.type === "game" ? (results.infoSource === 'Steam' ? 'Price' : "Game type")
                               : results.type === "book"
                                 ? "Pages"
                                 : "Runtime"}
@@ -123,9 +122,9 @@ export default function DesktopMain({
                                   {results.chapters}
                                 </>
                               )
-                            ) : results.type === "game" ? (
-                              results.game_type
-                            ) : results.type === "book" ? (
+                            ) : results.type === "game" ? ( results.infoSource === 'Steam' ? (results.is_free ? 'Free' : results.price ?? "No Data ٩(ˋᗣˊ*)و")
+                        : results.game_type
+                      ) : results.type === "book" ? (
                               `Pages: ${results.pages}`
                             ) : results.type === "serie" ? (
                               <>
@@ -368,8 +367,9 @@ export default function DesktopMain({
                           {results.review.opinion && (
                             <>({results.review.opinion})</>
                           )}{" "}
-                          - {results.review.author}
+                          {results.type !== 'game' && '-'}{results.review.author}
                         </p>
+                        {results.type === 'game' && '-'}
                         <AvatarReview
                           path={results.review.avatar ?? ""}
                           name={results.review.author ?? ""}

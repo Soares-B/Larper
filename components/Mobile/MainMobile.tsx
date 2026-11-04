@@ -192,9 +192,8 @@ export default function MobileMain({
                 max-[391px]:text-sm
                 max-[321px]:text-xs`}
                     >
-                      {results.type === "game"
-                        ? "Game type"
-                        : results.type === "book"
+                      {results.type === "game" ? (results.infoSource === 'Steam' ? 'Price' : "Game type")
+                              : results.type === "book"
                           ? "Pages"
                           : "Runtime"}
                     </p>
@@ -229,8 +228,8 @@ export default function MobileMain({
                             {results.chapters}
                           </>
                         )
-                      ) : results.type === "game" ? (
-                        results.game_type
+                      ) : results.type === "game" ? ( results.infoSource === 'Steam' ? (results.is_free ? 'Free' : results.price ?? "No Data ٩(ˋᗣˊ*)و")
+                        : results.game_type
                       ) : results.type === "book" ? (
                         `Pages: ${results.pages}`
                       ) : results.type === "serie" ? (
@@ -464,8 +463,9 @@ export default function MobileMain({
                         {results.review.opinion && (
                           <>({results.review.opinion})</>
                         )}{" "}
-                        - {results.review.author}
+                        {results.type !== 'game' && '-'}{results.review.author}
                       </p>
+                      {results.type === 'game' && '-'}
                       <AvatarReview
                         path={results.review.avatar ?? ""}
                         name={results.review.author ?? ""}

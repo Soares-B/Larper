@@ -98,8 +98,6 @@ export async function POST(req: Request) {
             if (searchVar) {
                 game = await searchVar.json();
 
-                console.log(game)
-
                 if (searchVar.status === 200){
                     if (type === "simple") {
                         restructure = Restructure(game, "game", 'simple');

@@ -57,6 +57,11 @@ export type MediaResult = {
   votes?: number;
   authors?: { name?: string; link?: string }[];
   episode_runtime?: string;
+  infoSource?: string;
+  is_free?: boolean;
+  price?: string | null;
+  categories?: (string)[] | null;
+  developers?: string | null
 };
 
 export type DetailedMediaResult = MediaResult & {
