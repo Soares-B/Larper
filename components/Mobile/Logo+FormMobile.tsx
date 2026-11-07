@@ -48,18 +48,18 @@ export default function MobileLogoInput({
       if (!response.ok) {
         const message = typeof data === "object" && data !== null && "message" in data
           ? String(data.message)
-          : "Não foi possível concluir a pesquisa.";
+          : "Unable to complete the search.";
         throw new Error(message);
       }
       if (!Array.isArray(data) || !Array.isArray(data[0])) {
-        throw new Error("A resposta da pesquisa é inválida.");
+        throw new Error("The search response is invalid.");
       }
 
       setMedia(data as SearchData);
       setCurrent(1);
       setOpenField(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Não foi possível concluir a pesquisa.");
+      setError(err instanceof Error ? err.message : "Unable to complete the search.");
     } finally {
       setLoading(false);
     }
@@ -96,7 +96,7 @@ export default function MobileLogoInput({
         >
           <input
             type="text"
-            aria-label="Pesquisar mídia"
+            aria-label="Search media"
             className={`w-[75%] p-2 rounded-[5px] text-lg ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} focus:outline-none ${theme === "dark" ? "hover:bg-[var(--backgroundHover)]" : theme === "light" ? "hover:bg-[var(--backgroundLightHover)]" : "hover:bg-[var(--backgroundGlassHover)]"} hover:outline-1
             max-[431px]:w-full`}
             onChange={(e) => setInput(e.target.value)}
@@ -111,14 +111,14 @@ export default function MobileLogoInput({
               hover:outline-1 select-none
             max-[431px]:hidden`}
           >
-            {loading ? "Buscando..." : "Submit"}
+            {loading ? "Searching..." : "Submit"}
           </button>
         </div>
 
         {/*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */}
         <input
           type="text"
-          aria-label="Pesquisar mídia"
+          aria-label="Search media"
           className={`p-2 rounded-[5px] text-lg ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} focus:outline-none ${theme === "dark" ? "hover:bg-[var(--backgroundHover)]" : theme === "light" ? "hover:bg-[var(--backgroundLightHover)]" : "hover:bg-[var(--backgroundGlassHover)]"} hover:outline-1
             max-[431px]:w-2/3 min-[431px]:hidden`}
           onChange={(e) => setInput(e.target.value)}
@@ -134,7 +134,7 @@ export default function MobileLogoInput({
             hover:outline-1 h-full select-none
           `}
           >
-            {loading ? "Buscando..." : "Submit"}
+            {loading ? "Searching..." : "Submit"}
           </button>
 
           <Details theme={theme} />
@@ -168,7 +168,7 @@ export default function MobileLogoInput({
           />
         </div>
         {error && <p role="alert" className="text-center text-red-400">{error}</p>}
-        {loading && <p role="status" className="sr-only">Buscando...</p>}
+        {loading && <p role="status" className="sr-only">Searching...</p>}
       </form>
     </div>
   );
