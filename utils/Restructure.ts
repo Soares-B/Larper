@@ -452,9 +452,7 @@ class Book{
     authors: string[] | null;
     description: string | null;
     rating?: number | null;
-    genres: {
-        genre: string | null,
-    }[] | null;
+    genres: (string | null)[] | null;
     cover: string | null;
     language: string | null;
     pages: number | null;
@@ -509,7 +507,7 @@ class TMDB{
         this.rating = typeof obj.info.vote_average === 'number' && Number.isFinite(obj.info.vote_average)
             ? Number(obj.info.vote_average.toFixed(2))
             : null;
-        this.genres = obj.dataDetails.genres?.map(g => g.name) ?? null;
+        this.genres = obj.dataDetails.genres?.map(g => g.name ?? null) ?? null;
         this.tagline = obj.dataDetails.tagline ? obj.dataDetails.tagline : null;
         this.favorite = false;
 
