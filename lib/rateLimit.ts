@@ -5,19 +5,13 @@ type RateLimitState = typeof globalThis & {
   __larperRateLimits?: Map<string, RateLimitEntry>;
 };
 
-/**
- * Best-effort per-instance rate limit. On serverless deployments this state is
- * not shared across instances; use the hosting provider's firewall for a
- * globally enforced limit if traffic requires it.
- */
 export function isRateLimited(
   req: Request,
   scope: string,
   maxRequests: number,
   windowMs = defaultWindowMs,
 ): boolean {
-  // Hosting proxies should overwrite x-real-ip. The fallback supports local
-  // development; requests without an IP share one bucket instead of bypassing.
+
   const ip = req.headers.get("x-real-ip")?.trim()
     || req.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
     || "unknown";
