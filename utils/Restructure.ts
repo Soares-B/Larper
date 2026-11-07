@@ -87,6 +87,7 @@ type SteamShape = {
         recommendations: {
             total: number | null,
         },
+        steam_rating?: number | null,
         release_date: {
             coming_soon: boolean,
             date: string | null,
