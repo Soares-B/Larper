@@ -53,8 +53,8 @@ export async function POST(req: Request) {
         let serie: object | null = null;
         let movie: object | null = null;
 
-        let searchVar;
-        let restructure;
+        let searchVar: Response | null;
+        let restructure: object | null | undefined;
 
         const fullSearch: FullSearch = [[]];
 
