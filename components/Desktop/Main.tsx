@@ -6,6 +6,7 @@ import NSFWButton from "../NSFW Button";
 import Link from "next/link";
 import AvatarReview from "../ui/Avatar";
 import { Heart } from "lucide-react";
+import type { Dispatch, SetStateAction } from "react";
 
 export default function DesktopMain({
   theme,
@@ -23,7 +24,7 @@ export default function DesktopMain({
   results: MediaResult | null;
   openField: boolean;
   NSFW: boolean;
-  setNSFW: any;
+  setNSFW: Dispatch<SetStateAction<boolean>>;
   random: () => Promise<void>;
   randomLoading: boolean;
   favorites: MediaResult[];
