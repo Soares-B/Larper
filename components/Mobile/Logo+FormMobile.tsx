@@ -5,9 +5,9 @@ import Details from "../Details Button";
 import Menu from "../Types Simple";
 import Theme from "../Themes";
 import Favorites from "../Favorites";
-import type { Filters } from "@/types/media";
+import type { Filters, MediaResult, SearchData } from "@/types/media";
 
-import { useState, type FormEvent } from "react";
+import { useState, type FormEvent, type Dispatch, type SetStateAction } from "react";
 
 export default function MobileLogoInput({
   theme,
@@ -21,12 +21,12 @@ export default function MobileLogoInput({
 }: {
   theme: string;
   filters: Filters;
-  setFilters: any;
-  setTheme: any;
-  favorites: any;
-  setOpenField: any;
-  setMedia: any;
-  setCurrent: any;
+  setFilters: Dispatch<SetStateAction<Filters>>;
+  setTheme: Dispatch<SetStateAction<string>>;
+  favorites: MediaResult[];
+  setOpenField: Dispatch<SetStateAction<boolean>>;
+  setMedia: Dispatch<SetStateAction<SearchData | null>>;
+  setCurrent: Dispatch<SetStateAction<number>>;
 }) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -55,7 +55,7 @@ export default function MobileLogoInput({
         throw new Error("A resposta da pesquisa é inválida.");
       }
 
-      setMedia(data);
+      setMedia(data as SearchData);
       setCurrent(1);
       setOpenField(true);
     } catch (err) {
