@@ -346,7 +346,7 @@ class Manga extends Tenrai{
 class Game{
 
     id: number;
-    name: string | null;
+    name: string;
     description: string | null;
     storyline?: string | null;
     age_rating: string | null;
@@ -381,7 +381,7 @@ class Game{
 
     constructor(obj: IGDBShape | SteamShape, style: string) {
 
-        this.name = obj.info.name;
+        this.name = obj.info.name ?? "Sem título";
         this.cover = obj.info.infoSource === 'Steam' ? obj.info.cover : obj.info.cover?.url ? `https:${obj.info.cover.url}` : null;
         this.link = obj.info.url;
 
