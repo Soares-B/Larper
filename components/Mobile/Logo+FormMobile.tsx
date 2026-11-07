@@ -7,7 +7,7 @@ import Theme from "../Themes";
 import Favorites from "../Favorites";
 import type { Filters } from "@/types/media";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 
 export default function MobileLogoInput({
   theme,
@@ -29,30 +29,40 @@ export default function MobileLogoInput({
   setCurrent: any;
 }) {
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  async function handleSubmit(e: any) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (!input.trim() || loading) return;
 
-    const response = await fetch("/api/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: input,
-        filters: filters,
-        type: "simple",
-      }),
-    });
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("/api/search", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: input, filters, type: "simple" }),
+      });
+      const data: unknown = await response.json().catch(() => null);
+      if (!response.ok) {
+        const message = typeof data === "object" && data !== null && "message" in data
+          ? String(data.message)
+          : "Não foi possível concluir a pesquisa.";
+        throw new Error(message);
+      }
+      if (!Array.isArray(data) || !Array.isArray(data[0])) {
+        throw new Error("A resposta da pesquisa é inválida.");
+      }
 
-    const data = await response.json();
-
-    setMedia(data);
-    setCurrent(1);
-
-    console.log(data);
-
-    setOpenField(true);
+      setMedia(data);
+      setCurrent(1);
+      setOpenField(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Não foi possível concluir a pesquisa.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -93,6 +103,7 @@ export default function MobileLogoInput({
           />
           <button
             type="submit"
+            disabled={loading || !input.trim()}
             className={`w-fit h-full p-2 rounded-[5px]
               ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"}
               ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"}
@@ -100,7 +111,7 @@ export default function MobileLogoInput({
               hover:outline-1 select-none
             max-[431px]:hidden`}
           >
-            Submit
+            {loading ? "Buscando..." : "Submit"}
           </button>
         </div>
 
@@ -155,6 +166,8 @@ export default function MobileLogoInput({
             setCurrent={setCurrent}
           />
         </div>
+        {error && <p role="alert" className="text-center text-red-400">{error}</p>}
+        {loading && <p role="status" className="sr-only">Buscando...</p>}
       </form>
     </div>
   );
