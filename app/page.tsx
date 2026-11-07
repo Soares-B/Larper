@@ -171,6 +171,7 @@ export default function Home() {
             setMedia={setMedia}
             setCurrent={setCurrent}
           />
+          <MediaTypeSwitcher media={media} current={current} setCurrent={setCurrent} />
 
           {media && media.length > 2 ? (
             <div
@@ -267,6 +268,7 @@ export default function Home() {
             setMedia={setMedia}
             setCurrent={setCurrent}
           />
+          <MediaTypeSwitcher media={media} current={current} setCurrent={setCurrent} />
 
           <div className="flex-1 min-h-0 w-full">
             {media && media.length > 2 ? (
