@@ -43,7 +43,7 @@ export default function DesktopMain({
       {results && (
         <>
           <div className="flex flex-col w-full h-full items-start min-h-0">
-            {/*----------------------------------------------------------------------------------------------------------------------------------*/}
+            
             <div className="flex flex-row w-full">
               <Link
                 href={results.link || "#"}
@@ -65,7 +65,6 @@ export default function DesktopMain({
                 )}
               </Link>
 
-              {/*----------------------------------------------------------------------------------------------------------------------------------*/}
 
               <div
                 className="w-full pr-5 ml-3 flex flex-col h-full max-h-[420px] min-h-[420px]
@@ -90,7 +89,7 @@ export default function DesktopMain({
                   <div
                     className={`flex-1 grid ${results.type !== "music" ? "grid-cols-2 grid-rows-2" : "grid-cols-2 grid-rows-1"} items-center justify-items-center gap-1 mt-1`}
                   >
-                    {/*----------------------------------------------------------------------------------------------------------------------------------*/}
+                    
                     {results.type !== "music" ? (
                       <>
                         <div
@@ -143,7 +142,6 @@ export default function DesktopMain({
                           </p>
                         </div>
 
-                        {/*----------------------------------------------------------------------------------------------------------------------------------*/}
                         <div
                           className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} rounded-[10px] row-1 col-2 h-[80%] w-[80%] relative min-h-[100px]`}
                         >
@@ -171,7 +169,6 @@ export default function DesktopMain({
                           </p>
                         </div>
 
-                        {/*----------------------------------------------------------------------------------------------------------------------------------*/}
                         <div
                           className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} rounded-[10px] row-2 col-1 h-[80%] w-[80%] relative min-h-[100px] overflow-y-auto scrollbar-thin ${theme === "dark" ? "scrollbar-track-[var(--middleDownTone)]" : "scrollbar-track-[var(--middleUpperTone)]"} ${theme === "dark" ? "scrollbar-thumb-[var(--middleTone)]" : "scrollbar-thumb-[var(--middleToneLight)]"}`}
                         >
@@ -201,7 +198,6 @@ export default function DesktopMain({
                           </p>
                         </div>
 
-                        {/*----------------------------------------------------------------------------------------------------------------------------------*/}
                         <div
                           className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} rounded-[10px] row-2 col-2 h-[80%] w-[80%] relative min-h-[100px]`}
                         >
@@ -259,7 +255,6 @@ export default function DesktopMain({
               </div>
             </div>
 
-            {/*----------------------------------------------------------------------------------------------------------------------------------*/}
             <div
               className="grid grid-cols-[320px_1fr] w-full flex-1 items-center
               max-[1367px]:grid-cols-[250px_1fr]"
@@ -283,7 +278,6 @@ export default function DesktopMain({
                     </div>
                   )}
 
-                {/*----------------------------------------------------------------------------------------------------------------------------------*/}
 
                 <div className="flex items-end gap-5 mb-3 ml-5">
                   <button
@@ -323,7 +317,6 @@ export default function DesktopMain({
                 </div>
               </div>
 
-              {/*----------------------------------------------------------------------------------------------------------------------------------*/}
 
               <div
                 key="review"
@@ -347,7 +340,6 @@ export default function DesktopMain({
                         ></Link>
                       </div>
 
-                      {/*----------------------------------------------------------------------------------------------------------------------------------*/}
                       <p
                         className="text-base absolute mb-2 ml-2 pr-3 text-justify
                       max-[1367px]:text-sm"
@@ -357,7 +349,6 @@ export default function DesktopMain({
                           : "No data :‹"}
                       </p>
 
-                      {/*----------------------------------------------------------------------------------------------------------------------------------*/}
                       <div
                         className="absolute bottom-0 right-0 mr-7 flex gap-2 w-fit mb-1
                       max-[1537px]:scale-90 max-[1537px]:mr-2
