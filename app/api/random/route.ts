@@ -7,7 +7,7 @@ import RestructureDetails from "@/utils/RestructureDetails";
 import Restructure from "@/utils/Restructure";
 import { isRateLimited } from "@/lib/rateLimit";
 
-type FullSearch = [string[], ...any[]];
+type FullSearch = [string[], ...object[]];
 
 export async function POST(req: Request) {
     try {
