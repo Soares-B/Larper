@@ -2,7 +2,6 @@ import { readJsonResponse } from "@/lib/readJsonResponse";
 import { NextResponse } from "next/server";
 const Key = process.env.TMDB_Token;
 
-
 export async function TMDBMovie(query: string){
     try{
         const urlPrincipal = new URL('https://api.themoviedb.org/3/search/movie');
@@ -109,6 +108,5 @@ export async function TMDBSerie(query: string){
         console.log(err)
         return NextResponse.json({message: `Erro! ${err}`}, {status: 500})
     }
-    
 
 }
