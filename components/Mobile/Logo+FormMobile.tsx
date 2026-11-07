@@ -89,7 +89,7 @@ export default function MobileLogoInput({
         max-[431px]:flex-col max-[431px]:gap-2"
         onSubmit={handleSubmit}
       >
-        {/*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */}
+        
         <div
           className="flex min-w-0 gap-5 items-center w-[50%]
         max-[431px]:hidden"
@@ -115,7 +115,6 @@ export default function MobileLogoInput({
           </button>
         </div>
 
-        {/*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */}
         <input
           type="text"
           aria-label="Search media"
@@ -151,7 +150,6 @@ export default function MobileLogoInput({
           />
         </div>
 
-        {/*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */}
         <div
           className="flex flex-1 min-w-0 items-center justify-between gap-2
         max-[431px]:hidden"
