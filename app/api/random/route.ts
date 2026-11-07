@@ -13,15 +13,15 @@ export async function POST(req: Request) {
     try {
         const body: unknown = await req.json();
         if (typeof body !== "object" || body === null || Array.isArray(body)) {
-            return NextResponse.json({ message: "Corpo da solicitação inválido." }, { status: 400 });
+            return NextResponse.json({ message: "Invalid request body." }, { status: 400 });
         }
         const { type, NSFW, style } = body as Record<string, unknown>;
         if ((type !== "anime" && type !== "manga") || typeof NSFW !== "boolean"
             || (style !== "simple" && style !== "detailed")) {
-            return NextResponse.json({ message: "Parâmetros de conteúdo aleatório inválidos." }, { status: 400 });
+            return NextResponse.json({ message: "Invalid random item parameters." }, { status: 400 });
         }
         if (isRateLimited(req, "random", 10)) {
-            return NextResponse.json({ message: "Muitas solicitações. Tente novamente em um minuto." }, {
+            return NextResponse.json({ message: "Too many requests. Try again in one minute." }, {
                 status: 429,
                 headers: { "Retry-After": "60" },
             });
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
             case "anime": {
                 const response = await TenraiRandomAnime(NSFW);
                 if (!response?.ok) {
-                    return NextResponse.json({ message: "Não foi possível buscar um anime aleatório." }, { status: 502 });
+                    return NextResponse.json({ message: "Unable to load a random anime." }, { status: 502 });
                 }
 
                 const data = await response.json();
@@ -80,7 +80,7 @@ export async function POST(req: Request) {
             case "manga": {
                 const response = await TenraiRandomManga(NSFW);
                 if (!response?.ok) {
-                    return NextResponse.json({ message: "Não foi possível buscar um mangá aleatório." }, { status: 502 });
+                    return NextResponse.json({ message: "Unable to load a random manga." }, { status: 502 });
                 }
 
                 const data = await response.json();
@@ -127,12 +127,12 @@ export async function POST(req: Request) {
         console.error("Random media request failed:", err);
 
         if (err instanceof SyntaxError) {
-            return NextResponse.json({ message: "O corpo da solicitação não contém JSON válido." }, { status: 400 });
+            return NextResponse.json({ message: "Request body is not valid JSON." }, { status: 400 });
         }
 
         return NextResponse.json(
             {
-                message: "Não foi possível buscar conteúdo aleatório no momento.",
+                message: "Unable to load a random item right now.",
             },
             {
                 status: 500,
