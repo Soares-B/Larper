@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint app/api/search/route.ts app/api/random/route.ts app/page.tsx components/Desktop/Logo+Form.tsx components/Desktop/Main.tsx components/Mobile/Logo+FormMobile.tsx components/Mobile/MainMobile.tsx lib/Steam.ts lib/TMDB.ts lib/Tenrai.ts lib/rateLimit.ts lib/readJsonResponse.ts types/media.ts utils/Restructure.ts tests/api-validation.spec.ts playwright.config.ts components/MediaTypeSwitcher.tsx",
+    "lint": "eslint app/api/search/route.ts app/api/random/route.ts app/page.tsx components/Desktop/Logo+Form.tsx components/Desktop/Main.tsx components/Mobile/Logo+FormMobile.tsx components/Mobile/MainMobile.tsx lib/Steam.ts lib/TMDB.ts lib/Tenrai.ts lib/rateLimit.ts lib/readJsonResponse.ts types/media.ts utils/Restructure.ts tests/api-validation.spec.ts playwright.config.ts",
     "test": "playwright test"
   },
   "dependencies": {
