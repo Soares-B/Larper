@@ -1,3 +1,4 @@
+import { readJsonResponse } from "@/lib/readJsonResponse";
 import { NextResponse } from "next/server";
 
 const steamKey = process.env.SteamKey;
@@ -27,7 +28,7 @@ export default async function Steam(query: string){
     try{
         const response = await fetch(url);
         if (!response.ok) throw new Error('Steam search request failed');
-        const data = await response.json();
+        const data = await readJsonResponse(response);
         const game = data.items?.[0];
         if (!game?.id) return null;
         const id = game.id
@@ -36,20 +37,26 @@ export default async function Steam(query: string){
 
         const responseDetails = await fetch(urlDetails);
         if (!responseDetails.ok) throw new Error('Steam details request failed');
-        const dataDetails = await responseDetails.json();
+        const dataDetails = await readJsonResponse(responseDetails);
         const info = dataDetails[id]?.data;
         if (!info) return null;
+        const reviewSummary = dataReview?.query_summary ?? dataReview?.response?.query_summary;
+        const totalReviews = Number(reviewSummary?.total_reviews);
+        const totalPositive = Number(reviewSummary?.total_positive);
+        info.steam_rating = totalReviews > 0 && Number.isFinite(totalPositive)
+            ? Number(((totalPositive / totalReviews) * 10).toFixed(1))
+            : null;
 
         const urlReview = `https://api.steampowered.com/IUserReviewsService/GetAppReviews/v1/?appid=${id}&filter=1&num_per_page=10`;
 
         const responseReview = await fetch(urlReview);
-        const dataReview = responseReview.ok ? await responseReview.json() : null;
+        const dataReview = responseReview.ok ? await readJsonResponse(responseReview) : null;
         const infoReview = dataReview?.response?.reviews?.[0] ?? null;
 
         if (infoReview && steamKey && infoReview.author?.steamid) {
             const urlUser = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${encodeURIComponent(steamKey)}&steamids=${encodeURIComponent(infoReview.author.steamid)}`;
             const responseUser = await fetch(urlUser);
-            const dataUser = responseUser.ok ? await responseUser.json() : null;
+            const dataUser = responseUser.ok ? await readJsonResponse(responseUser) : null;
             const infoUser = dataUser?.response?.players?.[0];
             infoReview.user = infoUser?.personaname ?? null;
             infoReview.avatar = infoUser?.avatarfull ?? null;
