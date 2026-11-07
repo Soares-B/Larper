@@ -155,6 +155,7 @@ export default function Home() {
             setMedia={setMedia}
             setCurrent={setCurrent}
           />
+          <MediaTypeSwitcher media={media} current={current} setCurrent={setCurrent} />
 
           {media && media.length > 2 ? <><div className="flex flex-row flex-1 min-h-10 gap-5 items-center justify-center w-full mb-2">
             <button
@@ -213,7 +214,6 @@ export default function Home() {
 
 
 
-        {/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
         <div
           key="desktop"
           className="hidden min-[769px]:flex w-full h-full flex-col"
@@ -228,6 +228,7 @@ export default function Home() {
             setMedia={setMedia}
             setCurrent={setCurrent}
           />
+          <MediaTypeSwitcher media={media} current={current} setCurrent={setCurrent} />
 
           {media && media.length > 2 ? (
             <div className="w-full h-full flex items-center justify-center gap-5">
