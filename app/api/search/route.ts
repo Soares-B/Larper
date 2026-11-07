@@ -7,40 +7,13 @@ import { TMDBMovie, TMDBSerie } from "@/lib/TMDB";
 import Deezer from "@/lib/Deezer";
 import Restructure from "@/utils/Restructure";
 import RestructureDetails from "@/utils/RestructureDetails";
+import { isRateLimited } from "@/lib/rateLimit";
 
 type FullSearch = [string[], ...any[]];
 
 const allowedFilters = ["anime", "manga", "game", "book", "serie", "movie", "music"] as const;
-const rateLimitWindowMs = 60_000;
-const rateLimitMaxRequests = 30;
-const rateLimitStore = globalThis as typeof globalThis & {
-    __larperSearchRateLimit?: Map<string, { count: number; resetAt: number }>;
-};
-
 function isRecord(value: unknown): value is Record<string, unknown> {
     return typeof value === "object" && value !== null && !Array.isArray(value);
-}
-
-function isRateLimited(req: Request) {
-    const forwardedFor = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-    const clientIp = req.headers.get("x-real-ip")?.trim() || forwardedFor || "unknown";
-    if (clientIp === "unknown") return false;
-    const now = Date.now();
-    const store = rateLimitStore.__larperSearchRateLimit ??= new Map();
-    if (store.size > 1_000) {
-        for (const [key, entry] of store) {
-            if (entry.resetAt <= now) store.delete(key);
-        }
-    }
-    const current = store.get(clientIp);
-
-    if (!current || current.resetAt <= now) {
-        store.set(clientIp, { count: 1, resetAt: now + rateLimitWindowMs });
-        return false;
-    }
-
-    current.count += 1;
-    return current.count > rateLimitMaxRequests;
 }
 
 export async function POST(req: Request) {
@@ -63,7 +36,7 @@ export async function POST(req: Request) {
         if (type !== "simple" && type !== "detailed") {
             return NextResponse.json({ message: "Tipo de pesquisa inválido." }, { status: 400 });
         }
-        if (isRateLimited(req)) {
+        if (isRateLimited(req, "search", 30)) {
             return NextResponse.json({ message: "Muitas pesquisas. Tente novamente em um minuto." }, {
                 status: 429,
                 headers: { "Retry-After": "60" },
