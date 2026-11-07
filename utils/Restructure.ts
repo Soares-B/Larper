@@ -391,7 +391,7 @@ class Game{
             this.background = obj.info.header_image ?? null
             this.genres = obj.info.genres?.map(g => g.description) ?? null;
             this.platforms = Object.entries(obj.info.platforms ?? {}).filter(([_, available]) => available).map(([platform]) => platform);
-            this.rating = obj.info.recommendations ? (obj.info.recommendations.total) : null;
+            this.rating = obj.info.steam_rating ?? null;
             this.date = obj.info.release_date?.coming_soon
                         ? 'Coming soon'
                         : obj.info.release_date?.date ?? null;
@@ -506,8 +506,8 @@ class TMDB{
 
     constructor(obj: TMDBShape, style: string){
         this.description = obj.info.overview ? textShortener(obj.info.overview, style, 'description') : null;
-        this.cover = `https://image.tmdb.org/t/p/w500${obj.info.poster_path}`;
-        this.background = `https://image.tmdb.org/t/p/w500${obj.info.backdrop_path}`;
+        this.cover = obj.info.poster_path ? `https://image.tmdb.org/t/p/w500${obj.info.poster_path}` : null;
+        this.background = obj.info.backdrop_path ? `https://image.tmdb.org/t/p/w500${obj.info.backdrop_path}` : null;
         this.id = obj.info.id;
         this.rating = typeof obj.info.vote_average === 'number' && Number.isFinite(obj.info.vote_average)
             ? Number(obj.info.vote_average.toFixed(2))
