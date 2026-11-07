@@ -4,6 +4,35 @@ import { NextResponse } from "next/server";
 const animeUrl = "https://api.tenrai.org/v1/anime";
 const mangaUrl = "https://api.tenrai.org/v1/manga";
 
+const tenraiRequestIntervalMs = 300;
+
+type TenraiRequestState = typeof globalThis & {
+    __larperTenraiQueue?: Promise<void>;
+    __larperTenraiLastRequestAt?: number;
+};
+
+async function fetchTenrai(input: string, init: RequestInit) {
+    const state = globalThis as TenraiRequestState;
+    const previousRequest = state.__larperTenraiQueue ?? Promise.resolve();
+    let releaseRequest: () => void = () => {};
+    state.__larperTenraiQueue = new Promise<void>(resolve => {
+        releaseRequest = resolve;
+    });
+
+    await previousRequest;
+
+    const elapsed = Date.now() - (state.__larperTenraiLastRequestAt ?? 0);
+    const wait = Math.max(0, tenraiRequestIntervalMs - elapsed);
+    if (wait > 0) {
+        await new Promise(resolve => setTimeout(resolve, wait));
+    }
+
+    state.__larperTenraiLastRequestAt = Date.now();
+    releaseRequest();
+
+    return fetch(input, init);
+}
+
 type authors = {
     name: string | null,
     url: string | null,
@@ -11,7 +40,7 @@ type authors = {
 
 export async function TenraiAnime(query: string) {
     try {
-        const response = await fetch(
+        const response = await fetchTenrai(
             `${animeUrl}?q=${encodeURIComponent(query)}`,
             {
                 cache: "no-store",
@@ -25,7 +54,7 @@ export async function TenraiAnime(query: string) {
             return null;
         }
 
-        const responseReview = await fetch(
+        const responseReview = await fetchTenrai(
             `${animeUrl}/${info.mal_id}/reviews`,
             {
                 cache: "no-store",
@@ -35,7 +64,7 @@ export async function TenraiAnime(query: string) {
         const dataReview = await readJsonResponse(responseReview);
         const infoReview = dataReview.data?.[0] ?? null;
 
-        const responseFull = await fetch(
+        const responseFull = await fetchTenrai(
             `${animeUrl}/${info.mal_id}/full`,
             {
                 cache: "no-store",
@@ -45,7 +74,7 @@ export async function TenraiAnime(query: string) {
         const dataFull = await readJsonResponse(responseFull);
         const infoFull = dataFull.data ?? null;
 
-        const responseRecoms = await fetch(
+        const responseRecoms = await fetchTenrai(
             `${animeUrl}/${info.mal_id}/recommendations`,
             {
                 cache: "no-store",
@@ -77,7 +106,7 @@ export async function TenraiAnime(query: string) {
 
 export async function TenraiManga(query: string) {
     try {
-        const response = await fetch(
+        const response = await fetchTenrai(
             `${mangaUrl}?q=${encodeURIComponent(query)}`,
             {
                 cache: "no-store",
@@ -91,7 +120,7 @@ export async function TenraiManga(query: string) {
             return null;
         }
 
-        const responseReview = await fetch(
+        const responseReview = await fetchTenrai(
             `${mangaUrl}/${info.mal_id}/reviews`,
             {
                 cache: "no-store",
@@ -101,7 +130,7 @@ export async function TenraiManga(query: string) {
         const dataReview = await readJsonResponse(responseReview);
         const infoReview = dataReview.data?.[0] ?? null;
 
-        const responseFull = await fetch(
+        const responseFull = await fetchTenrai(
             `${mangaUrl}/${info.mal_id}/full`,
             {
                 cache: "no-store",
@@ -115,7 +144,7 @@ export async function TenraiManga(query: string) {
             infoFull.authors = Author(infoFull.authors ?? []);
         }
 
-        const responseRecoms = await fetch(
+        const responseRecoms = await fetchTenrai(
             `${mangaUrl}/${info.mal_id}/recommendations`,
             {
                 cache: "no-store",
@@ -147,7 +176,7 @@ export async function TenraiManga(query: string) {
 
 export async function TenraiRandomAnime(NSFW: boolean) {
     try {
-        const response = await fetch(
+        const response = await fetchTenrai(
             `https://api.tenrai.org/v1/random/anime${NSFW ? '' : '?sfw-strict='}`,
             {
                 cache: "no-store",
@@ -158,7 +187,7 @@ export async function TenraiRandomAnime(NSFW: boolean) {
         const info = data.data;
         if (!info?.mal_id) return null;
 
-        const responseReview = await fetch(
+        const responseReview = await fetchTenrai(
             `${animeUrl}/${info.mal_id}/reviews`,
             {
                 cache: "no-store",
@@ -168,7 +197,7 @@ export async function TenraiRandomAnime(NSFW: boolean) {
         const dataReview = await readJsonResponse(responseReview);
         const infoReview = dataReview.data?.[0] ?? null;
 
-        const responseFull = await fetch(
+        const responseFull = await fetchTenrai(
             `${animeUrl}/${info.mal_id}/full`,
             {
                 cache: "no-store",
@@ -178,7 +207,7 @@ export async function TenraiRandomAnime(NSFW: boolean) {
         const dataFull = await readJsonResponse(responseFull);
         const infoFull = dataFull.data ?? null;
 
-        const responseRecoms = await fetch(
+        const responseRecoms = await fetchTenrai(
             `${animeUrl}/${info.mal_id}/recommendations`,
             {
                 cache: "no-store",
@@ -210,7 +239,7 @@ export async function TenraiRandomAnime(NSFW: boolean) {
 
 export async function TenraiRandomManga(NSFW: boolean) {
     try {
-        const response = await fetch(
+        const response = await fetchTenrai(
             `https://api.tenrai.org/v1/random/manga${NSFW ? '' : '?sfw-strict='}`,
             {
                 cache: "no-store",
@@ -221,7 +250,7 @@ export async function TenraiRandomManga(NSFW: boolean) {
         const info = data.data;
         if (!info?.mal_id) return null;
 
-        const responseReview = await fetch(
+        const responseReview = await fetchTenrai(
             `${mangaUrl}/${info.mal_id}/reviews`,
             {
                 cache: "no-store",
@@ -231,7 +260,7 @@ export async function TenraiRandomManga(NSFW: boolean) {
         const dataReview = await readJsonResponse(responseReview);
         const infoReview = dataReview.data?.[0] ?? null;
 
-        const responseFull = await fetch(
+        const responseFull = await fetchTenrai(
             `${mangaUrl}/${info.mal_id}/full`,
             {
                 cache: "no-store",
@@ -245,7 +274,7 @@ export async function TenraiRandomManga(NSFW: boolean) {
             infoFull.authors = Author(infoFull.authors ?? []);
         }
 
-        const responseRecoms = await fetch(
+        const responseRecoms = await fetchTenrai(
             `${mangaUrl}/${info.mal_id}/recommendations`,
             {
                 cache: "no-store",
