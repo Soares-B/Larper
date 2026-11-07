@@ -58,9 +58,6 @@ export async function POST(req: Request) {
 
         const fullSearch: FullSearch = [[]];
 
-        /*
-         * ANIME
-         */
         if (filters.anime) {
             searchVar = await TenraiAnime(normalizedQuery);
 
@@ -86,9 +83,6 @@ export async function POST(req: Request) {
             }
         }
 
-        /*
-         * MANGA
-         */
         if (filters.manga) {
             searchVar = await TenraiManga(normalizedQuery);
 
@@ -114,9 +108,6 @@ export async function POST(req: Request) {
             }
         }
 
-        /*
-         * GAME
-         */
         if (filters.game) {
             searchVar = await IGDB(normalizedQuery);
 
@@ -146,9 +137,6 @@ export async function POST(req: Request) {
             }
         }
 
-        /*
-         * BOOK
-         */
         if (filters.book) {
             searchVar = await GoogleBooks(normalizedQuery);
 
@@ -165,7 +153,6 @@ export async function POST(req: Request) {
                     restructure = null
                 }
 
-
                 book = restructure ?? null;
             }
 
@@ -175,9 +162,6 @@ export async function POST(req: Request) {
             }
         }
 
-        /*
-         * SERIE
-         */
         if (filters.serie) {
             searchVar = await TMDBSerie(normalizedQuery);
 
@@ -203,9 +187,6 @@ export async function POST(req: Request) {
             }
         }
 
-        /*
-         * MOVIE
-         */
         if (filters.movie) {
             searchVar = await TMDBMovie(normalizedQuery);
 
@@ -231,9 +212,6 @@ export async function POST(req: Request) {
             }
         }
 
-        /*
-         * MUSIC
-         */
         if (filters.music) {
             searchVar = await Deezer(normalizedQuery);
 
