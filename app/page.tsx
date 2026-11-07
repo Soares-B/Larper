@@ -188,7 +188,6 @@ export default function Home() {
                 />
               </button>
 
-              {/*---------------------------- */}
 
               <div className="min-[431px]:hidden flex flex-1 gap-5">
                 <button
@@ -222,7 +221,6 @@ export default function Home() {
                 mediaAmount={false}
               />
 
-              {/*---------------------------- */}
 
               <button
                 className="w-16 aspect-square bg-white/33 backdrop-blur-xl border-1 border-white/33 focus:outline-none mr-3 rounded-full flex justify-center items-center
@@ -251,7 +249,6 @@ export default function Home() {
           )}
         </div>
 
-        {/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
         <div
           className="hidden min-[769px]:flex w-full h-full min-h-0
         flex-col"
