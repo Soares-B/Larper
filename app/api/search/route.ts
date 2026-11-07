@@ -20,24 +20,24 @@ export async function POST(req: Request) {
     try {
         const body: unknown = await req.json();
         if (!isRecord(body)) {
-            return NextResponse.json({ message: "Corpo da pesquisa inválido." }, { status: 400 });
+            return NextResponse.json({ message: "Invalid search request body." }, { status: 400 });
         }
 
         const { query, filters, type } = body;
         if (typeof query !== "string" || !query.trim() || query.trim().length > 100) {
-            return NextResponse.json({ message: "A pesquisa deve ter entre 1 e 100 caracteres." }, { status: 400 });
+            return NextResponse.json({ message: "Search text must contain between 1 and 100 characters." }, { status: 400 });
         }
         if (!isRecord(filters)
             || Object.keys(filters).length === 0
             || Object.keys(filters).some(key => !allowedFilters.includes(key as typeof allowedFilters[number]) || typeof filters[key] !== "boolean")
             || !Object.values(filters).some(value => value === true)) {
-            return NextResponse.json({ message: "Filtros da pesquisa inválidos." }, { status: 400 });
+            return NextResponse.json({ message: "Invalid search filters." }, { status: 400 });
         }
         if (type !== "simple" && type !== "detailed") {
-            return NextResponse.json({ message: "Tipo de pesquisa inválido." }, { status: 400 });
+            return NextResponse.json({ message: "Invalid search type." }, { status: 400 });
         }
         if (isRateLimited(req, "search", 30)) {
-            return NextResponse.json({ message: "Muitas pesquisas. Tente novamente em um minuto." }, {
+            return NextResponse.json({ message: "Too many searches. Try again in one minute." }, {
                 status: 429,
                 headers: { "Retry-After": "60" },
             });
@@ -264,12 +264,12 @@ export async function POST(req: Request) {
         console.error("Search request failed:", err);
 
         if (err instanceof SyntaxError) {
-            return NextResponse.json({ message: "O corpo da pesquisa não contém JSON válido." }, { status: 400 });
+            return NextResponse.json({ message: "Search request body is not valid JSON." }, { status: 400 });
         }
 
         return NextResponse.json(
             {
-                message: "Não foi possível concluir a pesquisa no momento.",
+                message: "Unable to complete the search right now.",
             },
             {
                 status: 500,
