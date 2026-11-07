@@ -39,7 +39,7 @@ export default function MobileMain({
       {results && (
         <>
           <div className="flex flex-col w-full h-full items-start">
-            {/*----------------------------------------------------------------------------------------------------------------------------------*/}
+            
             <div
               className="flex flex-row w-full mb-3
             max-[641px]:mb-0"
@@ -66,13 +66,12 @@ export default function MobileMain({
                 )}
               </Link>
 
-              {/*----------------------------------------------------------------------------------------------------------------------------------*/}
 
               <div
                 className="w-full pr-5 mt-5 ml-3 flex flex-col h-full w-full min-w-0
               max-[641px]:max-h-[200px]"
               >
-                {/* --- */}
+                
                 <p
                   className="text-xl
                 max-[641px]:text-lg
@@ -82,7 +81,7 @@ export default function MobileMain({
                 >
                   {results.name}
                 </p>
-                {/* --- */}
+                
                 <p
                   className={`${theme === "dark" ? "text-[var(--middleTone)]" : "text-[var(--middleToneLight)]"} text-lg
                   max-[641px]:text-base
@@ -92,7 +91,7 @@ export default function MobileMain({
                 >
                   {results.subname}
                 </p>
-                {/* --- */}
+                
                 <div
                   className="flex flex-col flex-1 min-h-0 justify-between items-center
                 max-[376px]:justify-start
@@ -109,7 +108,6 @@ export default function MobileMain({
                     {results.description}
                   </p>
 
-                  {/* --- */}
                   <div
                     className="flex h-20 w-full items-center justify-center m-1
                   max-[641px]:scale-80 max-[641px]:max-h-[200px]
@@ -138,7 +136,6 @@ export default function MobileMain({
                         </div>
                       )}
 
-                    {/*----------------------------------------------------------------------------------------------------------------------------------*/}
                     <div className="flex items-end gap-2 justify-center ml-5">
                       <button
                         className="size-7 rounded-full"
@@ -180,13 +177,12 @@ export default function MobileMain({
               </div>
             </div>
 
-            {/*----------------------------------------------------------------------------------------------------------------------------------*/}
 
             <div
               className={`w-full flex-1 grid ${results.type !== "music" ? "grid-cols-2 grid-rows-2" : "grid-cols-2 grid-rows-1"} items-center justify-items-center gap-1 mt-1
           `}
             >
-              {/*----------------------------------------------------------------------------------------------------------------------------------*/}
+              
               {results.type !== "music" ? (
                 <>
                   <div
@@ -251,7 +247,6 @@ export default function MobileMain({
                     </p>
                   </div>
 
-                  {/*----------------------------------------------------------------------------------------------------------------------------------*/}
                   <div
                     className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} rounded-[10px] row-1 col-2 h-[80%] w-[80%] relative min-h-[100px]
               max-[641px]:min-h-[50px]
@@ -294,7 +289,6 @@ export default function MobileMain({
                     </p>
                   </div>
 
-                  {/*----------------------------------------------------------------------------------------------------------------------------------*/}
                   <div
                     className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} rounded-[10px] row-2 col-1 h-[80%] w-[80%] relative min-h-[100px] overflow-y-auto scrollbar-thin ${theme === "dark" ? "scrollbar-track-[var(--middleDownTone)]" : "scrollbar-track-[var(--middleUpperTone)]"} ${theme === "dark" ? "scrollbar-thumb-[var(--middleTone)]" : "scrollbar-thumb-[var(--middleToneLight)]"}
               max-[641px]:min-h-[50px]
@@ -332,7 +326,6 @@ export default function MobileMain({
                     </p>
                   </div>
 
-                  {/*----------------------------------------------------------------------------------------------------------------------------------*/}
                   <div
                     className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} rounded-[10px] row-2 col-2 h-[80%] w-[80%] relative min-h-[100px]
               max-[641px]:min-h-[50px]
@@ -416,7 +409,6 @@ export default function MobileMain({
               )}
             </div>
 
-            {/*----------------------------------------------------------------------------------------------------------------------------------*/}
             <div
               key="review"
               className="w-full flex items-center flex-1 min-h-0 justify-cente
@@ -442,7 +434,6 @@ export default function MobileMain({
                       ></Link>
                     </div>
 
-                    {/*----------------------------------------------------------------------------------------------------------------------------------*/}
                     <p
                       className="text-lg absolute mb-2 ml-2 pr-3 text-justify
                     max-[641px]:text-base
@@ -454,7 +445,6 @@ export default function MobileMain({
                         : "No data :‹"}
                     </p>
 
-                    {/*----------------------------------------------------------------------------------------------------------------------------------*/}
                     <div
                       className="absolute bottom-0 right-0 mr-7 flex gap-2 w-fit mb-1 scale-110
                     max-[641px]:scale-90 max-[641px]:mr-0
