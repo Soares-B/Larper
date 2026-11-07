@@ -48,18 +48,18 @@ export default function DesktopLogoInput({
       if (!response.ok) {
         const message = typeof data === "object" && data !== null && "message" in data
           ? String(data.message)
-          : "Não foi possível concluir a pesquisa.";
+          : "Unable to complete the search.";
         throw new Error(message);
       }
       if (!Array.isArray(data) || !Array.isArray(data[0])) {
-        throw new Error("A resposta da pesquisa é inválida.");
+        throw new Error("The search response is invalid.");
       }
 
       setMedia(data as SearchData);
       setCurrent(1);
       setOpenField(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Não foi possível concluir a pesquisa.");
+      setError(err instanceof Error ? err.message : "Unable to complete the search.");
     } finally {
       setLoading(false);
     }
@@ -93,7 +93,7 @@ export default function DesktopLogoInput({
       >
         <input
           type="text"
-          aria-label="Pesquisar mídia"
+          aria-label="Search media"
           className={`w-[50%] p-2 rounded-[5px] text-lg ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} focus:outline-none ${theme === "dark" ? "hover:bg-[var(--backgroundHover)]" : theme === "light" ? "hover:bg-[var(--backgroundLightHover)]" : "hover:bg-[var(--backgroundGlassHover)]"} hover:outline-1`}
           onChange={(e) => setInput(e.target.value)}
         />
@@ -102,7 +102,7 @@ export default function DesktopLogoInput({
           disabled={loading || !input.trim()}
           className={` w-fit h-fit p-2 rounded-[5px] ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} pl-3 pr-3 focus:outline-none ${theme === "dark" ? "hover:bg-[var(--backgroundHover)]" : theme === "light" ? "hover:bg-[var(--backgroundLightHover)]" : "hover:bg-[var(--backgroundGlassHover)]"} hover:outline-1 select-none`}
         >
-          {loading ? "Buscando..." : "Submit"}
+          {loading ? "Searching..." : "Submit"}
         </button>
 
         {error && <span role="alert" className="text-red-400">{error}</span>}
