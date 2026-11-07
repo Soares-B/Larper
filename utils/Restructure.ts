@@ -602,7 +602,7 @@ class Music{
 
         this.name = obj.info.title;
         this.preview = obj.info.preview ? obj.info.preview : null;
-        this.cover = `https://e-cdns-images.dzcdn.net/images/cover/${obj.info.md5_image}/750x750.jpg`
+        this.cover = obj.info.md5_image ? `https://e-cdns-images.dzcdn.net/images/cover/${obj.info.md5_image}/750x750.jpg` : null
         this.background = this.cover
         this.link = obj.info.link
         this.favorite = false;
