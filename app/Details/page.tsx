@@ -8,7 +8,6 @@ import DesktopMainDetails from "@/components/Desktop/MainDetails";
 
 import MobileLogoInputDetails from "@/components/Mobile/Logo+FormMobileDetails";
 import MobileMainDetails from "@/components/Mobile/MainMobileDetails";
-import MediaTypeSwitcher from "@/components/MediaTypeSwitcher";
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
@@ -59,7 +58,7 @@ export default function Home() {
   }, []);
 
   function handleClick(arrow: string) {
-    if (!media || media.length <= 1) {
+    if (!media || media[0].length <= 1) {
       return;
     }
 
@@ -155,9 +154,7 @@ export default function Home() {
             setMedia={setMedia}
             setCurrent={setCurrent}
           />
-          <MediaTypeSwitcher media={media} current={current} setCurrent={setCurrent} filters={filters} />
-
-          {media && media.length > 2 ? <><div className="flex flex-row flex-1 min-h-10 gap-5 items-center justify-center w-full mb-2">
+          {media && media[0].length > 1 ? <><div className="flex flex-row flex-1 min-h-10 gap-5 items-center justify-center w-full mb-2">
             <button
                 className="w-10 aspect-square bg-white/33 backdrop-blur-xl border-1 border-white/33 ml-15 rounded-full flex justify-center items-center hover:cursor-pointer"
                 onClick={() => handleClick("left")}
@@ -228,9 +225,7 @@ export default function Home() {
             setMedia={setMedia}
             setCurrent={setCurrent}
           />
-          <MediaTypeSwitcher media={media} current={current} setCurrent={setCurrent} filters={filters} />
-
-          {media && media.length > 2 ? (
+            {media && media[0].length > 1 ? (
             <div className="w-full h-full flex items-center justify-center gap-5">
               <button
                 className="size-15 bg-white/33 backdrop-blur-xl border-1 border-white/33 ml-15 rounded-full flex justify-center items-center hover:cursor-pointer
