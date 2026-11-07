@@ -40,18 +40,18 @@ export default async function Steam(query: string){
         const dataDetails = await readJsonResponse(responseDetails);
         const info = dataDetails[id]?.data;
         if (!info) return null;
-        const reviewSummary = dataReview?.query_summary ?? dataReview?.response?.query_summary;
-        const totalReviews = Number(reviewSummary?.total_reviews);
-        const totalPositive = Number(reviewSummary?.total_positive);
-        info.steam_rating = totalReviews > 0 && Number.isFinite(totalPositive)
-            ? Number(((totalPositive / totalReviews) * 10).toFixed(1))
-            : null;
 
         const urlReview = `https://api.steampowered.com/IUserReviewsService/GetAppReviews/v1/?appid=${id}&filter=1&num_per_page=10`;
 
         const responseReview = await fetch(urlReview);
         const dataReview = responseReview.ok ? await readJsonResponse(responseReview) : null;
         const infoReview = dataReview?.response?.reviews?.[0] ?? null;
+        const reviewSummary = dataReview?.query_summary ?? dataReview?.response?.query_summary;
+        const totalReviews = Number(reviewSummary?.total_reviews);
+        const totalPositive = Number(reviewSummary?.total_positive);
+        info.steam_rating = totalReviews > 0 && Number.isFinite(totalPositive)
+            ? Number(((totalPositive / totalReviews) * 10).toFixed(1))
+            : null;
 
         if (infoReview && steamKey && infoReview.author?.steamid) {
             const urlUser = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${encodeURIComponent(steamKey)}&steamids=${encodeURIComponent(infoReview.author.steamid)}`;
