@@ -216,6 +216,7 @@ export default function Home() {
                 NSFW={NSFW}
                 setNSFW={setNSFW}
                 random={random}
+                randomLoading={randomLoading}
                 favorites={favorites}
                 toggleFavorite={toggleFavorite}
                 mediaAmount={false}
@@ -297,6 +298,8 @@ export default function Home() {
                   NSFW={NSFW}
                   setNSFW={setNSFW}
                   random={random}
+                  randomLoading={randomLoading}
+                randomLoading={randomLoading}
                   favorites={favorites}
                   toggleFavorite={toggleFavorite}
                   mediaAmount={media.length > 2}
@@ -330,6 +333,8 @@ export default function Home() {
                   NSFW={NSFW}
                   setNSFW={setNSFW}
                   random={random}
+                  randomLoading={randomLoading}
+                randomLoading={randomLoading}
                   favorites={favorites}
                   toggleFavorite={toggleFavorite}
                   mediaAmount={false}
