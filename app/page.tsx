@@ -171,7 +171,7 @@ export default function Home() {
             setMedia={setMedia}
             setCurrent={setCurrent}
           />
-          <MediaTypeSwitcher media={media} current={current} setCurrent={setCurrent} />
+          <MediaTypeSwitcher media={media} current={current} setCurrent={setCurrent} filters={filters} />
 
           {media && media.length > 2 ? (
             <div
@@ -268,7 +268,7 @@ export default function Home() {
             setMedia={setMedia}
             setCurrent={setCurrent}
           />
-          <MediaTypeSwitcher media={media} current={current} setCurrent={setCurrent} />
+        <MediaTypeSwitcher media={media} current={current} setCurrent={setCurrent} filters={filters} />
 
           <div className="flex-1 min-h-0 w-full">
             {media && media.length > 2 ? (
