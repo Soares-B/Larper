@@ -644,28 +644,31 @@ function textShortener(desc: string | null, style: string, review: string) {
   return text.slice(0, lastPeriod + 1);
 }
 
-export default function Restructure(media: any, type: string, style: string){
+type MediaKind = "anime" | "manga" | "game" | "book" | "serie" | "movie" | "music";
+type DisplayStyle = "simple" | "detailed";
+
+export default function Restructure(media: unknown, type: MediaKind, style: DisplayStyle){
     switch(type){
         case 'anime': {
-            return new Anime(media, style)
+            return new Anime(media as AnimeShape, style)
         }
         case 'manga': {
-            return new Manga(media, style)
+            return new Manga(media as MangaShape, style)
         }
         case 'game': {
-            return new Game(media, style)
+            return new Game(media as IGDBShape | SteamShape, style)
         }
         case 'book': {
-            return new Book(media, style)
+            return new Book(media as BookShape, style)
         }
         case 'serie': {
-            return new Serie(media, style)
+            return new Serie(media as SerieShape, style)
         }
         case 'movie': {
-            return new Movie(media, style)
+            return new Movie(media as MovieShape, style)
         }
         case 'music': {
-            return new Music(media)
+            return new Music(media as MusicShape)
         }
     }
 }
