@@ -8,7 +8,6 @@ import DesktopMain from "@/components/Desktop/Main";
 
 import MobileLogoInput from "@/components/Mobile/Logo+FormMobile";
 import MobileMain from "@/components/Mobile/MainMobile";
-import MediaTypeSwitcher from "@/components/MediaTypeSwitcher";
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
@@ -64,7 +63,7 @@ export default function Home() {
   const results = (media?.[current] as MediaResult | undefined) ?? null;
 
   function handleClick(arrow: string) {
-    if (!media || media.length <= 1) {
+    if (!media || media[0].length <= 1) {
       return;
     }
 
@@ -171,9 +170,7 @@ export default function Home() {
             setMedia={setMedia}
             setCurrent={setCurrent}
           />
-          <MediaTypeSwitcher media={media} current={current} setCurrent={setCurrent} filters={filters} />
-
-          {media && media.length > 2 ? (
+          {media && media[0].length > 1 ? (
             <div
               className="flex flex-row flex-1 min-h-0 items-center mt-3 gap-5
           max-[641px]:gap-3
@@ -268,10 +265,8 @@ export default function Home() {
             setMedia={setMedia}
             setCurrent={setCurrent}
           />
-        <MediaTypeSwitcher media={media} current={current} setCurrent={setCurrent} filters={filters} />
-
           <div className="flex-1 min-h-0 w-full">
-            {media && media.length > 2 ? (
+            {media && media[0].length > 1 ? (
               <div
                 className="w-full h-full flex items-center justify-center gap-20
             max-[1441px]:gap-10
