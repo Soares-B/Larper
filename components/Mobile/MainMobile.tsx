@@ -14,6 +14,7 @@ export default function MobileMain({
   NSFW,
   setNSFW,
   random,
+  randomLoading,
   favorites,
   toggleFavorite,
   mediaAmount,
@@ -23,7 +24,8 @@ export default function MobileMain({
   openField: boolean;
   NSFW: boolean;
   setNSFW: any;
-  random: any;
+  random: () => Promise<void>;
+  randomLoading: boolean;
   favorites: MediaResult[];
   toggleFavorite: (media: MediaResult) => void;
   mediaAmount: boolean;
@@ -119,12 +121,14 @@ export default function MobileMain({
                         results.type === "manga") && (
                         <div className="flex items-center justify-center gap-3">
                           <button
+                        disabled={randomLoading}
+                        aria-busy={randomLoading}
                             className={`${theme === "dark" ? "bg-[var(--middleDownTone)]" : "bg-[var(--middleUpperTone)]"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} focus:outline-none ${theme === "dark" ? "hover:bg-[var(--backgroundHover)]" : theme === "light" ? "hover:bg-[var(--backgroundLightHover)]" : "hover:bg-[var(--backgroundGlassHover)]"} hover:outline-1 p-3 rounded-[5px] hover:cursor-pointer
                             max-[541px]:p-2
                             max-[431px]:scale-95`}
                             onClick={() => random()}
                           >
-                            Random {results.type}
+                            {randomLoading ? "Buscando..." : `Random ${results.type}`}
                           </button>
                           <NSFWButton
                             theme={theme}
