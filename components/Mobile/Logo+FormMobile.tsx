@@ -126,6 +126,7 @@ export default function MobileLogoInput({
         <div className="min-[431px]:hidden flex flex-row gap-2">
           <button
             type="submit"
+            disabled={loading || !input.trim()}
             className={`w-1/2 h-fit p-2 rounded-[5px]
             ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"}
             ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"}
@@ -133,7 +134,7 @@ export default function MobileLogoInput({
             hover:outline-1 h-full select-none
           `}
           >
-            Submit
+            {loading ? "Buscando..." : "Submit"}
           </button>
 
           <Details theme={theme} />
