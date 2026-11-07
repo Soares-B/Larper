@@ -473,7 +473,7 @@ class Book{
         this.authors = obj.info.authors;
         this.description = textShortener(obj.info.description, style, 'description');
         this.rating = obj.info.averageRating ? obj.info.averageRating * 2 : null;
-        this.genres = obj.info.categories?.map(genre => genre) ?? null;
+        this.genres = obj.info.categories?.map(category => category.genre) ?? null;
         this.cover = obj.info.imageLinks?.["thumbnail"];
         this.background = this.cover
         this.language = obj.info.language;
@@ -492,7 +492,7 @@ class TMDB{
     background: string | null;
     id: number;
     rating: number | null;
-    genres: any[] | null;
+    genres: (string | null)[] | null;
     tagline: string | null;
     favorite: false;
 
@@ -561,7 +561,7 @@ class Movie extends TMDB{
     subname: string | null;
     date: string | null;
     type: string;
-    runtime: String | null;
+    runtime: string | null;
     link: string | null;
 
 
