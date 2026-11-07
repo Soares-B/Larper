@@ -22,6 +22,8 @@ export default function Home() {
   const [media, setMedia] = useState<SearchData | null>(null);
   const [current, setCurrent] = useState(1);
   const [spoiler, setSpoiler] = useState(false);
+  const [randomLoading, setRandomLoading] = useState(false);
+  const [randomError, setRandomError] = useState<string | null>(null);
 
   const [filters, setFilters] = useState<Filters>({
     anime: true,
@@ -78,26 +80,36 @@ export default function Home() {
   }
 
   async function random() {
-    if (!results) return;
+    if (!results || randomLoading) return;
 
-    const response = await fetch("/api/random", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        type: results.type,
-        NSFW: NSFW,
-        style: "simple",
-      }),
-    });
+    setRandomLoading(true);
+    setRandomError(null);
+    try {
+      const response = await fetch("/api/random", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: results.type, NSFW, style: "simple" }),
+      });
+      const data: unknown = await response.json().catch(() => null);
+      if (!response.ok) {
+        const message = typeof data === "object" && data !== null && "message" in data
+          ? String(data.message)
+          : "Não foi possível buscar conteúdo aleatório.";
+        throw new Error(message);
+      }
+      if (typeof data !== "object" || data === null || !("fullSearch" in data)
+        || !Array.isArray(data.fullSearch)) {
+        throw new Error("A resposta de conteúdo aleatório é inválida.");
+      }
 
-    const { fullSearch } = await response.json();
-
-    setMedia(fullSearch);
-    setCurrent(1);
-
-    setOpenField(true);
+      setMedia(data.fullSearch as SearchData);
+      setCurrent(1);
+      setOpenField(true);
+    } catch (err) {
+      setRandomError(err instanceof Error ? err.message : "Não foi possível buscar conteúdo aleatório.");
+    } finally {
+      setRandomLoading(false);
+    }
   }
 
   function toggleFavorite(media: MediaResult) {
@@ -137,6 +149,7 @@ export default function Home() {
           : undefined
       }
     >
+      {randomError && <p role="alert" className="fixed top-2 left-1/2 z-50 -translate-x-1/2 rounded bg-black/80 px-4 py-2 text-red-300">{randomError}</p>}
       <div
         key="blur"
         className={`${results && results.cover && "backdrop-blur-sm"} h-full w-full`}
