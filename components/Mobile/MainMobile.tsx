@@ -43,21 +43,25 @@ export default function MobileMain({
             max-[641px]:mb-0"
             >
               <Link
-                href={results.link}
+                href={results.link || "#"}
                 target="_blank"
                 className="ml-5 mt-5 w-fit block max-h-[300px] min-h-[100px] min-w-[200px] focus:outline-none select-none
                 max-[641px]:min-w-[100px] max-[641px]:max-h-[200px]
                 max-[376px]:min-w-[80px] max-[376px]:max-h-[200px]"
               >
-                <Image
-                  src={results.cover!}
-                  width={150}
-                  height={250}
-                  alt={results.name}
-                  className="rounded-[5px] h-auto w-auto min-w-[200px] max-h-[300px] select-none
-                    max-[641px]:min-w-[100px]
-                    max-[376px]:min-w-[80px] max-[376px]:max-h-[200px]"
-                ></Image>
+                {results.cover ? (
+                  <Image
+                    src={results.cover}
+                    width={150}
+                    height={250}
+                    alt={results.name}
+                    className="rounded-[5px] h-auto w-auto min-w-[200px] max-h-[300px] select-none
+                      max-[641px]:min-w-[100px]
+                      max-[376px]:min-w-[80px] max-[376px]:max-h-[200px]"
+                  />
+                ) : (
+                  <span className="flex min-h-[100px] min-w-[80px] items-center justify-center">Sem capa</span>
+                )}
               </Link>
 
               {/*----------------------------------------------------------------------------------------------------------------------------------*/}

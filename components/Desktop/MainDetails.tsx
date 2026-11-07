@@ -69,22 +69,26 @@ export default function DesktopMainDetails({
           max-[1367px]:min-h-0 max-[1367px]:mb-0
           ">
             <Link
-              href={results.link}
+              href={results.link || "#"}
               target="_blank"
               className="ml-5 mt-5 w-fit block max-h-[420px] min-w-[300px] max-w-[300px] focus:outline-none select-none
               max-[1367px]:max-h-[315px] max-[1367px]:min-w-[225px] max-[1367px]:max-w-[225px]
               max-[1281px]:max-h-[265px] max-[1281px]:min-w-[187px] max-[1281px]:max-w-[187px]"
             >
-              <Image
-                src={results.cover!}
-                width={300}
-                height={550}
-                alt={results.name}
-                className="rounded-[5px] h-auto w-auto min-w-[300px] max-h-[420px] max-w-[300px] select-none
-                max-[1537px]:max-h-[400px]
-                max-[1367px]:max-h-[315px] max-[1367px]:min-w-[225px] max-[1367px]:max-w-[225px]
-                max-[1281px]:max-h-[265px] max-[1281px]:min-w-[187px] max-[1281px]:max-w-[187px]"
-              ></Image>
+              {results.cover ? (
+                <Image
+                  src={results.cover}
+                  width={300}
+                  height={550}
+                  alt={results.name}
+                  className="rounded-[5px] h-auto w-auto min-w-[300px] max-h-[420px] max-w-[300px] select-none
+                  max-[1537px]:max-h-[400px]
+                  max-[1367px]:max-h-[315px] max-[1367px]:min-w-[225px] max-[1367px]:max-w-[225px]
+                  max-[1281px]:max-h-[265px] max-[1281px]:min-w-[187px] max-[1281px]:max-w-[187px]"
+                />
+              ) : (
+                <span className="flex min-h-[100px] min-w-[187px] items-center justify-center">Capa indisponível</span>
+              )}
             </Link>
 
             {/*----------------------------------------------------------------------------------------------------------------------------------*/}
@@ -435,16 +439,16 @@ export default function DesktopMainDetails({
                                   results.similar.map((s) => {
                                     return (
                                       <span key={s}>
-                                        <Link
+                                        <button
+                                          type="button"
                                           key={s}
-                                          href=""
-                                          className="hover:underline focus:outline-none"
+                                          className="bg-transparent border-0 p-0 text-inherit hover:underline focus:outline-none"
                                           onClick={() =>
                                             handleSubmit(s, results.type)
                                           }
                                         >
                                           {s}
-                                        </Link>
+                                        </button>
                                         ,{" "}
                                       </span>
                                     );
@@ -493,16 +497,16 @@ export default function DesktopMainDetails({
                             results.recoms.map((r) => {
                               return (
                                 <span key={r}>
-                                  <Link
+                                  <button
+                                    type="button"
                                     key={r}
-                                    href=""
-                                    className="hover:underline focus:outline-none"
+                                    className="bg-transparent border-0 p-0 text-inherit hover:underline focus:outline-none"
                                     onClick={() =>
                                       handleSubmit(r, results.type)
                                     }
                                   >
                                     {r}
-                                  </Link>
+                                  </button>
                                   ,{" "}
                                 </span>
                               );
@@ -520,16 +524,16 @@ export default function DesktopMainDetails({
                                 results.recommendations.map((r) => {
                                   return (
                                     <span key={r}>
-                                      <Link
+                                      <button
+                                        type="button"
                                         key={r}
-                                        href=""
-                                        className="hover:underline focus:outline-none"
+                                        className="bg-transparent border-0 p-0 text-inherit hover:underline focus:outline-none"
                                         onClick={() =>
                                           handleSubmit(r, results.type)
                                         }
                                       >
                                         {r}
-                                      </Link>
+                                      </button>
                                       ,{" "}
                                     </span>
                                   );
@@ -629,11 +633,13 @@ export default function DesktopMainDetails({
                 {results.review && Object.keys(results.review).length > 0 ? (
                   <>
                     <div className="absolute w-full h-full inset-0">
-                      <Link
-                        href={results.review.link ?? ""}
-                        className="absolute w-full h-full inset-0 z-10 focus:outline-none"
-                        target="_blank"
-                      ></Link>
+                      {results.review.link && (
+                        <Link
+                          href={results.review.link}
+                          className="absolute w-full h-full inset-0 z-10 focus:outline-none"
+                          target="_blank"
+                        />
+                      )}
                     </div>
 
                     {/*----------------------------------------------------------------------------------------------------------------------------------*/}

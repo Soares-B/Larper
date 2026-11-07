@@ -22,53 +22,51 @@ function description(d: string){
 }
 
 export default async function Steam(query: string){
-    const url = `https://store.steampowered.com/api/storesearch/?term=${query}&l=english&cc=us`
+    const url = `https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(query)}&l=english&cc=us`
 
     try{
         const response = await fetch(url);
+        if (!response.ok) throw new Error('Steam search request failed');
         const data = await response.json();
-        const game = data.items[0]
+        const game = data.items?.[0];
+        if (!game?.id) return null;
         const id = game.id
 
         const urlDetails = `https://store.steampowered.com/api/appdetails/?appids=${id}&l=english&cc=us`
 
         const responseDetails = await fetch(urlDetails);
+        if (!responseDetails.ok) throw new Error('Steam details request failed');
         const dataDetails = await responseDetails.json();
-        const info = dataDetails[id].data
+        const info = dataDetails[id]?.data;
+        if (!info) return null;
 
         const urlReview = `https://api.steampowered.com/IUserReviewsService/GetAppReviews/v1/?appid=${id}&filter=1&num_per_page=10`;
 
         const responseReview = await fetch(urlReview);
-        const dataReview = await responseReview.json();
-        const infoReview = dataReview.response.reviews[0]
+        const dataReview = responseReview.ok ? await responseReview.json() : null;
+        const infoReview = dataReview?.response?.reviews?.[0] ?? null;
 
-        const urlUser = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${steamKey}&steamids=${infoReview.author.steamid}`
-
-        const responseUser = await fetch(urlUser);
-        const dataUser = await responseUser.json();
-        const infoUser = dataUser.response.players[0]
-
-        infoReview.user = infoUser.personaname
-        infoReview.avatar = infoUser.avatarfull        
-
-        if (!info){
-            return null
+        if (infoReview && steamKey && infoReview.author?.steamid) {
+            const urlUser = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${encodeURIComponent(steamKey)}&steamids=${encodeURIComponent(infoReview.author.steamid)}`;
+            const responseUser = await fetch(urlUser);
+            const dataUser = responseUser.ok ? await responseUser.json() : null;
+            const infoUser = dataUser?.response?.players?.[0];
+            infoReview.user = infoUser?.personaname ?? null;
+            infoReview.avatar = infoUser?.avatarfull ?? null;
         }
 
         info.infoSource = 'Steam'
 
-        info.about_the_game = description(info.detailed_description)
+        info.about_the_game = description(info.detailed_description ?? "")
         info.cover = `https://cdn.akamai.steamstatic.com/steam/apps/${id}/library_600x900.jpg`
         info.url = `https://store.steampowered.com/app/${id}/`
-
-        console.log(infoReview)
 
         return NextResponse.json({info, infoReview})
 
     }catch(err){
-        console.log(err)
+        console.error('Steam request failed:', err);
         return NextResponse.json({
-            message: `Erro! ${err}`
+            message: 'Não foi possível pesquisar jogos na Steam no momento.'
         }, {status: 500})
     }
 

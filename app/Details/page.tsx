@@ -142,7 +142,7 @@ export default function Home() {
         className={`${results && results.cover && "backdrop-blur-sm"} h-full w-full`}
       >
         <div key="mobile"
-             className="min-[769]:hidden w-full h-full flex flex-col">
+             className="min-[769px]:hidden w-full h-full flex flex-col">
 
           <MobileLogoInputDetails
             theme={theme}
@@ -215,7 +215,7 @@ export default function Home() {
         {/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
         <div
           key="desktop"
-          className="max-[769px]:hidden w-full h-full flex flex-col"
+          className="hidden min-[769px]:flex w-full h-full flex-col"
         >
           <DesktopLogoInputDetails
             theme={theme}

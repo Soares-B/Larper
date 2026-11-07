@@ -136,7 +136,7 @@ class Serie{
 
         if (obj.dataDetails.episode_run_time?.length > 0){
             this.episode_runtime = `${obj.dataDetails.episode_run_time} minutes`;
-        }else if (obj.dataDetails.last_episode_to_air.runtime){
+        }else if (obj.dataDetails.last_episode_to_air?.runtime){
             this.episode_runtime = `${obj.dataDetails.last_episode_to_air.runtime} minutes`;
         }else{
             this.episode_runtime = 'No data (ㆆࡇㆆ")';
@@ -215,5 +215,8 @@ export default function RestructureDetails(media: any, type: string){
                 new Movie(media),
                 Restructure(media, 'movie', 'detailed')
             );
+        case 'book':
+        case 'music':
+            return Restructure(media, type, 'detailed');
     }
 }

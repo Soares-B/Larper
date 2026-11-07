@@ -6,7 +6,7 @@ import { Fragment } from "react";
 type Favorite = {
   name: string;
   type: string;
-  cover: string;
+  cover?: string | null;
 };
 
 type Props = {
@@ -141,13 +141,17 @@ export default function Favorites({
                       handleSubmit(f.name, f.type);
                     }}
                   >
-                    <Image
-                      src={f.cover}
-                      width={40}
-                      height={30}
-                      alt={f.name}
-                      className="rounded-[2px] mr-[15px]"
-                    />
+                    {f.cover ? (
+                      <Image
+                        src={f.cover}
+                        width={40}
+                        height={30}
+                        alt={f.name}
+                        className="rounded-[2px] mr-[15px]"
+                      />
+                    ) : (
+                      <span className="mr-[15px]">—</span>
+                    )}
 
                     <div className="flex w-fit items-center">
                       <p className="w-[125px] mr-[20px]">{f.name}</p>

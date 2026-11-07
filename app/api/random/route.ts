@@ -10,15 +10,26 @@ type FullSearch = [string[], ...any[]];
 
 export async function POST(req: Request) {
     try {
-        const { type, NSFW, style } = await req.json();
+        const body: unknown = await req.json();
+        if (typeof body !== "object" || body === null || Array.isArray(body)) {
+            return NextResponse.json({ message: "Corpo da solicitação inválido." }, { status: 400 });
+        }
+        const { type, NSFW, style } = body as Record<string, unknown>;
+        if ((type !== "anime" && type !== "manga") || typeof NSFW !== "boolean"
+            || (style !== "simple" && style !== "detailed")) {
+            return NextResponse.json({ message: "Parâmetros de conteúdo aleatório inválidos." }, { status: 400 });
+        }
 
         const fullSearch: FullSearch = [[]];
 
         switch (type) {
             case "anime": {
                 const response = await TenraiRandomAnime(NSFW);
+                if (!response?.ok) {
+                    return NextResponse.json({ message: "Não foi possível buscar um anime aleatório." }, { status: 502 });
+                }
 
-                const data = await response?.json();
+                const data = await response.json();
 
                 if (style === 'simple'){
                     const restructure = Restructure(
@@ -61,8 +72,11 @@ export async function POST(req: Request) {
 
             case "manga": {
                 const response = await TenraiRandomManga(NSFW);
+                if (!response?.ok) {
+                    return NextResponse.json({ message: "Não foi possível buscar um mangá aleatório." }, { status: 502 });
+                }
 
-                const data = await response?.json();
+                const data = await response.json();
 
                 if (style === 'simple'){
                     const restructure = Restructure(
@@ -103,11 +117,15 @@ export async function POST(req: Request) {
             }
         }
     } catch (err) {
-        console.log(err);
+        console.error("Random media request failed:", err);
+
+        if (err instanceof SyntaxError) {
+            return NextResponse.json({ message: "O corpo da solicitação não contém JSON válido." }, { status: 400 });
+        }
 
         return NextResponse.json(
             {
-                message: `Error! ${err}`,
+                message: "Não foi possível buscar conteúdo aleatório no momento.",
             },
             {
                 status: 500,

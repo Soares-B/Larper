@@ -1,40 +1,37 @@
-import { error } from "console";
 import { NextResponse } from "next/server";
 
 const Key = process.env.GoogleBooks_Token;
 
-type books = {
-    items: [
-        {volumeInfo:
-            {authors: string[]}
-        }
-    ]
-}
+type GoogleBooksResponse = {
+    items?: Array<{ volumeInfo?: { authors?: string[] } & Record<string, unknown> }>;
+};
 
 export default async function GoogleBooks(query: string){
     try{
-        const url =  'https://www.googleapis.com/books/v1/volumes?q='
+        const url = new URL('https://www.googleapis.com/books/v1/volumes');
+        url.searchParams.set('q', query);
+        if (Key) url.searchParams.set('key', Key);
 
-        const response = await fetch (url + query + '&key=' + Key);
-        const data: books = await response.json();
+        const response = await fetch(url);
+        const data: GoogleBooksResponse = await response.json();
 
         if (response.status !== 200){
-            throw new Error
+            throw new Error('Google Books request failed');
         }
 
-        let info: any = (data.items).find(book => 'authors' in book.volumeInfo)
-        info = info.volumeInfo
-        
-        if (!info){
+        const book = data.items?.find(item => item.volumeInfo?.authors?.length);
+        const info = book?.volumeInfo;
+
+        if (!info) {
             return null;
         }
 
         return NextResponse.json({info})
 
     }catch(err){
-        console.log(err)
+        console.error('Google Books request failed:', err);
         return NextResponse.json({
-            message: `Erro! ${err}`
+            message: 'Não foi possível pesquisar livros no momento.'
         }, {status: 500})
     }
     

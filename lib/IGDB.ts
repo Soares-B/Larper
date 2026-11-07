@@ -4,6 +4,8 @@ import getAccessToken from "./TwitchToken";
 export default async function IGDB(query: string){
     try{
 
+        const safeQuery = query.replace(/[\\"]/g, "\\$&").replace(/[\r\n]/g, " ");
+
         const token = await getAccessToken();
         const url = 'https://api.igdb.com/v4/games'
         const options = {
@@ -14,12 +16,13 @@ export default async function IGDB(query: string){
                 'Content-Type': 'text/plain'
             },
             body: `
-                search "${query}";
+                search "${safeQuery}";
                 fields name, cover.url, genres.name, age_ratings.synopsis, rating, game_modes.name, game_type.type, platforms.name, release_dates.human, storyline, themes.name, url, summary, language_supports.language;
                 limit 1;
             `
         }
         const response = await fetch(url, options);
+        if (!response.ok) throw new Error('IGDB request failed');
         const data = await response.json();
         let info = data[0];
 
@@ -37,7 +40,7 @@ export default async function IGDB(query: string){
 
         let languagesData = null;
 
-        if (languages !== null){
+        if (languages && languages.length > 0){
             const languagesResponse = await fetch(
             'https://api.igdb.com/v4/languages', 
             
@@ -53,7 +56,7 @@ export default async function IGDB(query: string){
                 where id = (${languages.join(',')});
             `
         })
-            languagesData = await languagesResponse.json(); 
+            if (languagesResponse.ok) languagesData = await languagesResponse.json();
         }
 
         info.infoSource = 'IGDB'
@@ -61,9 +64,9 @@ export default async function IGDB(query: string){
         return NextResponse.json({info, languagesData,})
 
     }catch(err){
-        console.log(err)
+        console.error('IGDB request failed:', err);
         return NextResponse.json({
-            message: `Erro! ${err}`
+            message: 'Não foi possível pesquisar jogos no momento.'
         }, {status: 500})
     }
 }

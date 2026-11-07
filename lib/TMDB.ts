@@ -4,16 +4,17 @@ const Key = process.env.TMDB_Token;
 
 export async function TMDBMovie(query: string){
     try{
-        const urlPrincipal = 'https://api.themoviedb.org/3/search/movie?query=';
+        const urlPrincipal = new URL('https://api.themoviedb.org/3/search/movie');
+        urlPrincipal.searchParams.set('query', query);
         const urlDetails = 'https://api.themoviedb.org/3/movie/'
         const options = {
             method: 'GET',
             headers: {accept: 'application/json', Authorization: `Bearer ${Key}`}
         };
 
-        const response = await fetch(urlPrincipal + query, options);
+        const response = await fetch(urlPrincipal, options);
         const data = await response.json();
-        const info = data.results[0];
+        const info = data.results?.[0];
 
         if (!info) {
             return null;
@@ -24,20 +25,20 @@ export async function TMDBMovie(query: string){
 
         const responseReview = await fetch(urlDetails + info.id + '/reviews', options);
         const dataReviews = await responseReview.json();
-        const infoReview = dataReviews.results[0];
+        const infoReview = dataReviews.results?.[0] ?? null;
 
         const responseRecommendations = await fetch(urlDetails + info.id + '/recommendations', options)
         const dataRecommendations = await responseRecommendations.json();
 
-        const infoRecommendations = dataRecommendations.results.slice(0, 3);
+        const infoRecommendations = dataRecommendations.results?.slice(0, 3) ?? [];
 
         const responseKeywords = await fetch(urlDetails + info.id + '/keywords', options)
         const dataKeywords = await responseKeywords.json();
-        const infoKeywords = dataKeywords.keywords.slice(0, 5);
+        const infoKeywords = dataKeywords.keywords?.slice(0, 5) ?? [];
 
         const responseSimilar = await fetch(urlDetails + info.id + '/similar', options)
         const dataSimilar = await responseSimilar.json();
-        const infoSimilar = dataSimilar.results.slice(0, 3);
+        const infoSimilar = dataSimilar.results?.slice(0, 3) ?? [];
 
         return NextResponse.json({
             info,
@@ -58,16 +59,17 @@ export async function TMDBMovie(query: string){
 
 export async function TMDBSerie(query: string){
     try{
-        const urlPrincipal = 'https://api.themoviedb.org/3/search/tv?query=';
+        const urlPrincipal = new URL('https://api.themoviedb.org/3/search/tv');
+        urlPrincipal.searchParams.set('query', query);
         const urlDetails = 'https://api.themoviedb.org/3/tv/';
         const options = {
             method: 'GET',
             headers: {accept: 'application/json', Authorization: `Bearer ${Key}`}
         };
         
-        const response = await fetch(urlPrincipal + query, options);
+        const response = await fetch(urlPrincipal, options);
         const data = await response.json();
-        const info = data.results[0];
+        const info = data.results?.[0];
 
         if (!info) {
             return null;
@@ -78,20 +80,20 @@ export async function TMDBSerie(query: string){
 
         const responseReview = await fetch(urlDetails + info.id + '/reviews', options);
         const dataReviews = await responseReview.json();
-        const infoReview = dataReviews.results[0];
+        const infoReview = dataReviews.results?.[0] ?? null;
 
         const responseRecommendations = await fetch(urlDetails + info.id + '/recommendations', options)
         const dataRecommendations = await responseRecommendations.json();
 
-        const infoRecommendations = dataRecommendations.results.slice(0, 3);
+        const infoRecommendations = dataRecommendations.results?.slice(0, 3) ?? [];
 
         const responseKeywords = await fetch(urlDetails + info.id + '/keywords', options)
         const dataKeywords = await responseKeywords.json();
-        const infoKeywords = dataKeywords.results.slice(0, 5);
+        const infoKeywords = dataKeywords.results?.slice(0, 5) ?? [];
 
         const responseSimilar = await fetch(urlDetails + info.id + '/similar', options)
         const dataSimilar = await responseSimilar.json();
-        const infoSimilar = dataSimilar.results.slice(0, 3);
+        const infoSimilar = dataSimilar.results?.slice(0, 3) ?? [];
 
         return NextResponse.json({
             info,

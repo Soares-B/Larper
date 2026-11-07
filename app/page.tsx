@@ -239,7 +239,7 @@ export default function Home() {
 
         {/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
         <div
-          className="hidden min-[770px]:flex w-full h-full min-h-0
+          className="hidden min-[769px]:flex w-full h-full min-h-0
         flex-col"
         >
           <DesktopLogoInput

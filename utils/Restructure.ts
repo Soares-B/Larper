@@ -390,18 +390,18 @@ class Game{
             this.age_rating = obj.info.required_age ?? null;
             this.background = obj.info.header_image ?? null
             this.genres = obj.info.genres?.map(g => g.description) ?? null;
-            this.platforms = Object.entries(obj.info.platforms).filter(([_, available]) => available).map(([platform]) => platform);
+            this.platforms = Object.entries(obj.info.platforms ?? {}).filter(([_, available]) => available).map(([platform]) => platform);
             this.rating = obj.info.recommendations ? (obj.info.recommendations.total) : null;
-            this.date = obj.info.release_date.coming_soon
+            this.date = obj.info.release_date?.coming_soon
                         ? 'Coming soon'
-                        : obj.info.release_date.date ?? null;
+                        : obj.info.release_date?.date ?? null;
             if (obj.info.is_free){
                 this.price = 'Free'
             }else{
                 this.price = obj.info.price_overview ? (obj.info.price_overview.final_formatted ?? undefined) : undefined;
             }
 
-            this.categories = (obj.info.categories.map(c => c.description)).slice(0,5) ?? null;
+            this.categories = (obj.info.categories ?? []).map(c => c.description).slice(0,5);
             this.developers = obj.info.developers ?? null;
 
             if (obj.infoReview){
@@ -426,7 +426,7 @@ class Game{
             this.genres = obj.info.genres?.map(g => g.name) ?? null;
             this.platforms = obj.info.platforms?.map(p => p.name) ?? null;           
             this.rating = obj.info.rating ? Number((obj.info.rating / 10).toFixed(1)) : null;
-            this.date = obj.info.release_dates ? obj.info.release_dates[0].human : null;
+            this.date = obj.info.release_dates?.[0]?.human ?? null;
 
             
             if (obj.languagesData){
@@ -509,7 +509,9 @@ class TMDB{
         this.cover = `https://image.tmdb.org/t/p/w500${obj.info.poster_path}`;
         this.background = `https://image.tmdb.org/t/p/w500${obj.info.backdrop_path}`;
         this.id = obj.info.id;
-        this.rating = Number(obj.info.vote_average?.toFixed(2)) ?? null;
+        this.rating = typeof obj.info.vote_average === 'number' && Number.isFinite(obj.info.vote_average)
+            ? Number(obj.info.vote_average.toFixed(2))
+            : null;
         this.genres = obj.dataDetails.genres?.map(g => g.name) ?? null;
         this.tagline = obj.dataDetails.tagline ? obj.dataDetails.tagline : null;
         this.favorite = false;
@@ -517,7 +519,9 @@ class TMDB{
         if (obj.infoReview) {
             this.review = {
                 author: obj.infoReview.author ?? null,
-                rating: Number(obj.infoReview.author_details?.rating?.toFixed(1)) ?? null,
+                rating: typeof obj.infoReview.author_details?.rating === 'number' && Number.isFinite(obj.infoReview.author_details.rating)
+                    ? Number(obj.infoReview.author_details.rating.toFixed(1))
+                    : null,
                 content: textShortener(obj.infoReview.content ?? null, style, style === 'detailed' ? 'review' : 'description'),
                 avatar: obj.infoReview.author_details?.avatar_path ? `https://image.tmdb.org/t/p/w500${obj.infoReview.author_details.avatar_path}` : null,
                 link: obj.infoReview.url ?? '',

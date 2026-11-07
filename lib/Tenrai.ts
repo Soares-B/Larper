@@ -110,9 +110,9 @@ export async function TenraiManga(query: string) {
         const dataFull = await responseFull.json();
         const infoFull = dataFull.data ?? null;
 
-        const authors = Author(infoFull.authors)
-
-        infoFull.authors = authors
+        if (infoFull) {
+            infoFull.authors = Author(infoFull.authors ?? []);
+        }
 
         const responseRecoms = await fetch(
             `${mangaUrl}/${info.mal_id}/recommendations`,
@@ -155,6 +155,7 @@ export async function TenraiRandomAnime(NSFW: boolean) {
 
         const data = await response.json();
         const info = data.data;
+        if (!info?.mal_id) return null;
 
         const responseReview = await fetch(
             `${animeUrl}/${info.mal_id}/reviews`,
@@ -217,6 +218,7 @@ export async function TenraiRandomManga(NSFW: boolean) {
 
         const data = await response.json();
         const info = data.data;
+        if (!info?.mal_id) return null;
 
         const responseReview = await fetch(
             `${mangaUrl}/${info.mal_id}/reviews`,
@@ -238,9 +240,9 @@ export async function TenraiRandomManga(NSFW: boolean) {
         const dataFull = await responseFull.json();
         const infoFull = dataFull.data ?? null;
 
-        const authors = Author(infoFull.authors)
-
-        infoFull.authors = authors
+        if (infoFull) {
+            infoFull.authors = Author(infoFull.authors ?? []);
+        }
 
         const responseRecoms = await fetch(
             `${mangaUrl}/${info.mal_id}/recommendations`,

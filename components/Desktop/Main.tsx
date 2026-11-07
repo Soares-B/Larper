@@ -44,19 +44,23 @@ export default function DesktopMain({
             {/*----------------------------------------------------------------------------------------------------------------------------------*/}
             <div className="flex flex-row w-full">
               <Link
-                href={results.link}
+                href={results.link || "#"}
                 target="_blank"
                 className="ml-5 mt-5 w-fit block max-h-[420px] min-h-[420px] min-w-[300px] focus:outline-none select-none
                 max-[1367px]:max-h-[350px] max-[1367px]:min-h-[350px] max-[1367px]:min-w-[250px]"
               >
-                <Image
-                  src={results.cover!}
-                  width={300}
-                  height={550}
-                  alt={results.name}
-                  className="rounded-[5px] h-auto w-auto min-w-[300px] max-h-[420px] select-none
-                  max-[1367px]:max-h-[350px] max-[1367px]:min-w-[250px]"
-                ></Image>
+                {results.cover ? (
+                  <Image
+                    src={results.cover}
+                    width={300}
+                    height={550}
+                    alt={results.name}
+                    className="rounded-[5px] h-auto w-auto min-w-[300px] max-h-[420px] select-none
+                    max-[1367px]:max-h-[350px] max-[1367px]:min-w-[250px]"
+                  />
+                ) : (
+                  <span className="flex min-h-[100px] min-w-[200px] items-center justify-center">Capa indisponível</span>
+                )}
               </Link>
 
               {/*----------------------------------------------------------------------------------------------------------------------------------*/}

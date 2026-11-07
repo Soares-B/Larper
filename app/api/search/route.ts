@@ -10,9 +10,67 @@ import RestructureDetails from "@/utils/RestructureDetails";
 
 type FullSearch = [string[], ...any[]];
 
+const allowedFilters = ["anime", "manga", "game", "book", "serie", "movie", "music"] as const;
+const rateLimitWindowMs = 60_000;
+const rateLimitMaxRequests = 30;
+const rateLimitStore = globalThis as typeof globalThis & {
+    __larperSearchRateLimit?: Map<string, { count: number; resetAt: number }>;
+};
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+    return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function isRateLimited(req: Request) {
+    const forwardedFor = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+    const clientIp = req.headers.get("x-real-ip")?.trim() || forwardedFor || "unknown";
+    if (clientIp === "unknown") return false;
+    const now = Date.now();
+    const store = rateLimitStore.__larperSearchRateLimit ??= new Map();
+    if (store.size > 1_000) {
+        for (const [key, entry] of store) {
+            if (entry.resetAt <= now) store.delete(key);
+        }
+    }
+    const current = store.get(clientIp);
+
+    if (!current || current.resetAt <= now) {
+        store.set(clientIp, { count: 1, resetAt: now + rateLimitWindowMs });
+        return false;
+    }
+
+    current.count += 1;
+    return current.count > rateLimitMaxRequests;
+}
+
 export async function POST(req: Request) {
     try {
-        const { query, filters, type } = await req.json();
+        const body: unknown = await req.json();
+        if (!isRecord(body)) {
+            return NextResponse.json({ message: "Corpo da pesquisa inválido." }, { status: 400 });
+        }
+
+        const { query, filters, type } = body;
+        if (typeof query !== "string" || !query.trim() || query.trim().length > 100) {
+            return NextResponse.json({ message: "A pesquisa deve ter entre 1 e 100 caracteres." }, { status: 400 });
+        }
+        if (!isRecord(filters)
+            || Object.keys(filters).length === 0
+            || Object.keys(filters).some(key => !allowedFilters.includes(key as typeof allowedFilters[number]) || typeof filters[key] !== "boolean")
+            || !Object.values(filters).some(value => value === true)) {
+            return NextResponse.json({ message: "Filtros da pesquisa inválidos." }, { status: 400 });
+        }
+        if (type !== "simple" && type !== "detailed") {
+            return NextResponse.json({ message: "Tipo de pesquisa inválido." }, { status: 400 });
+        }
+        if (isRateLimited(req)) {
+            return NextResponse.json({ message: "Muitas pesquisas. Tente novamente em um minuto." }, {
+                status: 429,
+                headers: { "Retry-After": "60" },
+            });
+        }
+
+        const normalizedQuery = query.trim();
 
         let anime = null;
         let manga = null;
@@ -27,13 +85,11 @@ export async function POST(req: Request) {
 
         const fullSearch: FullSearch = [[]];
 
-        const encodeQuery = encodeURIComponent(query);
-
         /*
          * ANIME
          */
         if (filters.anime) {
-            searchVar = await TenraiAnime(query);
+            searchVar = await TenraiAnime(normalizedQuery);
 
             if (searchVar) {
                 const data = await searchVar.json();
@@ -61,7 +117,7 @@ export async function POST(req: Request) {
          * MANGA
          */
         if (filters.manga) {
-            searchVar = await TenraiManga(query);
+            searchVar = await TenraiManga(normalizedQuery);
 
             if (searchVar) {
                 const data = await searchVar.json();
@@ -89,10 +145,10 @@ export async function POST(req: Request) {
          * GAME
          */
         if (filters.game) {
-            searchVar = await IGDB(encodeQuery);
+            searchVar = await IGDB(normalizedQuery);
 
             if (!searchVar?.ok){
-                searchVar = await Steam(encodeQuery)
+                searchVar = await Steam(normalizedQuery)
             }
 
             if (searchVar) {
@@ -121,7 +177,7 @@ export async function POST(req: Request) {
          * BOOK
          */
         if (filters.book) {
-            searchVar = await GoogleBooks(encodeQuery);
+            searchVar = await GoogleBooks(normalizedQuery);
 
             if (searchVar) {
                 book = await searchVar.json();
@@ -150,7 +206,7 @@ export async function POST(req: Request) {
          * SERIE
          */
         if (filters.serie) {
-            searchVar = await TMDBSerie(encodeQuery);
+            searchVar = await TMDBSerie(normalizedQuery);
 
             if (searchVar) {
                 serie = await searchVar.json();
@@ -178,7 +234,7 @@ export async function POST(req: Request) {
          * MOVIE
          */
         if (filters.movie) {
-            searchVar = await TMDBMovie(encodeQuery);
+            searchVar = await TMDBMovie(normalizedQuery);
 
             if (searchVar) {
                 movie = await searchVar.json();
@@ -206,7 +262,7 @@ export async function POST(req: Request) {
          * MUSIC
          */
         if (filters.music) {
-            searchVar = await Deezer(encodeQuery);
+            searchVar = await Deezer(normalizedQuery);
 
             if (searchVar) {
                 music = await searchVar.json();
@@ -232,11 +288,15 @@ export async function POST(req: Request) {
 
         return NextResponse.json(fullSearch);
     } catch (err) {
-        console.log(err);
+        console.error("Search request failed:", err);
+
+        if (err instanceof SyntaxError) {
+            return NextResponse.json({ message: "O corpo da pesquisa não contém JSON válido." }, { status: 400 });
+        }
 
         return NextResponse.json(
             {
-                message: `Error! ${err}`,
+                message: "Não foi possível concluir a pesquisa no momento.",
             },
             {
                 status: 500,
