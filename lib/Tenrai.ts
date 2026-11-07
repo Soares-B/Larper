@@ -1,3 +1,4 @@
+import { readJsonResponse } from "@/lib/readJsonResponse";
 import { NextResponse } from "next/server";
 
 const animeUrl = "https://api.tenrai.org/v1/anime";
@@ -17,7 +18,7 @@ export async function TenraiAnime(query: string) {
             }
         );
 
-        const data = await response.json();
+        const data = await readJsonResponse(response);
         const info = data.data?.[0];
 
         if (!info) {
@@ -31,7 +32,7 @@ export async function TenraiAnime(query: string) {
             }
         );
 
-        const dataReview = await responseReview.json();
+        const dataReview = await readJsonResponse(responseReview);
         const infoReview = dataReview.data?.[0] ?? null;
 
         const responseFull = await fetch(
@@ -41,7 +42,7 @@ export async function TenraiAnime(query: string) {
             }
         );
 
-        const dataFull = await responseFull.json();
+        const dataFull = await readJsonResponse(responseFull);
         const infoFull = dataFull.data ?? null;
 
         const responseRecoms = await fetch(
@@ -51,7 +52,7 @@ export async function TenraiAnime(query: string) {
             }
         );
 
-        const dataRecoms = await responseRecoms.json();
+        const dataRecoms = await readJsonResponse(responseRecoms);
         const infoRecoms = dataRecoms.data?.slice(0, 3) ?? [];
 
         return NextResponse.json({
@@ -83,7 +84,7 @@ export async function TenraiManga(query: string) {
             }
         );
 
-        const data = await response.json();
+        const data = await readJsonResponse(response);
         const info = data.data?.[0];
 
         if (!info) {
@@ -97,7 +98,7 @@ export async function TenraiManga(query: string) {
             }
         );
 
-        const dataReview = await responseReview.json();
+        const dataReview = await readJsonResponse(responseReview);
         const infoReview = dataReview.data?.[0] ?? null;
 
         const responseFull = await fetch(
@@ -107,7 +108,7 @@ export async function TenraiManga(query: string) {
             }
         );
 
-        const dataFull = await responseFull.json();
+        const dataFull = await readJsonResponse(responseFull);
         const infoFull = dataFull.data ?? null;
 
         if (infoFull) {
@@ -121,7 +122,7 @@ export async function TenraiManga(query: string) {
             }
         );
 
-        const dataRecoms = await responseRecoms.json();
+        const dataRecoms = await readJsonResponse(responseRecoms);
         const infoRecoms = dataRecoms.data?.slice(0, 3) ?? [];
 
         return NextResponse.json({
@@ -153,7 +154,7 @@ export async function TenraiRandomAnime(NSFW: boolean) {
             }
         );
 
-        const data = await response.json();
+        const data = await readJsonResponse(response);
         const info = data.data;
         if (!info?.mal_id) return null;
 
@@ -164,7 +165,7 @@ export async function TenraiRandomAnime(NSFW: boolean) {
             }
         );
 
-        const dataReview = await responseReview.json();
+        const dataReview = await readJsonResponse(responseReview);
         const infoReview = dataReview.data?.[0] ?? null;
 
         const responseFull = await fetch(
@@ -174,7 +175,7 @@ export async function TenraiRandomAnime(NSFW: boolean) {
             }
         );
 
-        const dataFull = await responseFull.json();
+        const dataFull = await readJsonResponse(responseFull);
         const infoFull = dataFull.data ?? null;
 
         const responseRecoms = await fetch(
@@ -184,7 +185,7 @@ export async function TenraiRandomAnime(NSFW: boolean) {
             }
         );
 
-        const dataRecoms = await responseRecoms.json();
+        const dataRecoms = await readJsonResponse(responseRecoms);
         const infoRecoms = dataRecoms.data?.slice(0, 3) ?? [];
 
         return NextResponse.json({
@@ -216,7 +217,7 @@ export async function TenraiRandomManga(NSFW: boolean) {
             }
         );
 
-        const data = await response.json();
+        const data = await readJsonResponse(response);
         const info = data.data;
         if (!info?.mal_id) return null;
 
@@ -227,7 +228,7 @@ export async function TenraiRandomManga(NSFW: boolean) {
             }
         );
 
-        const dataReview = await responseReview.json();
+        const dataReview = await readJsonResponse(responseReview);
         const infoReview = dataReview.data?.[0] ?? null;
 
         const responseFull = await fetch(
@@ -237,7 +238,7 @@ export async function TenraiRandomManga(NSFW: boolean) {
             }
         );
 
-        const dataFull = await responseFull.json();
+        const dataFull = await readJsonResponse(responseFull);
         const infoFull = dataFull.data ?? null;
 
         if (infoFull) {
@@ -251,7 +252,7 @@ export async function TenraiRandomManga(NSFW: boolean) {
             }
         );
 
-        const dataRecoms = await responseRecoms.json();
+        const dataRecoms = await readJsonResponse(responseRecoms);
         const infoRecoms = dataRecoms.data?.slice(0, 3) ?? [];
 
         return NextResponse.json({
