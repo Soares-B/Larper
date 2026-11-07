@@ -5,6 +5,7 @@ import {
 } from "@/lib/Tenrai";
 import RestructureDetails from "@/utils/RestructureDetails";
 import Restructure from "@/utils/Restructure";
+import { isRateLimited } from "@/lib/rateLimit";
 
 type FullSearch = [string[], ...any[]];
 
@@ -18,6 +19,12 @@ export async function POST(req: Request) {
         if ((type !== "anime" && type !== "manga") || typeof NSFW !== "boolean"
             || (style !== "simple" && style !== "detailed")) {
             return NextResponse.json({ message: "Parâmetros de conteúdo aleatório inválidos." }, { status: 400 });
+        }
+        if (isRateLimited(req, "random", 10)) {
+            return NextResponse.json({ message: "Muitas solicitações. Tente novamente em um minuto." }, {
+                status: 429,
+                headers: { "Retry-After": "60" },
+            });
         }
 
         const fullSearch: FullSearch = [[]];
