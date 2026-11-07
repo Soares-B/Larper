@@ -8,6 +8,7 @@ import DesktopMain from "@/components/Desktop/Main";
 
 import MobileLogoInput from "@/components/Mobile/Logo+FormMobile";
 import MobileMain from "@/components/Mobile/MainMobile";
+import MediaTypeSwitcher from "@/components/MediaTypeSwitcher";
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
