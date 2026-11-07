@@ -7,7 +7,7 @@ import Theme from "../Themes";
 import Favorites from "../Favorites";
 import type { Filters } from "@/types/media";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 
 export default function DesktopLogoInput({
   theme,
@@ -29,28 +29,40 @@ export default function DesktopLogoInput({
   setCurrent: any;
 }) {
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  async function handleSubmit(e: any) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (!input.trim() || loading) return;
 
-    const response = await fetch("/api/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: input,
-        filters: filters,
-        type: "simple",
-      }),
-    });
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("/api/search", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: input, filters, type: "simple" }),
+      });
+      const data: unknown = await response.json().catch(() => null);
+      if (!response.ok) {
+        const message = typeof data === "object" && data !== null && "message" in data
+          ? String(data.message)
+          : "Não foi possível concluir a pesquisa.";
+        throw new Error(message);
+      }
+      if (!Array.isArray(data) || !Array.isArray(data[0])) {
+        throw new Error("A resposta da pesquisa é inválida.");
+      }
 
-    const data = await response.json();
-
-    setMedia(data);
-    setCurrent(1);
-
-    setOpenField(true);
+      setMedia(data);
+      setCurrent(1);
+      setOpenField(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Não foi possível concluir a pesquisa.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -87,11 +99,13 @@ export default function DesktopLogoInput({
         />
         <button
           type="submit"
+          disabled={loading || !input.trim()}
           className={` w-fit h-fit p-2 rounded-[5px] ${theme === "dark" ? "bg-[var(--background)]" : theme === "light" ? "bg-[var(--backgroundLight)]" : theme === "glass" ? "bg-[var(--backgroundGlass)] backdrop-blur-md" : "bg-[var(--backgroundTransparent)] backdrop-blur-md"} ${theme === "dark" ? "text-[var(--text)]" : theme === "light" ? "text-[var(--textLight)]" : "text-[var(--textLight)]"} pl-3 pr-3 focus:outline-none ${theme === "dark" ? "hover:bg-[var(--backgroundHover)]" : theme === "light" ? "hover:bg-[var(--backgroundLightHover)]" : "hover:bg-[var(--backgroundGlassHover)]"} hover:outline-1 select-none`}
         >
-          Submit
+          {loading ? "Buscando..." : "Submit"}
         </button>
 
+        {error && <span role="alert" className="text-red-400">{error}</span>}
         <Details theme={theme} />
         <Menu theme={theme} filters={filters} setFilters={setFilters} />
         <Theme theme={theme} setTheme={setTheme} />
