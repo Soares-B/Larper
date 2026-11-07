@@ -1,7 +1,7 @@
 "use client";
 
 import type { Filters, MediaResult, SearchData } from "@/types/media";
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 
 import DesktopLogoInput from "@/components/Desktop/Logo+Form";
 import DesktopMain from "@/components/Desktop/Main";
@@ -11,17 +11,42 @@ import MobileMain from "@/components/Mobile/MainMobile";
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
+const emptyFavorites: MediaResult[] = [];
+let cachedFavoritesRaw: string | null = null;
+let cachedFavorites: MediaResult[] = emptyFavorites;
+
+function subscribeToFavorites(onChange: () => void) {
+  window.addEventListener("storage", onChange);
+  window.addEventListener("favoriteschange", onChange);
+  return () => {
+    window.removeEventListener("storage", onChange);
+    window.removeEventListener("favoriteschange", onChange);
+  };
+}
+
+function getFavoritesSnapshot() {
+  const raw = localStorage.getItem("favorites");
+  if (raw !== cachedFavoritesRaw) {
+    cachedFavoritesRaw = raw;
+    try {
+      const parsed: unknown = raw ? JSON.parse(raw) : [];
+      cachedFavorites = Array.isArray(parsed) ? parsed as MediaResult[] : emptyFavorites;
+    } catch {
+      cachedFavorites = emptyFavorites;
+    }
+  }
+  return cachedFavorites;
+}
+
 export default function Home() {
   const [theme, setTheme] = useState("dark");
   const [openField, setOpenField] = useState(false);
 
-  const [query, setQuery] = useState("");
-  const [favorites, setFavorites] = useState<MediaResult[]>([]);
+  const favorites = useSyncExternalStore(subscribeToFavorites, getFavoritesSnapshot, () => emptyFavorites);
   const [NSFW, setNSFW] = useState(false);
 
   const [media, setMedia] = useState<SearchData | null>(null);
   const [current, setCurrent] = useState(1);
-  const [spoiler, setSpoiler] = useState(false);
   const [randomLoading, setRandomLoading] = useState(false);
   const [randomError, setRandomError] = useState<string | null>(null);
 
@@ -36,28 +61,6 @@ export default function Home() {
   });
 
   const results = (media?.[current] as MediaResult | undefined) ?? null;
-
-  useEffect(() => {
-    const result = media?.[current] as MediaResult | undefined;
-
-    if (result?.type === "anime" || result?.type === "manga") {
-      setSpoiler(result.review?.spoiler ?? false);
-    } else {
-      setSpoiler(false);
-    }
-  }, [media, current]);
-
-  useEffect(() => {
-    try {
-      const savedFavorites = localStorage.getItem("favorites");
-
-      if (savedFavorites) {
-        setFavorites(JSON.parse(savedFavorites));
-      }
-    } catch (error) {
-      console.error("Erro ao carregar favoritos:", error);
-    }
-  }, []);
 
   function handleClick(arrow: string) {
     if (!media || media.length <= 1) {
@@ -113,8 +116,7 @@ export default function Home() {
   }
 
   function toggleFavorite(media: MediaResult) {
-    setFavorites((prevFavorites) => {
-      const isFavorite = prevFavorites.some(
+      const isFavorite = favorites.some(
         (favorite) =>
           favorite.type === media.type &&
           favorite.name === media.name &&
@@ -122,7 +124,7 @@ export default function Home() {
       );
 
       const updatedFavorites = isFavorite
-        ? prevFavorites.filter(
+        ? favorites.filter(
             (favorite) =>
               !(
                 favorite.type === media.type &&
@@ -130,12 +132,12 @@ export default function Home() {
                 favorite.link === media.link
               ),
           )
-        : [...prevFavorites, media];
+        : [...favorites, media];
 
       localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-
-      return updatedFavorites;
-    });
+      cachedFavoritesRaw = JSON.stringify(updatedFavorites);
+      cachedFavorites = updatedFavorites;
+      window.dispatchEvent(new Event("favoriteschange"));
   }
 
   return (
@@ -331,7 +333,6 @@ export default function Home() {
                   setNSFW={setNSFW}
                   random={random}
                   randomLoading={randomLoading}
-                randomLoading={randomLoading}
                   favorites={favorites}
                   toggleFavorite={toggleFavorite}
                   mediaAmount={false}
