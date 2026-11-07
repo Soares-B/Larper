@@ -389,7 +389,7 @@ class Game{
             this.age_rating = obj.info.required_age ?? null;
             this.background = obj.info.header_image ?? null
             this.genres = obj.info.genres?.map(g => g.description) ?? null;
-            this.platforms = Object.entries(obj.info.platforms ?? {}).filter(([_, available]) => available).map(([platform]) => platform);
+            this.platforms = Object.entries(obj.info.platforms ?? {}).filter(([, available]) => available).map(([platform]) => platform);
             this.rating = obj.info.steam_rating ?? null;
             this.date = obj.info.release_date?.coming_soon
                         ? 'Coming soon'
