@@ -94,19 +94,19 @@ export default function Home() {
       if (!response.ok) {
         const message = typeof data === "object" && data !== null && "message" in data
           ? String(data.message)
-          : "Não foi possível buscar conteúdo aleatório.";
+          : "Unable to load a random item.";
         throw new Error(message);
       }
       if (typeof data !== "object" || data === null || !("fullSearch" in data)
         || !Array.isArray(data.fullSearch)) {
-        throw new Error("A resposta de conteúdo aleatório é inválida.");
+        throw new Error("The random item response is invalid.");
       }
 
       setMedia(data.fullSearch as SearchData);
       setCurrent(1);
       setOpenField(true);
     } catch (err) {
-      setRandomError(err instanceof Error ? err.message : "Não foi possível buscar conteúdo aleatório.");
+      setRandomError(err instanceof Error ? err.message : "Unable to load a random item.");
     } finally {
       setRandomLoading(false);
     }
