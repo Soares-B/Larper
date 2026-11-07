@@ -65,7 +65,6 @@ type MangaShape = TenraiShape & {
     }
 }
 
-
 type SteamShape = {
     info: {
         name: string | null,
@@ -273,7 +272,6 @@ class Tenrai{
         link: string;
     } | object
 
-
     constructor(obj: TenraiShape, style: string){
         this.review = {};
         this.name = obj.info.title_japanese;
@@ -429,7 +427,6 @@ class Game{
             this.rating = obj.info.rating ? Number((obj.info.rating / 10).toFixed(1)) : null;
             this.date = obj.info.release_dates?.[0]?.human ?? null;
 
-            
             if (obj.languagesData){
                 this.language = {
                     languages: obj.languagesData.map(l => l.name),
@@ -504,7 +501,6 @@ class TMDB{
         link: string
     } | null
 
-
     constructor(obj: TMDBShape, style: string){
         this.description = obj.info.overview ? textShortener(obj.info.overview, style, 'description') : null;
         this.cover = obj.info.poster_path ? `https://image.tmdb.org/t/p/w500${obj.info.poster_path}` : null;
@@ -563,7 +559,6 @@ class Movie extends TMDB{
     type: string;
     runtime: string | null;
     link: string | null;
-
 
     constructor (obj: MovieShape, style: string){
         super(obj, style)
