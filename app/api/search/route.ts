@@ -9,7 +9,7 @@ import Restructure from "@/utils/Restructure";
 import RestructureDetails from "@/utils/RestructureDetails";
 import { isRateLimited } from "@/lib/rateLimit";
 
-type FullSearch = [string[], ...any[]];
+type FullSearch = [string[], ...object[]];
 
 const allowedFilters = ["anime", "manga", "game", "book", "serie", "movie", "music"] as const;
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -45,13 +45,13 @@ export async function POST(req: Request) {
 
         const normalizedQuery = query.trim();
 
-        let anime = null;
-        let manga = null;
-        let game = null;
-        let book = null;
-        let music = null;
-        let serie = null;
-        let movie = null;
+        let anime: object | null = null;
+        let manga: object | null = null;
+        let game: object | null = null;
+        let book: object | null = null;
+        let music: object | null = null;
+        let serie: object | null = null;
+        let movie: object | null = null;
 
         let searchVar;
         let restructure;
